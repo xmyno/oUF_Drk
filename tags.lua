@@ -24,12 +24,22 @@ local function hex(r, g, b)
 	end
 end
 
-tags.Events['drk:hp'] = 'UNIT_HEALTH UNIT_MAXHEALTH'
-tags.Methods['drk:hp'] = function(u)
-	if UnitIsDead(u) or UnitIsGhost(u) or not UnitIsConnected(u) then
-		return _TAGS['drk:DDG'](u)
+tags.Events["drk:perhp"] = 'UNIT_HEALTH UNIT_MAXHEALTH'
+tags.Methods["drk:perhp"] = function(u)
+	local m = UnitHealthMax(u)
+	if(m == 0) then
+		return 0
 	else
-		local per = _TAGS['perhp'](u).."%" or 0
+		return math.floor((UnitHealth(u)/m*100+.05)*10)/10
+	end
+end
+
+tags.Events["drk:hp"] = 'UNIT_HEALTH UNIT_MAXHEALTH'
+tags.Methods["drk:hp"] = function(u)
+	if UnitIsDead(u) or UnitIsGhost(u) or not UnitIsConnected(u) then
+		return _TAGS["drk:DDG"](u)
+	else
+		local per = _TAGS["drk:perhp"](u).."%" or 0
 		local min, max = UnitHealth(u), UnitHealthMax(u)
 		if u == "player" or u == "target" then
 			if min~=max then 
@@ -43,18 +53,18 @@ tags.Methods['drk:hp'] = function(u)
 	end
 end
 
-tags.Events['drk:raidhp'] = 'UNIT_HEALTH'
-tags.Methods['drk:raidhp'] = function(u) 
+tags.Events["drk:raidhp"] = 'UNIT_HEALTH'
+tags.Methods["drk:raidhp"] = function(u) 
   if UnitIsDead(u) or UnitIsGhost(u) or not UnitIsConnected(u) then
-    return _TAGS['drk:DDG'](u)
+    return _TAGS["drk:DDG"](u)
   else
-	local per = _TAGS['perhp'](u).."%" or 0
+	local per = _TAGS["drk:perhp"](u).."%" or 0
     return per
   end
 end
 
-tags.Events['drk:color'] = 'UNIT_REACTION UNIT_HEALTH UNIT_HAPPINESS'
-tags.Methods['drk:color'] = function(u, r)
+tags.Events["drk:color"] = 'UNIT_REACTION UNIT_HEALTH UNIT_HAPPINESS'
+tags.Methods["drk:color"] = function(u, r)
 	local _, class = UnitClass(u)
 	local reaction = UnitReaction(u, "player")
 	
@@ -73,13 +83,13 @@ tags.Methods['drk:color'] = function(u, r)
 	end
 end
 
-tags.Events["drk:afkdnd"] = "PLAYER_FLAGS_CHANGED"
+tags.Events["drk:afkdnd"] = 'PLAYER_FLAGS_CHANGED'
 tags.Methods["drk:afkdnd"] = function(unit) 
 	return UnitIsAFK(unit) and "|cffCFCFCF <afk>|r" or UnitIsDND(unit) and "|cffCFCFCF <dnd>|r" or ""
 end
 
-tags.Events['drk:DDG'] = 'UNIT_HEALTH'
-tags.Methods['drk:DDG'] = function(u)
+tags.Events["drk:DDG"] = 'UNIT_HEALTH'
+tags.Methods["drk:DDG"] = function(u)
 	if UnitIsDead(u) then
 		return "|cffCFCFCF Dead|r"
 	elseif UnitIsGhost(u) then
@@ -89,8 +99,8 @@ tags.Methods['drk:DDG'] = function(u)
 	end
 end
 
-tags.Events['drk:power'] = 'UNIT_MAXPOWER UNIT_POWER'
-tags.Methods['drk:power']  = function(u) 
+tags.Events["drk:power"] = 'UNIT_MAXPOWER UNIT_POWER'
+tags.Methods["drk:power"]  = function(u) 
 	local min, max = UnitPower(u), UnitPowerMax(u)
 	if min~=max then 
 		return SVal(min).."/"..SVal(max)
@@ -107,19 +117,19 @@ tags.Methods["my:power"] = function(unit)
 	if(maxpp == 0) then
 		return ""
 	else
-		if (englishClass == 'WARRIOR') then
+		if (englishClass == "WARRIOR") then
 			return curpp
-		elseif (englishClass == 'DEATHKNIGHT' or englishClass == 'ROGUE' or englishClass == 'HUNTER') then
+		elseif (englishClass == "DEATHKNIGHT" or englishClass == "ROGUE" or englishClass == "HUNTER") then
 			return curpp .. ' /' .. maxpp
 		else
-			return SVal(curpp) .. ' /' .. SVal(maxpp) .. ' | ' .. math.floor(curpp/maxpp*100+0.5) .. '%'
+			return SVal(curpp) .. " /" .. SVal(maxpp) .. " | " .. math.floor(curpp/maxpp*100+0.5) .. "%"
 		end
 	end
 end;
 
 
 -- ComboPoints
-tags.Events["myComboPoints"] = "UNIT_COMBO_POINTS PLAYER_TARGET_CHANGED"
+tags.Events["myComboPoints"] = 'UNIT_COMBO_POINTS PLAYER_TARGET_CHANGED'
 tags.Methods["myComboPoints"] = function(unit)
 	local cp, str		
 	if(UnitExists'vehicle') then
@@ -144,7 +154,7 @@ tags.Methods["myComboPoints"] = function(unit)
 end
 
 -- Deadly Poison Tracker
-tags.Events["myDeadlyPoison"] = "UNIT_COMBO_POINTS PLAYER_TARGET_CHANGED UNIT_AURA"
+tags.Events["myDeadlyPoison"] = 'UNIT_COMBO_POINTS PLAYER_TARGET_CHANGED UNIT_AURA'
 tags.Methods["myDeadlyPoison"] = function(unit)
 
 	local Spell = "Deadly Poison" or GetSpellInfo(43233)
@@ -172,10 +182,10 @@ tags.Methods["myDeadlyPoison"] = function(unit)
 	return str
 end
 
-tags.Events["drk:xp"] = "PLAYER_XP_UPDATE PLAYER_LEVEL_UP UNIT_PET_EXPERIENCE UPDATE_EXHAUSTION"
+tags.Events["drk:xp"] = 'PLAYER_XP_UPDATE PLAYER_LEVEL_UP UNIT_PET_EXPERIENCE UPDATE_EXHAUSTION'
 tags.Methods["drk:xp"] = function(unit)
 	local curxp,maxxp
-	if(unit == 'pet') then
+	if(unit == "pet") then
 		curxp,maxxp = GetPetExperience()
 	else
 		curxp = UnitXP(unit)
@@ -185,13 +195,13 @@ tags.Methods["drk:xp"] = function(unit)
 	local rested = GetXPExhaustion()
 	if(rested and rested > 0) then
 		rested = math.floor((rested / UnitXPMax(unit) * 100 + 0.05)*10)/10
-		return curxp..'/'..maxxp..' | '..perxp..'% ('..rested..'% RXP)'
+		return curxp.."/"..maxxp.." | "..perxp.."% ("..rested.."% RXP)"
 	else
-		return curxp..'/'..maxxp..' | '..perxp..'%'
+		return curxp.."/"..maxxp.." | "..perxp.."%"
 	end
 end
 
-tags.Events["drk:level"] = "UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED"
+tags.Events["drk:level"] = 'UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED'
 tags.Methods["drk:level"] = function(unit)
 	
 	local c = UnitClassification(unit)

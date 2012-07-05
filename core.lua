@@ -100,7 +100,7 @@ local UnitSpecific = {
 		lib.gen_mirrorcb(self)
 		if (cfg.targetBuffs) then lib.createBuffs(self) end
 		if (cfg.targetDebuffs) then lib.createDebuffs(self) end
-		if (cfg.showRogueCombopoints) then lib.RogueComboPoints(self) end
+		if (cfg.showRogueCombopoints) then lib.genCPoints(self) end
 		lib.HealPred(self)
 	end,
 	

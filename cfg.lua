@@ -64,9 +64,6 @@ cfg.raidscale = 1 -- scale factor for raid frames
 cfg.miscscale = 0.8 -- scale factor for all other frames
 
 
-
---##########  DELETE  #############
-cfg.showauras = false -- use custom player auras instead of blizzard's default aura frame
 -----------------------------
 -- HANDOVER
 -----------------------------

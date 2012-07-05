@@ -4,11 +4,14 @@
 --| UPDATED by myno
 --
 --TODO:
---#altpowerbar on target
---#raid/partyframes
---combat icon target
---phase icon
---raid mark placement
+-- # altpowerbar on target
+-- # raid/partyframes
+-- # warklock resource bars
+-- # monk chi bar update on talent change
+-- # check if eclipse bar is working
+-- combat icon target
+-- phase icon
+-- raid mark placement
 -----------------------------
 -- INIT
 -----------------------------
@@ -696,19 +699,10 @@ lib.createBuffs = function(f)
     b:SetHeight(b.size*2)
     b:SetWidth(f:GetWidth())
 
-	--if f.mystyle == "target" then
-	b:SetPoint("TOPLEFT", f, "TOPRIGHT", 5, 0)
+	b:SetPoint("TOPLEFT", f, "TOPRIGHT", 5, -1)
 	b.initialAnchor = "TOPLEFT"
 	b["growth-x"] = "RIGHT"
 	b["growth-y"] = "DOWN"
-    --elseif f.mystyle == "player" then
-	--	b:SetPoint("TOPLEFT", f, "TOPRIGHT", 5, 0)
-	--	b.initialAnchor = "TOPRIGHT"
-	--	b["growth-x"] = "RIGHT"
-	--	b["growth-y"] = "DOWN"
-	--else
-	--	b.num = 0
-    --end
     b.PostCreateIcon = myPostCreateIcon
     b.PostUpdateIcon = myPostUpdateIcon
 
@@ -742,7 +736,7 @@ lib.createTotAuras = function(f)
     b.spacing = 5
     b:SetHeight(b.size)
     b:SetWidth(f:GetWidth())
-	b:SetPoint("TOPLEFT", f, "TOPRIGHT", 5, 0)
+	b:SetPoint("TOPLEFT", f, "TOPRIGHT", 5, -1)
 	b.initialAnchor = "TOPLEFT"
 	b["growth-x"] = "RIGHT"
 	b["growth-y"] = "DOWN"
@@ -1004,7 +998,6 @@ lib.genShadoworbs = function(self)
 			self.ShadowOrbs[i]:SetPoint('TOPLEFT', self.ShadowOrbs[i-1], 'TOPRIGHT', 2, 0)
 		end
 	end
-	--]]
 end
 
 -- SoulShard bar
@@ -1055,12 +1048,12 @@ lib.genHolyPower = function(self)
 	self.HolyPower = CreateFrame("Frame", nil, self)
 	self.HolyPower:SetPoint('CENTER', self.Power, 'TOP', 0, 0)
 	self.HolyPower:SetHeight(5)
-	self.HolyPower:SetWidth(self.Health:GetWidth())
+	self.HolyPower:SetWidth(self.Health:GetWidth()/2+75)
 	
 	for i = 1, 5 do
 		self.HolyPower[i] = CreateFrame("StatusBar", self:GetName().."_Holypower"..i, self)
 		self.HolyPower[i]:SetHeight(5)
-		self.HolyPower[i]:SetWidth((self:GetWidth() / 2)+75)
+		self.HolyPower[i]:SetWidth((self.HolyPower:GetWidth()/5)-2)
 		self.HolyPower[i]:SetStatusBarTexture(cfg.statusbar_texture)
 		self.HolyPower[i]:SetStatusBarColor(.9,.95,.33)
 		self.HolyPower[i]:SetFrameLevel(11)
@@ -1121,6 +1114,45 @@ lib.genRunes = function(self)
 	end
 end
 
+-- combo points
+lib.genCPoints = function(self)
+	if (playerClass == "ROGUE" or playerClass == "DRUID") then
+		self.CPoints = CreateFrame("Frame", nil, self)
+		self.CPoints:SetPoint('CENTER', self.Health, 'TOP', 0, 0)
+		self.CPoints:SetHeight(5)
+		self.CPoints:SetWidth(self.Health:GetWidth()/2+75)
+
+		for i= 1, 5 do
+			self.CPoints[i] = CreateFrame("StatusBar", self:GetName().."_CPoints"..i, self)
+			self.CPoints[i]:SetHeight(5)
+			self.CPoints[i]:SetWidth((self.Health:GetWidth()/5)-2)
+			self.CPoints[i]:SetStatusBarTexture(cfg.statusbar_texture)
+			self.CPoints[i]:SetFrameLevel(11)
+			self.CPoints[i].bg = self.CPoints[i]:CreateTexture(nil, "BORDER")
+			self.CPoints[i].bg:SetTexture(cfg.statusbar_texture)
+			self.CPoints[i].bg:SetPoint("TOPLEFT", self.CPoints[i], "TOPLEFT", 0, 0)
+			self.CPoints[i].bg:SetPoint("BOTTOMRIGHT", self.CPoints[i], "BOTTOMRIGHT", 0, 0)
+			self.CPoints[i].bg.multiplier = 0.3
+			
+			local h = CreateFrame("Frame", nil, self.CPoints[i])
+			h:SetFrameLevel(10)
+			h:SetPoint("TOPLEFT",-3,3)
+			h:SetPoint("BOTTOMRIGHT",3,-3)
+			lib.gen_power_backdrop(h)
+			
+			if (i == 1) then
+				self.CPoints[i]:SetPoint('LEFT', self.CPoints, 'LEFT', 1, 0)
+			else
+				self.CPoints[i]:SetPoint('TOPLEFT', self.CPoints[i-1], 'TOPRIGHT', 2, 0)
+			end
+		end
+		self.CPoints[1]:SetStatusBarColor(.3,.9,.9)
+		self.CPoints[2]:SetStatusBarColor(.3,.9,.9)
+		self.CPoints[3]:SetStatusBarColor(.3,.9,.3)
+		self.CPoints[4]:SetStatusBarColor(.3,.9,.3)
+		self.CPoints[5]:SetStatusBarColor(.9,.3,.3)	
+	end
+end
 
 -- ReadyCheck
 lib.ReadyCheck = function(self)
@@ -1167,25 +1199,7 @@ lib.HealPred = function(self)
 	}
 end
 
--- ComboPoints
-lib.RogueComboPoints = function(self)
 
-	if(playerClass == "ROGUE" or playerClass == "DRUID") then
-	    local CPoints = lib.gen_fontstring(oUF_drkTarget.Portrait, cfg.font, 25, "OUTLINE")
-		CPoints:SetPoint('CENTER', oUF_drkTarget.Portrait, 'CENTER', 0, 35)
-		CPoints:SetJustifyH('CENTER')
-		CPoints:SetAlpha(0.8)
-		self:Tag(CPoints, '[myComboPoints]')
-		if(playerClass == "ROGUE" and cfg.RogueDPT) then
-			local DPTracker = lib.gen_fontstring(oUF_drkTarget.Portrait, cfg.font, 11, "OUTLINE")
-			DPTracker:SetPoint('BOTTOMLEFT', CPoints, 'TOPRIGHT',0,-13)
-			DPTracker:SetJustifyH('CENTER')
-			DPTracker:SetAlpha(0.8)
-			DPTracker:SetShadowOffset(1, -1)
-			self:Tag(DPTracker, '[myDeadlyPoison]')
-		end			
-	end
-end
 -- Addons -------------------------------------------
 
 lib.gen_Exp = function(self)
