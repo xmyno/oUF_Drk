@@ -71,4 +71,3 @@ function f:PLAYER_ENTERING_WORLD()
 		ORD:RegisterDebuffs(zone_data)
 	end
 end]]
-

@@ -24,7 +24,7 @@ cfg.showpet = true -- show pet frame
 cfg.showfocus = true -- show focus frame
 cfg.showfocustarget = true -- show focus target frame
 --auras
-cfg.playerAuras = true -- show player buffs and debuffs, disables Blizzard buff bar
+cfg.playerAuras = false -- show player buffs and debuffs, disables Blizzard buff bar
 cfg.targetBuffs = true -- show target buff frame
 cfg.targetDebuffs = true -- show target debuff frame
 cfg.totBuffs = false -- show target-of-target buffs (only one can be active)
@@ -34,7 +34,7 @@ cfg.focusDebuffs = true -- show focus debuffs (only one can be active)
 --class-specific bars
 cfg.showRunebar = true -- show DK rune bar
 cfg.showHolybar = true -- show Paladin HolyPower bar
-cfg.showEclipsebar = false -- show druid Eclipse bar
+cfg.showEclipsebar = true -- show druid Eclipse bar
 cfg.showShardbar = true -- show Warlock SoulShard bar
 cfg.showHarmonybar = true -- show Monk Harmony bar
 cfg.showShadoworbsbar = true -- show Shadow Priest Shadow Orbs bar

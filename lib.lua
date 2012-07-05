@@ -8,10 +8,7 @@
 -- # raid/partyframes
 -- # warklock resource bars
 -- # monk chi bar update on talent change
--- # check if eclipse bar is working
--- combat icon target
 -- phase icon
--- raid mark placement
 -----------------------------
 -- INIT
 -----------------------------
@@ -150,7 +147,7 @@ lib.gen_hpstrings = function(f)
 		f:Tag(hpval,"[drk:hp]")
 	else
 		local name = lib.gen_fontstring(f.Health, cfg.font, retVal(f,14,12,12), "NONE")
-		name:SetPoint("LEFT", f.Health, "TOPLEFT", retVal(f,3,3,2), retVal(f,-10,-10,-7))
+		name:SetPoint("LEFT", f.Health, "TOPLEFT", retVal(f,5,3,2), retVal(f,-10,-10,-7))
 		name:SetJustifyH("LEFT")
 		name.frequentUpdates = 0.1
 		local powerval = lib.gen_fontstring(f.Health, cfg.font, 14, "THINOUTLINE")
@@ -386,8 +383,12 @@ lib.gen_RaidMark = function(f)
     h:SetFrameLevel(10)
     h:SetAlpha(0.8)
     local ri = h:CreateTexture(nil,'OVERLAY',h)
-    ri:SetPoint("CENTER", f, "TOP", 0, 2)
-	local size = retVal(f, 28, 18, 10)
+	if f.mystyle == 'player' or f.mystyle == 'target' then
+		ri:SetPoint("RIGHT", f, "LEFT", 5, 6)
+	else
+		ri:SetPoint("CENTER", f, "TOP", 0, 2)
+	end
+	local size = retVal(f, 20, 18, 10)
     ri:SetSize(size, size)
     f.RaidIcon = ri
 end
@@ -715,10 +716,10 @@ lib.createDebuffs = function(f)
 	b.num = 10
 	b.onlyShowPlayer = false
     b.spacing = 5
-    b:SetHeight((b.size+b.spacing)*4)
+    b:SetHeight(b.size)
     b:SetWidth(f:GetWidth())
 	
-    b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", 0, -5)
+    b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", .5, -5)
     b.initialAnchor = "TOPLEFT"
     b["growth-x"] = "RIGHT"
     b["growth-y"] = "DOWN"
@@ -838,28 +839,32 @@ end
 lib.addEclipseBar = function(self)
 	if playerClass ~= "DRUID" then return end
 	local eclipseBar = CreateFrame('Frame', nil, self)
-	eclipseBar:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 0, -12)
+	if self.Debuffs then
+	eclipseBar:SetPoint('CENTER', self.Debuffs, 'BOTTOM', 0, -9)
+	else
+	eclipseBar:SetPoint('CENTER', self.Power, 'BOTTOM', 0, -7)
+	end
 	eclipseBar:SetFrameLevel(4)
 	eclipseBar:SetHeight(6)
 	eclipseBar:SetWidth(self:GetWidth())
 	local h = CreateFrame("Frame", nil, eclipseBar)
-	h:SetPoint("TOPLEFT",-5,5)
-	h:SetPoint("BOTTOMRIGHT",5,-5)
-	lib.gen_backdrop(h)
+	h:SetPoint("TOPLEFT",-3,3)
+	h:SetPoint("BOTTOMRIGHT",3,-3)
+	lib.gen_power_backdrop(h)
 	eclipseBar.eBarBG = h
 
 	local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
 	lunarBar:SetPoint('LEFT', eclipseBar, 'LEFT', 0, 0)
 	lunarBar:SetSize(eclipseBar:GetWidth(), eclipseBar:GetHeight())
 	lunarBar:SetStatusBarTexture(cfg.statusbar_texture)
-	lunarBar:SetStatusBarColor(0, .1, .7)
+	lunarBar:SetStatusBarColor(.1, .3, .7)
 	lunarBar:SetFrameLevel(5)
 
 	local solarBar = CreateFrame('StatusBar', nil, eclipseBar)
 	solarBar:SetPoint('LEFT', lunarBar:GetStatusBarTexture(), 'RIGHT', 0, 0)
 	solarBar:SetSize(eclipseBar:GetWidth(), eclipseBar:GetHeight())
 	solarBar:SetStatusBarTexture(cfg.statusbar_texture)
-	solarBar:SetStatusBarColor(1,1,.13)
+	solarBar:SetStatusBarColor(1,.85,.13)
 	solarBar:SetFrameLevel(5)
 	
 	
@@ -870,49 +875,57 @@ lib.addEclipseBar = function(self)
     
 	local EBText = lib.gen_fontstring(solarBar, cfg.font, 14, "OUTLINE")
 	EBText:SetPoint('CENTER', eclipseBar, 'CENTER', 0,0)
-	local EBText2 = lib.gen_fontstring(solarBar, cfg.font, 18, "OUTLINE")
-	EBText2:SetPoint('CENTER', eclipseBar, 'CENTER', 0,-15)
+	local EBText2 = lib.gen_fontstring(solarBar, cfg.font, 16, "THINOUTLINE")
+	EBText2:SetPoint('LEFT', EBText, 'RIGHT', 1,-1)
+	--EBText2:SetShadowColor(0,0,0,1)
+	--EBText2:SetShadowOffset(1,1)
 
 	self.EclipseBar.PostDirectionChange = function(element, unit)
-	 EBText:SetText("")
-	 EBText2:SetText("")
+		EBText:SetText("")
+		EBText2:SetText("")
 	end
 	
 	
 	--self:Tag(EBText, '[pereclipse]')
 	self.EclipseBar.PostUpdatePower = function(unit)
-	 
-	 local eclipsePowerMax = UnitPowerMax('player', SPELL_POWER_ECLIPSE)
-	 local eclipsePower = math.abs(UnitPower('player', SPELL_POWER_ECLIPSE)/eclipsePowerMax*100)
-	 
 
-     if ( GetEclipseDirection() == "sun" ) then
-        EBText:SetText(eclipsePower .. "  >>")
-        EBText2:SetText("|cff004accSTARFIRE|r")
-     elseif ( GetEclipseDirection() == "moon" ) then
-        EBText:SetText("<<  " .. eclipsePower)
-        EBText2:SetText("|cffcec500WRATH|r")
-     else
-        EBText:SetText("")
-        EBText2:SetText("")
-     end
+		local eclipsePowerMax = UnitPowerMax('player', SPELL_POWER_ECLIPSE)
+		local eclipsePower = math.abs(UnitPower('player', SPELL_POWER_ECLIPSE)/eclipsePowerMax*100)
+
+		if ( GetEclipseDirection() == "sun" ) then
+			EBText:SetText(eclipsePower .. "  >>")
+			EBText2:SetText("|cff006accSTARFIRE|r")
+			EBText2:ClearAllPoints()
+			EBText2:SetPoint('RIGHT', EBText, 'LEFT', 1,-1)
+		elseif ( GetEclipseDirection() == "moon" ) then
+			EBText:SetText("<<  " .. eclipsePower)
+			EBText2:SetText("|cffeac500WRATH|r")
+			EBText2:ClearAllPoints()
+			EBText2:SetPoint('LEFT', EBText, 'RIGHT', 1,-1)
+		else
+			EBText:SetText(eclipsePower)
+			EBText2:SetText("")
+		end
 	end
 	
 	self.EclipseBar.PostUpdateVisibility = function(unit)
-	 local eclipsePowerMax = UnitPowerMax('player', SPELL_POWER_ECLIPSE)
-	 local eclipsePower = math.abs(UnitPower('player', SPELL_POWER_ECLIPSE)/eclipsePowerMax*100)
-	 
+		local eclipsePowerMax = UnitPowerMax('player', SPELL_POWER_ECLIPSE)
+		local eclipsePower = math.abs(UnitPower('player', SPELL_POWER_ECLIPSE)/eclipsePowerMax*100)
 
-     if ( GetEclipseDirection() == "sun" ) then
-        EBText:SetText(eclipsePower .. "  >>")
-        EBText2:SetText("|cff004accSTARFIRE|r")
-     elseif ( GetEclipseDirection() == "moon" ) then
-        EBText:SetText("<<  " .. eclipsePower)
-        EBText2:SetText("|cffcec500WRATH|r")
-     else
-        EBText:SetText("")
-        EBText2:SetText("")
-     end
+		if ( GetEclipseDirection() == "sun" ) then
+			EBText:SetText(eclipsePower .. "  >>")
+			EBText2:SetText("|cff006accSTARFIRE|r ")
+			EBText2:ClearAllPoints()
+			EBText2:SetPoint('RIGHT', EBText, 'LEFT', 1,-1)
+		elseif ( GetEclipseDirection() == "moon" ) then
+			EBText:SetText("<<  " .. eclipsePower)
+			EBText2:SetText("|cffeac500WRATH|r")
+			EBText2:ClearAllPoints()
+			EBText2:SetPoint('LEFT', EBText, 'RIGHT', 1,-1)
+		else
+			EBText:SetText(eclipsePower)
+			EBText2:SetText("")
+		end
 	end
 
 end
@@ -1125,7 +1138,7 @@ lib.genCPoints = function(self)
 		for i= 1, 5 do
 			self.CPoints[i] = CreateFrame("StatusBar", self:GetName().."_CPoints"..i, self)
 			self.CPoints[i]:SetHeight(5)
-			self.CPoints[i]:SetWidth((self.Health:GetWidth()/5)-2)
+			self.CPoints[i]:SetWidth((self.CPoints:GetWidth()/5)-2)
 			self.CPoints[i]:SetStatusBarTexture(cfg.statusbar_texture)
 			self.CPoints[i]:SetFrameLevel(11)
 			self.CPoints[i].bg = self.CPoints[i]:CreateTexture(nil, "BORDER")
@@ -1146,10 +1159,10 @@ lib.genCPoints = function(self)
 				self.CPoints[i]:SetPoint('TOPLEFT', self.CPoints[i-1], 'TOPRIGHT', 2, 0)
 			end
 		end
-		self.CPoints[1]:SetStatusBarColor(.3,.9,.9)
-		self.CPoints[2]:SetStatusBarColor(.3,.9,.9)
+		self.CPoints[1]:SetStatusBarColor(.3,.9,.3)
+		self.CPoints[2]:SetStatusBarColor(.3,.9,.3)
 		self.CPoints[3]:SetStatusBarColor(.3,.9,.3)
-		self.CPoints[4]:SetStatusBarColor(.3,.9,.3)
+		self.CPoints[4]:SetStatusBarColor(.9,.9,0)
 		self.CPoints[5]:SetStatusBarColor(.9,.3,.3)	
 	end
 end
