@@ -100,7 +100,7 @@ local updateIcon = function(unit, debuffs)
 			icon:Show()
 			hide = false
 		end
-		
+
 		index = index + 1
 	end
 	if hide then
@@ -113,7 +113,7 @@ local Update = function(self, event, unit)
 
 	local debuffs = self.raidDebuffs
 	if(debuffs) then
-		updateIcon(unit, debuffs)	
+		updateIcon(unit, debuffs)
 	end
 end
 

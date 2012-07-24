@@ -226,9 +226,8 @@ end
 lib.addAltPowerBar = function(f)
   	local s = CreateFrame("StatusBar", nil, f)
 	s:SetFrameLevel(0)
-	s:SetSize(f:GetWidth(), 2)
+	s:SetSize(f:GetWidth()-.5, 3)
 	s:SetPoint("BOTTOM", f, "BOTTOM", 0, -7)
-
 	s:SetStatusBarTexture(cfg.powerbar_texture)
 	s:GetStatusBarTexture():SetHorizTile(false)
 	s:SetStatusBarColor(235/255, 235/255, 235/255)
@@ -236,14 +235,14 @@ lib.addAltPowerBar = function(f)
 	
 	local h = CreateFrame("Frame", nil, s)
 	h:SetFrameLevel(0)
-	h:SetPoint("TOPLEFT",-5,5)
-	h:SetPoint("BOTTOMRIGHT",5,-5)
-	lib.gen_backdrop(h)
+	h:SetPoint("TOPLEFT",-3.5,3.5)
+	h:SetPoint("BOTTOMRIGHT",3.5,-3.5)
+	lib.gen_power_backdrop(h)
 	
     local b = s:CreateTexture(nil, "BACKGROUND")
     b:SetTexture(cfg.powerbar_texture)
     b:SetAllPoints(s)
-	b:SetVertexColor(65/255, 65/255, 65/255)
+	b:SetVertexColor(45/255, 45/255, 45/255)
     f.AltPowerBar.bg = b
 end
   
@@ -251,7 +250,11 @@ end
 lib.addAltPowerBarString = function(f)
 	local altpphelpframe = CreateFrame("Frame",nil,s)
 	if f.mystyle == "player" then
-		altpphelpframe:SetPoint("CENTER", PlayerPowerBarAlt, "TOP", 0, -5) -- adds percentage to standard blizzard altPowerBar
+		if cfg.AltPowerBarPlayer then
+			altpphelpframe:SetPoint("RIGHT", f.AltPowerBar, "RIGHT", 8, 0)
+		else
+			altpphelpframe:SetPoint("CENTER", PlayerPowerBarAlt, "TOP", 0, -5) -- adds percentage to standard blizzard altPowerBar
+		end
 	else
 		altpphelpframe:SetPoint("RIGHT", f.AltPowerBar, "RIGHT", 0, 0)
 	end
@@ -259,10 +262,10 @@ lib.addAltPowerBarString = function(f)
 	altpphelpframe:SetSize(30,10)
 	local altppbartext
 	if f.mystyle == "player" then
-		altppbartext = lib.gen_fontstring(altpphelpframe, cfg.font, 12, "OUTLINE")
+		altppbartext = lib.gen_fontstring(altpphelpframe, cfg.font, 8, "OUTLINE")
 		altppbartext:SetPoint("CENTER", altpphelpframe, "CENTER", 0, 0)
 	else
-		altppbartext = lib.gen_fontstring(altpphelpframe, cfg.font, 11, "NONE")
+		altppbartext = lib.gen_fontstring(altpphelpframe, cfg.font, 8, "OUTLINE")
 		altppbartext:SetPoint("RIGHT", altpphelpframe, "RIGHT", 0, 0)	
 	end
 	f:Tag(altppbartext,"[Drk:AltPowerBar]")
@@ -551,7 +554,6 @@ lib.addCastBar = function(f)
     s.PostCastFailed = cast.PostCastFailed
     s.PostCastInterrupted = cast.PostCastFailed
 
-	
     f.Castbar = s
     f.Castbar.Text = txt
     f.Castbar.Time = t
@@ -737,7 +739,11 @@ lib.addDebuffs = function(f)
     b:SetHeight(b.size)
     b:SetWidth(f:GetWidth())
 	
-    b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", .5, -5)
+	if f.AltPowerBar then
+		b:SetPoint("TOPLEFT", f.AltPowerBar, "BOTTOMLEFT", .5, -5)
+	else
+		b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", .5, -5)
+	end
     b.initialAnchor = "TOPLEFT"
     b["growth-x"] = "RIGHT"
     b["growth-y"] = "DOWN"
@@ -791,7 +797,7 @@ lib.addBossBuffs = function(f)
     b.spacing = 5
     b:SetHeight(b.size)
     b:SetWidth(f:GetWidth())
-	b:SetPoint("TOPLEFT", f, "TOPRIGHT", 5, 0)
+	b:SetPoint("TOPLEFT", f, "TOPRIGHT", 5, -1)
 	b.initialAnchor = "TOPLEFT"
 	b["growth-x"] = "RIGHT"
 	b["growth-y"] = "DOWN"
@@ -809,7 +815,7 @@ lib.addBossDebuffs = function(f)
     b.spacing = 5
     b:SetHeight(b.size)
     b:SetWidth(f:GetWidth())
-	b:SetPoint("BOTTOMLEFT", f, "BOTTOMRIGHT", 5, 0)
+	b:SetPoint("BOTTOMLEFT", f, "BOTTOMRIGHT", 5, 1)
 	b.initialAnchor = "TOPLEFT"
 	b["growth-x"] = "RIGHT"
 	b["growth-y"] = "DOWN"

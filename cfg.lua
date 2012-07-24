@@ -21,8 +21,8 @@ local cfg = CreateFrame("Frame")
 	cfg.bossX = 15 -- x-coordinate of boss frames
 	cfg.bossY = -40 -- y-coordinate is for the first bossframe, additional frames will grow upwards (75px each)
 --auras
-	cfg.playerAuras = false -- show player buffs and debuffs, disables Blizzard buff bar
-	cfg.AltPowerBarPlayer = false --show altpowerbar on player frame, false = blizzard standard
+	cfg.playerAuras = true -- show player buffs and debuffs, disables Blizzard buff bar
+	cfg.AltPowerBarPlayer = true --show altpowerbar on player frame, false = blizzard standard
 	cfg.targetBuffs = true -- show target buff frame
 	cfg.targetDebuffs = true -- show target debuff frame
 	cfg.totBuffs = false -- show target-of-target buffs (only one can be active)
@@ -57,12 +57,16 @@ local cfg = CreateFrame("Frame")
 		MONK={
 		},
 		PALADIN={
+		
 		},
 		PRIEST={
 		},
 		ROGUE={
+		
 		},
 		SHAMAN={
+			-- Riptide
+			--Earth Shield
 		},
 		WARLOCK={
 		},
@@ -70,6 +74,7 @@ local cfg = CreateFrame("Frame")
 			6673, --Battle Shout
 			18499,
 			85730,
+			--Vigilance
 		},
 	}
 	cfg.DebuffWatchList = {
