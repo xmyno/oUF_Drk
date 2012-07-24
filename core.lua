@@ -3,7 +3,6 @@
   local cfg = ns.cfg
   local lib = ns.lib
   
-  oUF.colors.smooth = {255/255,0/255,0/255, 255/255,50/255,50/255, 42/255,48/255,50/255}
 
   -----------------------------
   -- STYLE FUNCTIONS
@@ -20,45 +19,47 @@ local UnitSpecific = {
 		self:SetSize(250, 50)
 
 		-- Generate Bars
-		lib.gen_hpbar(self)
-		lib.gen_hpstrings(self)
-		lib.gen_highlight(self)
-		lib.gen_ppbar(self)
-		lib.gen_portrait(self)
-		lib.gen_RaidMark(self)
+		lib.addHealthBar(self)
+		lib.addStrings(self)
+		lib.addHighlight(self)
+		lib.addPowerBar(self)
+		lib.addPortrait(self)
+		lib.addRaidMark(self)
 		
-		--lib.gen_altppbar(self) --standart blizzard bar is used.
-		lib.gen_altppbartext(self)
-		if IsAddOnLoaded("oUF_Experience") then lib.gen_Exp(self) end
+		if cfg.AltPowerBarPlayer then lib.addAltPowerBar(self) end
+		lib.addAltPowerBarString(self)
+		if IsAddOnLoaded("oUF_Experience") then lib.addExperienceBar(self) end
 
 		-- Buffs and Debuffs
 		if cfg.playerAuras then
 			BuffFrame:Hide()
-			lib.createBuffs(self)
-			lib.createDebuffs(self)
+			lib.addBuffs(self)
+			lib.addDebuffs(self)
 		end
 		
-		self.Health.frequentUpdates = false
+		self.colors.smooth = {255/255,0/255,0/255, 255/255,50/255,50/255, 42/255,48/255,50/255}
+		self.Health.frequentUpdates = true
 		self.Health.colorSmooth = true
-		self.Health.bg.multiplier = 0.2
+		self.Health.bg.multiplier = 0.3
 		self.Power.colorClass = true
 		self.Power.bg.multiplier = 0.5
-		
+
 		self.Health.Smooth = true
 		self.Power.Smooth = true
 		
-		lib.gen_castbar(self)
-		lib.gen_InfoIcons(self)
+		lib.addCastBar(self)
+		lib.addInfoIcons(self)
 		lib.addPhaseIcon(self)
 		lib.addQuestIcon(self)
-		lib.HealPred(self)
+		lib.addHealPred(self)
+		lib.addMirrorCastBar(self)
 
-		if cfg.showRunebar then lib.genRunes(self) end
-		if cfg.showHolybar then lib.genHolyPower(self) end
-		if cfg.showHarmonybar then lib.genHarmony(self) end
-		if cfg.showShardbar then lib.genShards(self) end
+		if cfg.showRunebar then lib.addRunes(self) end
+		if cfg.showHolybar then lib.addHolyPower(self) end
+		if cfg.showHarmonybar then lib.addHarmony(self) end
+		if cfg.showShardbar then lib.addShards(self) end
 		if cfg.showEclipsebar then lib.addEclipseBar(self) end
-		if cfg.showShadoworbsbar then lib.genShadoworbs(self) end
+		if cfg.showShadoworbsbar then lib.addShadoworbs(self) end
 
 	end,
 	
@@ -68,40 +69,38 @@ local UnitSpecific = {
 		
 		-- Size and Scale
 		self.scale = cfg.ptscale
-		self:SetSize(250,50)
+		self:SetSize(250, 50)
 
 		-- Generate Bars
-		lib.gen_hpbar(self)
-		lib.gen_hpstrings(self)
-		lib.gen_highlight(self)
-		lib.gen_ppbar(self)
-		lib.gen_portrait(self)
+		lib.addHealthBar(self)
+		lib.addStrings(self)
+		lib.addHighlight(self)
+		lib.addPowerBar(self)
+		lib.addPortrait(self)
 		self.Portrait.PostUpdate = lib.PortraitPostUpdate
-		lib.gen_RaidMark(self)
-		lib.gen_InfoIcons(self)
+		lib.addRaidMark(self)
+		lib.addInfoIcons(self)
 		lib.addPhaseIcon(self)
 
 		--style specific stuff
-		self.Health.frequentUpdates = false
+		self.colors.smooth = {255/255,0/255,0/255, 255/255,50/255,50/255, 42/255,48/255,50/255}
+		self.Health.frequentUpdates = true
 		self.Health.colorSmooth = true
 		self.Health.bg.multiplier = 0.3
 		self.Power.colorTapping = true
 		self.Power.colorDisconnected = true
-		self.Power.colorHappiness = false
 		self.Power.colorClass = true
 		self.Power.colorReaction = true
-		self.Power.colorClass = true
 		self.Power.bg.multiplier = 0.5
 		
 		self.Health.Smooth = true
 		self.Power.Smooth = true
 		
-		lib.gen_castbar(self)
-		lib.gen_mirrorcb(self)
-		if (cfg.targetBuffs) then lib.createBuffs(self) end
-		if (cfg.targetDebuffs) then lib.createDebuffs(self) end
-		if (cfg.showComboPoints) then lib.genCPoints(self) end
-		lib.HealPred(self)
+		lib.addCastBar(self)
+		if cfg.targetBuffs then lib.addBuffs(self) end
+		if cfg.targetDebuffs then lib.addDebuffs(self) end
+		if cfg.showComboPoints then lib.addCPoints(self) end
+		lib.addHealPred(self)
 	end,
 	
 	focus = function(self, ...)
@@ -113,19 +112,19 @@ local UnitSpecific = {
 		self:SetSize(120, 25)
 		
 		-- Generate Bars
-		lib.gen_hpbar(self)
-		lib.gen_hpstrings(self)
-		lib.gen_highlight(self)
-		lib.gen_ppbar(self)
-		lib.gen_RaidMark(self)
+		lib.addHealthBar(self)
+		lib.addStrings(self)
+		lib.addHighlight(self)
+		lib.addPowerBar(self)
+		lib.addRaidMark(self)
 
 		--style specific stuff
+		self.colors.smooth = {255/255,0/255,0/255, 255/255,50/255,50/255, 42/255,48/255,50/255}
 		self.Health.frequentUpdates = false
 		self.Health.colorSmooth = true
 		self.Health.bg.multiplier = 0.3
 		self.Power.colorTapping = true
 		self.Power.colorDisconnected = true
-		self.Power.colorHappiness = false
 		self.Power.colorClass = true
 		self.Power.colorReaction = true
 		self.Power.colorHealth = true
@@ -133,9 +132,9 @@ local UnitSpecific = {
 		
 		self.Health.Smooth = true
 		
-		lib.gen_castbar(self)
+		lib.addCastBar(self)
 		
-		if (cfg.focusBuffs or cfg.focusDebuffs) then lib.createFocusAuras(self) end
+		if cfg.focusBuffs or cfg.focusDebuffs then lib.addFocusAuras(self) end
 		
 	end,
 	
@@ -148,19 +147,19 @@ local UnitSpecific = {
 		self:SetSize(120, 25)
 
 		-- Generate Bars
-		lib.gen_hpbar(self)
-		lib.gen_hpstrings(self)
-		lib.gen_highlight(self)
-		lib.gen_ppbar(self)
-		lib.gen_RaidMark(self)
+		lib.addHealthBar(self)
+		lib.addStrings(self)
+		lib.addHighlight(self)
+		lib.addPowerBar(self)
+		lib.addRaidMark(self)
 
 		--style specific stuff
+		self.colors.smooth = {255/255,0/255,0/255, 255/255,50/255,50/255, 42/255,48/255,50/255}
 		self.Health.frequentUpdates = false
 		self.Health.colorSmooth = true
 		self.Health.bg.multiplier = 0.3
 		self.Power.colorTapping = true
 		self.Power.colorDisconnected = true
-		self.Power.colorHappiness = false
 		self.Power.colorClass = true
 		self.Power.colorReaction = true
 		self.Power.colorHealth = true
@@ -168,9 +167,9 @@ local UnitSpecific = {
 		
 		self.Health.Smooth = true
 		
-		lib.gen_castbar(self)
+		lib.addCastBar(self)
 		
-		if (cfg.totBuffs or cfg.totDebuffs) then lib.createTotAuras(self) end
+		if cfg.totBuffs or cfg.totDebuffs then lib.addTotAuras(self) end
 
 	end,
 	
@@ -183,24 +182,24 @@ local UnitSpecific = {
 		self:SetSize(120, 25)
 
 		-- Generate Bars
-		lib.gen_hpbar(self)
-		lib.gen_hpstrings(self)
-		lib.gen_highlight(self)
-		lib.gen_ppbar(self)
-		lib.gen_RaidMark(self)
-		
+		lib.addHealthBar(self)
+		lib.addStrings(self)
+		lib.addHighlight(self)
+		lib.addPowerBar(self)
+		lib.addRaidMark(self)
+
 		--style specific stuff
+		self.colors.smooth = {255/255,0/255,0/255, 255/255,50/255,50/255, 42/255,48/255,50/255}
 		self.Health.frequentUpdates = false
 		self.Health.colorSmooth = true
 		self.Health.bg.multiplier = 0.3
 		self.Power.colorTapping = true
 		self.Power.colorDisconnected = true
-		self.Power.colorHappiness = false
 		self.Power.colorClass = true
 		self.Power.colorReaction = true
 		self.Power.colorHealth = true
 		self.Power.bg.multiplier = 0.5
-		lib.gen_castbar(self)
+		lib.addCastBar(self)
 	
 	end,
 	
@@ -211,34 +210,27 @@ local UnitSpecific = {
 		
 		-- Size and Scale
 		self.scale = cfg.miscscale
-		self:SetSize(120,25)
+		self:SetSize(120, 25)
 
 		-- Generate Bars
-		lib.gen_hpbar(self)
-		lib.gen_hpstrings(self)
-		lib.gen_highlight(self)
-		lib.gen_ppbar(self)
-		lib.gen_RaidMark(self)
+		lib.addHealthBar(self)
+		lib.addStrings(self)
+		lib.addHighlight(self)
+		lib.addPowerBar(self)
+		lib.addRaidMark(self)
 		
 		--style specific stuff
+		self.colors.smooth = {255/255,0/255,0/255, 255/255,50/255,50/255, 42/255,48/255,50/255}
 		self.Health.frequentUpdates = false
 		self.Health.colorSmooth = true
 		self.Health.bg.multiplier = 0.3
 		self.Power.colorTapping = true
 		self.Power.colorDisconnected = true
-		self.Power.colorHappiness = false
 		self.Power.colorClass = true
 		self.Power.colorReaction = true
 		self.Power.colorHealth = true
 		self.Power.bg.multiplier = 0.5
-		lib.gen_castbar(self)
-
-		-- Hunter Pet Hapiness
-		if PlayerClass == "HUNTER" then
-			self.Power.colorReaction = false
-			self.Power.colorClass = false
-			self.Power.colorHappiness = true
-		end
+		lib.addCastBar(self)
 		
 	end,
 	
@@ -250,32 +242,36 @@ local UnitSpecific = {
 		self.scale = cfg.raidscale
 		self.Range = {
 			insideAlpha = 1,
-			outsideAlpha = .3,
+			outsideAlpha = .4,
 		}
 
 		-- Generate Bars
-		lib.gen_hpbar(self)
-		lib.gen_hpstrings(self)
-		lib.gen_highlight(self)
-		lib.gen_ppbar(self)
-		lib.gen_RaidMark(self)
-		lib.ReadyCheck(self)
+		lib.addHealthBar(self)
+		lib.addStrings(self)
+		lib.addHighlight(self)
+		lib.addPowerBar(self)
+		lib.addRaidMark(self)
+		lib.addReadyCheck(self)
+		
 
 		--style specific stuff
-		self.Health.frequentUpdates = true
-		self.Health.colorSmooth = true
-		self.Health.bg.multiplier = 0.3
+		self.colors.health = { r=.1, g=.1, b=.1, a=.9 }
+		self.Health.colorHealth = true
+		self.Health.bg.multiplier = 0.2
 		self.Power.colorClass = true
-		self.Power.bg.multiplier = 0.5
-		lib.gen_InfoIcons(self)
+		self.Power.bg.multiplier = 0.35
+		
+		lib.addInfoIcons(self)
 		lib.CreateTargetBorder(self)
-		lib.CreateThreatBorder(self)
-		lib.HealPred(self)
+		--lib.CreateThreatBorder(self)
+		lib.addHealPred(self)
+		lib.addAuraWatch(self)
+		lib.addRaidDebuffs(self)
 		self.Health.PostUpdate = lib.PostUpdateRaidFrame
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', lib.ChangedTarget)
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', lib.ChangedTarget)
-		self:RegisterEvent("UNIT_THREAT_LIST_UPDATE", lib.UpdateThreat)
-		self:RegisterEvent("UNIT_THREAT_SITUATION_UPDATE", lib.UpdateThreat)
+		--self:RegisterEvent("UNIT_THREAT_LIST_UPDATE", lib.UpdateThreat)
+		--self:RegisterEvent("UNIT_THREAT_SITUATION_UPDATE", lib.UpdateThreat)
 	end,
 }
 
@@ -285,7 +281,7 @@ local UnitSpecific = {
 local GlobalStyle = function(self, unit, isSingle)
 
 	self.menu = lib.spawnMenu
-	self:RegisterForClicks('AnyDown')
+	self:RegisterForClicks('AnyUp')
 	
 	-- Call Unit Specific Styles
 	if(UnitSpecific[unit]) then
@@ -297,7 +293,7 @@ end
 local GroupGlobalStyle = function(self, unit)
 
 	self.menu = lib.spawnMenu
-	self:RegisterForClicks('AnyDown')
+	self:RegisterForClicks('AnyUp')
 	
 	-- Call Unit Specific Styles
 	if(UnitSpecific[unit]) then
@@ -318,24 +314,22 @@ local function CreateUnitFrame(self, unit)
 
 	self.mystyle="boss"
 	
-	lib.gen_hpbar(self)
+	lib.addHealthBar(self)
+	lib.addStrings(self)
+	lib.addPowerBar(self)
+	lib.addAltPowerBar(self)
+	lib.addCastBar(self)
+	lib.addRaidMark(self)
+
 	self.Health.colorSmooth = true
 	self.Health.bg.multiplier = 0.2
-	
-	lib.gen_ppbar(self)
 	self.Power.colorClass = true
 	self.Power.colorReaction = true
 	self.Power.colorHealth = true
 	self.Power.bg.multiplier = 0.2
-
-	lib.gen_hpstrings(self)
-	lib.gen_castbar(self)
-	lib.gen_altppbar(self)
 	
-	lib.gen_RaidMark(self)
-	
-	lib.createBossBuffs(self)
-	lib.createBossDebuffs(self)
+	lib.addBossBuffs(self)
+	lib.addBossDebuffs(self)
 end
 
 
@@ -359,7 +353,50 @@ oUF:Factory(function(self)
 	self:Spawn('focus'):SetPoint("BOTTOMRIGHT",oUF_drkPlayer,"TOPRIGHT", 0, 7)
 	self:Spawn('focustarget'):SetPoint("BOTTOMLEFT",oUF_drkTarget,"TOPLEFT", 0, 7)
 	
-	
+	local soloraid
+	if cfg.RaidShowSolo then
+		soloraid = "custom show"
+	else
+		soloraid = "raid"
+	end
+		
+	self:SetActiveStyle('drkGroup')
+	local raid = {}
+	for i = 1, 5 do
+		local header = oUF:SpawnHeader(
+		  "drkGroup"..i,
+		  nil,
+		  soloraid,
+		  "showRaid",           true,
+		  "point",              "TOP",
+		  "startingIndex",		1,
+		  "yOffset",            -5,
+		  "xoffset",            8,
+		  "columnSpacing",      7,
+		  "groupFilter",        tostring(i),
+		  "groupBy",            "GROUP",
+		  "groupingOrder",      "1,2,3,4,5",
+		  "sortMethod",         "NAME",
+		  "columnAnchorPoint",  "RIGHT",
+		  "maxColumns",         5,
+		  "unitsPerColumn",     5,
+		  "oUF-initialConfigFunction", [[
+			self:SetHeight(32)
+			self:SetWidth(77)
+		  ]]
+		)
+		
+		if i == 1 then
+			header:SetAttribute("showSolo", true)
+			header:SetAttribute("showPlayer", true) 
+			header:SetAttribute("showParty", true)
+			header:SetPoint("TOPLEFT",UIParent,"BOTTOMRIGHT",-410,190)
+		else
+			header:SetPoint("TOPLEFT",raid[i-1],"TOPRIGHT",4,0)
+		end
+		header:SetScale(cfg.raidscale)
+		raid[i] = header
+	end
 end)
 
 oUF:RegisterStyle("oUF_BossBars", CreateUnitFrame)

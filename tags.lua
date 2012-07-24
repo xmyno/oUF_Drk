@@ -53,13 +53,16 @@ tags.Methods["drk:hp"] = function(u)
 	end
 end
 
-tags.Events["drk:raidhp"] = 'UNIT_HEALTH'
+tags.Events["drk:raidhp"] = 'UNIT_HEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 tags.Methods["drk:raidhp"] = function(u) 
   if UnitIsDead(u) or UnitIsGhost(u) or not UnitIsConnected(u) then
     return _TAGS["drk:DDG"](u)
   else
-	local per = _TAGS["drk:perhp"](u).."%" or 0
-    return per
+	
+	local missinghp = SVal(_TAGS["missinghp"](u)) or ""
+	if missinghp ~= "" then
+		return "-"..missinghp
+	end
   end
 end
 
@@ -95,7 +98,7 @@ tags.Methods["drk:DDG"] = function(u)
 	elseif UnitIsGhost(u) then
 		return "|cffCFCFCF Ghost|r"
 	elseif not UnitIsConnected(u) then
-		return "|cffCFCFCF Offline|r"
+		return "|cffCFCFCF Off|r"
 	end
 end
 

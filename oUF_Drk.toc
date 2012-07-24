@@ -1,14 +1,16 @@
-## Interface: 40000
-## Author: Drakull
-## Title: oUF_Drk
+## Interface: 50001
+## Author: Drakull, xmyno
+## Title: oUF_Drk Fanupdate
+## Version: r2
 ## Notes: My Layout for oUF
 ## RequiredDeps: oUF
-## OptionalDeps: oUF_PowerSpark, oUF_ReadyCheck, oUF_Experience, oUF_Reputation, oUF_Vengeance
+## OptionalDeps: oUF_Experience
 ## X-Category: UnitFrame
 
 cfg.lua
 tags.lua
 castbar.lua
-raiddebuffs.lua
+elements\raidDebuffs.lua
+elements\AuraWatch.lua
 lib.lua
 core.lua

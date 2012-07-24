@@ -97,22 +97,27 @@ lib.gen_fontstring = function(f, name, size, outline)
 	fs:SetShadowOffset(1,-1)
 	return fs
 end  
-  
+
+
 --gen healthbar func
-lib.gen_hpbar = function(f)
+lib.addHealthBar = function(f)
 	--statusbar
 	local s = CreateFrame("StatusBar", nil, f)
-	s:SetStatusBarTexture(cfg.statusbar_texture)
-	s:GetStatusBarTexture():SetHorizTile(true)
 	if f.mystyle=="boss" then
 		s:SetHeight(37)
 		s:SetWidth(250)
 		s:SetPoint("TOPLEFT", f, "TOPLEFT", 0, 0)
+		s:SetStatusBarTexture(cfg.statusbar_texture)
 	else
-		s:SetHeight(retVal(f,34,19,24))
+		s:SetHeight(retVal(f,34,19,29))
 		s:SetWidth(f:GetWidth())
 		s:SetPoint("TOP",0,0)
+		s:SetStatusBarTexture(cfg.statusbar_texture)
+		if f.mystyle=="raid" then
+			s:SetStatusBarColor(.25,.25,.25,1)
+		end
 	end
+	s:GetStatusBarTexture():SetHorizTile(true)
 	--helper
 	local h = CreateFrame("Frame", nil, s)
 	h:SetFrameLevel(0)
@@ -120,7 +125,8 @@ lib.gen_hpbar = function(f)
 	if f.mystyle == "target" or f.mystyle == "player" or f.mystyle == "boss" then
 		h:SetPoint("BOTTOMRIGHT",4,-4)
 	elseif f.mystyle == "raid" then
-		h:SetPoint("BOTTOMRIGHT", 5, -9) --NYI
+		h:SetPoint("TOPLEFT",f,"TOPLEFT",-4,4)
+		h:SetPoint("BOTTOMRIGHT",f,"BOTTOMRIGHT", 3.8, -4)
 	else
 		h:SetPoint("BOTTOMRIGHT", 4, -10)
 	end
@@ -128,13 +134,16 @@ lib.gen_hpbar = function(f)
 	--bg
 	local b = s:CreateTexture(nil, "BACKGROUND")
 	b:SetTexture(cfg.statusbar_texture)
+	if f.mystyle == "raid" then
+		b:SetVertexColor(.07,.07,.07,.8)
+	end
 	b:SetAllPoints(s)
 	f.Health = s
 	f.Health.bg = b
 end
 
 --gen hp strings func
-lib.gen_hpstrings = function(f)
+lib.addStrings = function(f)
     --health/name text strings
 	if f.mystyle=="boss" then
 		local name = lib.gen_fontstring(f.Health, cfg.font, 14, "NONE")
@@ -152,9 +161,9 @@ lib.gen_hpstrings = function(f)
 		name.frequentUpdates = 0.1
 		local powerval = lib.gen_fontstring(f.Health, cfg.font, 14, "THINOUTLINE")
 		powerval:SetPoint("LEFT", f.Health, "BOTTOMRIGHT", 3, -16)
-		local hpval = lib.gen_fontstring(f.Health, cfg.font, retVal(f,14,12,10), "NONE")
-		hpval:SetPoint("RIGHT", f.Health, "TOPRIGHT", retVal(f,-3,-3,-3), retVal(f,-10,-10,-17))
-		--this will make the name go "..." when its to long
+		local hpval = lib.gen_fontstring(f.Health, cfg.font, retVal(f,14,12,11.5), "NONE")
+		hpval:SetPoint("RIGHT", f.Health, retVal(f,"TOPRIGHT","TOPRIGHT","BOTTOMRIGHT"), retVal(f,-3,-3,0), retVal(f,-10,-10,6))
+		--this will make the name go "..." when its too long
 		if f.mystyle == "raid" then
 			name:SetPoint("RIGHT", f, "RIGHT", -1, 0) --NYI
 		else
@@ -175,7 +184,7 @@ lib.gen_hpstrings = function(f)
 end
 
 --gen powerbar func
-lib.gen_ppbar = function(f)
+lib.addPowerBar = function(f)
     --statusbar
     local s = CreateFrame("StatusBar", nil, f)
     s:SetStatusBarTexture(cfg.powerbar_texture)
@@ -185,11 +194,15 @@ lib.gen_ppbar = function(f)
 		s:SetWidth(250)
 		s:SetHeight(8)
 		s:SetPoint("BOTTOMLEFT",f,"BOTTOMLEFT",0,0)
-		s:SetStatusBarColor(165/255, 73/255, 23/255, 1)
+		s:SetStatusBarColor(165/255, 73/255, 23/255, 1)	
 	else
-		s:SetHeight(retVal(f,13,5,3))
+		s:SetHeight(retVal(f,13,5,2))
 		s:SetWidth(f:GetWidth())
-		s:SetPoint("BOTTOM",f,"BOTTOM",0,0)
+		if f.mystyle=="raid" then
+			s:SetPoint("BOTTOM",f,"BOTTOM",0,0)
+		else
+			s:SetPoint("BOTTOM",f,"BOTTOM",0,0)
+		end
 	end
 	s.frequentUpdates = true
     --helper
@@ -199,6 +212,7 @@ lib.gen_ppbar = function(f)
 		h:SetPoint("TOPLEFT",-4,4)
 		h:SetPoint("BOTTOMRIGHT",4,-4)
 		lib.gen_backdrop(h)
+	
 	end
     --bg
     local b = s:CreateTexture(nil, "BACKGROUND")
@@ -209,7 +223,7 @@ lib.gen_ppbar = function(f)
 end
 
 --gen altpowerbar func
-lib.gen_altppbar = function(f)
+lib.addAltPowerBar = function(f)
   	local s = CreateFrame("StatusBar", nil, f)
 	s:SetFrameLevel(0)
 	s:SetSize(f:GetWidth(), 2)
@@ -234,10 +248,10 @@ lib.gen_altppbar = function(f)
 end
   
 --gen altpowerbar strings func
-lib.gen_altppbartext = function(f)
+lib.addAltPowerBarString = function(f)
 	local altpphelpframe = CreateFrame("Frame",nil,s)
 	if f.mystyle == "player" then
-		altpphelpframe:SetPoint("CENTER", PlayerPowerBarAlt, "TOP", 0, -5)
+		altpphelpframe:SetPoint("CENTER", PlayerPowerBarAlt, "TOP", 0, -5) -- adds percentage to standard blizzard altPowerBar
 	else
 		altpphelpframe:SetPoint("RIGHT", f.AltPowerBar, "RIGHT", 0, 0)
 	end
@@ -255,7 +269,7 @@ lib.gen_altppbartext = function(f)
 end
   
 --gen portrait func
-lib.gen_portrait = function(f)
+lib.addPortrait = function(f)
     local p = CreateFrame("PlayerModel", nil, f)
     p:SetFrameLevel(4)
     p:SetHeight(19.8)
@@ -279,7 +293,7 @@ lib.gen_portrait = function(f)
 end
 
 --gen combat and LFD icons
-lib.gen_InfoIcons = function(f)
+lib.addInfoIcons = function(f)
     local h = CreateFrame("Frame",nil,f)
     h:SetAllPoints(f)
     h:SetFrameLevel(10)
@@ -377,7 +391,7 @@ lib.addQuestIcon = function(self)
 end
 
 --gen raid mark icons
-lib.gen_RaidMark = function(f)
+lib.addRaidMark = function(f)
     local h = CreateFrame("Frame", nil, f)
     h:SetAllPoints(f)
     h:SetFrameLevel(10)
@@ -397,11 +411,11 @@ end
 function lib.CreateTargetBorder(self)
 	local glowBorder = {edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1}
 	self.TargetBorder = CreateFrame("Frame", nil, self)
-	self.TargetBorder:SetPoint("TOPLEFT", self, "TOPLEFT", -1, 1)
-	self.TargetBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 1, -1)
+	self.TargetBorder:SetPoint("TOPLEFT", self, "TOPLEFT", -2.5, 2.5)
+	self.TargetBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 3, -2.5)
 	self.TargetBorder:SetBackdrop(glowBorder)
 	self.TargetBorder:SetFrameLevel(5)
-	self.TargetBorder:SetBackdropBorderColor(.7,.7,.7,1)
+	self.TargetBorder:SetBackdropBorderColor(.7,.7,.7,.8)
 	self.TargetBorder:Hide()
 end
 
@@ -413,52 +427,53 @@ function lib.ChangedTarget(self, event, unit)
 		self.TargetBorder:Hide()
 	end
 end
-	
+
+
 -- Create Raid Threat Status Border
-function lib.CreateThreatBorder(self)
-	local glowBorder = {edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 2}
-	self.Thtborder = CreateFrame("Frame", nil, self)
-	self.Thtborder:SetPoint("TOPLEFT", self, "TOPLEFT", -2, 2)
-	self.Thtborder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 2, -2)
-	self.Thtborder:SetBackdrop(glowBorder)
-	self.Thtborder:SetFrameLevel(4)
-	self.Thtborder:Hide()	
-end
-  
+--function lib.CreateThreatBorder(self)
+--	local glowBorder = {edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 2}
+--	self.Thtborder = CreateFrame("Frame", nil, self)
+--	self.Thtborder:SetPoint("TOPLEFT", self, "TOPLEFT", -2, 2)
+--	self.Thtborder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 2, -2)
+--	self.Thtborder:SetBackdrop(glowBorder)
+--	self.Thtborder:SetFrameLevel(4)
+--	self.Thtborder:Hide()	
+--end
+ 
 -- Raid Frames Threat Highlight
-function lib.UpdateThreat(self, event, unit)
-	if (self.unit ~= unit) then return end
-	
-	local status = UnitThreatSituation(unit)
-	unit = unit or self.unit
-	if status and status > 1 then
-		local r, g, b = GetThreatStatusColor(status)
-		self.Thtborder:Show()
-		self.Thtborder:SetBackdropBorderColor(r, g, b, 1)
-	else
-		self.Thtborder:SetBackdropBorderColor(r, g, b, 0)
-		self.Thtborder:Hide()
-	end
-end
+--function lib.UpdateThreat(self, event, unit)
+--	if (self.unit ~= unit) then return end
+--	
+--	local status = UnitThreatSituation(unit)
+--	unit = unit or self.unit
+--	if status and status > 1 then
+--		local r, g, b = GetThreatStatusColor(status)
+--		self.Thtborder:Show()
+--		self.Thtborder:SetBackdropBorderColor(r, g, b, 1)
+--	else
+--		self.Thtborder:SetBackdropBorderColor(r, g, b, 0)
+--		self.Thtborder:Hide()
+--	end
+--end
 	
   
 --gen castbar
-lib.gen_castbar = function(f)
+lib.addCastBar = function(f)
 	if not cfg.Castbars then return end
     local s = CreateFrame("StatusBar", "oUF_DrkCastbar"..f.mystyle, f)
 
     if f.mystyle == "player" or f.mystyle == "target" then
-		s:SetPoint("TOPLEFT",f.Portrait,"TOPLEFT",21,0)
-		s:SetHeight(f.Portrait:GetHeight()+.5)
-		s:SetWidth(f:GetWidth()-39.45)
+		s:SetPoint("TOPLEFT",f.Portrait,"TOPLEFT",21,.5)
+		s:SetHeight(f.Portrait:GetHeight()+1.5)
+		s:SetWidth(f:GetWidth()-38.45)
 	elseif f.mystyle=="boss" then
 		s:SetPoint("TOP",f.Power,"TOP",13,0)
 		s:SetHeight(20)
 		s:SetWidth(f:GetWidth()-26)
    else
-		s:SetPoint("TOPRIGHT",f,"TOPRIGHT",0,28)
-		s:SetHeight(20)
-		s:SetWidth(f:GetWidth()-24)
+		s:SetPoint("TOPRIGHT",f,"TOPRIGHT",-.5,26)
+		s:SetHeight(18)
+		s:SetWidth(f:GetWidth()-23.5)
     end
     s:SetStatusBarTexture(cfg.statusbar_texture)
     s:SetStatusBarColor(.5, .5, 1,1)
@@ -496,11 +511,13 @@ lib.gen_castbar = function(f)
     txt:SetPoint("RIGHT", t, "LEFT", -5, 0)
     --icon
     local i = s:CreateTexture(nil, "ARTWORK")
-    i:SetSize(s:GetHeight(),s:GetHeight())
+   
 	if f.mystyle=='player' or f.mystyle=='target' then
 		i:SetPoint("RIGHT", s, "LEFT", 0, 0)
+		i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
 	else
-		i:SetPoint("RIGHT",s,"LEFT",-5.5,0)
+		i:SetPoint("RIGHT",s,"LEFT",-4,0)
+		i:SetSize(s:GetHeight(),s:GetHeight())
 	end
     i:SetTexCoord(0.1, 0.9, 0.1, 0.9)
     --helper2 for icon
@@ -543,13 +560,13 @@ lib.gen_castbar = function(f)
   end
   
 -- mirror castbar!
-lib.gen_mirrorcb = function(f)
+lib.addMirrorCastBar = function(f)
 	for _, bar in pairs({'MirrorTimer1','MirrorTimer2','MirrorTimer3',}) do   
-		for i, region in pairs({_G[bar]:GetRegions()}) do
-			if (region.GetTexture and region:GetTexture() == 'SolidTexture') then
-			  region:Hide()
-			end
-		end
+		--for i, region in pairs({_G[bar]:GetRegions()}) do
+		--	if (region.GetTexture and region:GetTexture() == 'SolidTexture') then
+		--	  region:Hide()
+		--	end
+		--end
 		_G[bar..'Border']:Hide()
 		_G[bar]:SetParent(UIParent)
 		_G[bar]:SetScale(1)
@@ -564,6 +581,7 @@ lib.gen_mirrorcb = function(f)
 		_G[bar..'Text']:ClearAllPoints()
 		_G[bar..'Text']:SetPoint('CENTER', MirrorTimer1StatusBar, 0, 1)
 		_G[bar..'StatusBar']:SetAllPoints(_G[bar])
+		
 		--glowing borders
 		local h = CreateFrame("Frame", nil, _G[bar])
 		h:SetFrameLevel(0)
@@ -691,7 +709,7 @@ function CreateBuffTimer(self, elapsed)
 	end
 end
   
-lib.createBuffs = function(f)
+lib.addBuffs = function(f)
     b = CreateFrame("Frame", nil, f)
     b.size = 20
     b.num = 20
@@ -710,7 +728,7 @@ lib.createBuffs = function(f)
     f.Buffs = b
 end
 
-lib.createDebuffs = function(f)
+lib.addDebuffs = function(f)
     b = CreateFrame("Frame", nil, f)
     b.size = 20
 	b.num = 10
@@ -729,7 +747,7 @@ lib.createDebuffs = function(f)
     f.Debuffs = b
 end
   
-lib.createTotAuras = function(f)
+lib.addTotAuras = function(f)
     b = CreateFrame("Frame", nil, f)
     b.size = 20
 	b.num = 5
@@ -747,7 +765,7 @@ lib.createTotAuras = function(f)
 	if (cfg.totDebuffs and not cfg.totBuffs) then f.Debuffs = b end
 end  
 
-lib.createFocusAuras = function(f)
+lib.addFocusAuras = function(f)
     b = CreateFrame("Frame", nil, f)
     b.size = 20
 	b.num = 5
@@ -765,7 +783,7 @@ lib.createFocusAuras = function(f)
 	if (cfg.focusDebuffs and not cfg.focusBuffs) then f.Debuffs = b end
 end
 
-lib.createBossBuffs = function(f)
+lib.addBossBuffs = function(f)
     b = CreateFrame("Frame", nil, f)
     b.size = 20
 	b.num = 4
@@ -783,7 +801,7 @@ lib.createBossBuffs = function(f)
     f.Buffs = b
 end  
 
-lib.createBossDebuffs = function(f)
+lib.addBossDebuffs = function(f)
     b = CreateFrame("Frame", nil, f)
     b.size = 20
 	b.num = 4
@@ -800,7 +818,26 @@ lib.createBossDebuffs = function(f)
 
     f.Debuffs = b
 end
- 
+
+--[[lib.addRaidDebuffs = function(f)
+    b = CreateFrame("Frame", nil, f)
+    b.size = 12
+	b.num = 3
+	b.onlyShowPlayer = false
+    b.spacing = 3
+    b:SetHeight(b.size)
+    b:SetWidth(f:GetWidth())
+	b:SetPoint("BOTTOMLEFT", f, "BOTTOMLEFT", 3, 3)
+	b.initialAnchor = "TOPLEFT"
+	b["growth-x"] = "RIGHT"
+	b["growth-y"] = "DOWN"
+    b.PostCreateIcon = myPostCreateIcon
+    b.PostUpdateIcon = myPostUpdateIcon
+
+    f.Debuffs = b
+end
+]]
+
 -- portrait update
 lib.PortraitPostUpdate = function(element, unit)
 	if not UnitExists(unit) or not UnitIsConnected(unit) or not UnitIsVisible(unit) then
@@ -818,15 +855,20 @@ lib.PostUpdateRaidFrame = function(Health, unit, min, max)
 	local dead = UnitIsDead(unit)
 	local ghost = UnitIsGhost(unit)
 	
+	Health:SetStatusBarColor(.25,.25,.25,1)
+	
 	if disconnnected or dead or ghost then
-		Health:SetValue(max)
+		--Health:SetValue(max)
 		
 		if(disconnnected) then
-			Health:SetStatusBarColor(0,0,0,0.6)
+			--Health:SetStatusBarColor(0,0,0,0.6)
+			Health:SetValue(0)
 		elseif(ghost) then
-			Health:SetStatusBarColor(1,1,1,0.6)
+			Health:SetStatusBarColor(.15,.15,.15,0.5)
+			Health:SetValue(0)
 		elseif(dead) then
-			Health:SetStatusBarColor(1,0,0,0.7)
+			--Health:SetStatusBarColor(.15,.15,.15,0.7)
+			Health:SetValue(0)
 		end
 	else
 		Health:SetValue(min)
@@ -846,7 +888,7 @@ lib.addEclipseBar = function(self)
 	end
 	eclipseBar:SetFrameLevel(4)
 	eclipseBar:SetHeight(6)
-	eclipseBar:SetWidth(self:GetWidth())
+	eclipseBar:SetWidth(self:GetWidth()+.5)
 	local h = CreateFrame("Frame", nil, eclipseBar)
 	h:SetPoint("TOPLEFT",-3,3)
 	h:SetPoint("BOTTOMRIGHT",3,-3)
@@ -935,7 +977,7 @@ end
 	--self.Harmony[i]:SetWidth(self.Harmony:GetWidth()/maxChi-2)
 --end
 --Monk harmony bar
-lib.genHarmony = function(self)
+lib.addHarmony = function(self)
 	if playerClass ~= "MONK" then return end
 		
 	self.Harmony = CreateFrame("Frame", nil, self)
@@ -975,7 +1017,7 @@ lib.genHarmony = function(self)
 end
 
 --Shadow Orbs bar
-lib.genShadoworbs = function(self)
+lib.addShadoworbs = function(self)
 	if playerClass ~= "PRIEST" then return end
 	
 	self.ShadowOrbs = CreateFrame("Frame", nil, self)
@@ -1015,7 +1057,7 @@ end
 
 -- SoulShard bar
 
-lib.genShards = function(self)
+lib.addShards = function(self)
 --[[	
 if playerClass ~= "WARLOCK" then return end
 	
@@ -1055,11 +1097,11 @@ end
 
 
 -- HolyPowerbar
-lib.genHolyPower = function(self)
+lib.addHolyPower = function(self)
 	if playerClass ~= "PALADIN" then return end
 	
 	self.HolyPower = CreateFrame("Frame", nil, self)
-	self.HolyPower:SetPoint('CENTER', self.Power, 'TOP', 0, 0)
+	self.HolyPower:SetPoint('CENTER', self.Health, 'TOP', 0, 0)
 	self.HolyPower:SetHeight(5)
 	self.HolyPower:SetWidth(self.Health:GetWidth()/2+75)
 	
@@ -1092,7 +1134,7 @@ lib.genHolyPower = function(self)
 end
 
 -- runebar
-lib.genRunes = function(self)
+lib.addRunes = function(self)
 	if playerClass ~= "DEATHKNIGHT" then return end
 
 	self.Runes = CreateFrame("Frame", nil, self)
@@ -1128,7 +1170,7 @@ lib.genRunes = function(self)
 end
 
 -- combo points
-lib.genCPoints = function(self)
+lib.addCPoints = function(self)
 	if (playerClass == "ROGUE" or playerClass == "DRUID") then
 		self.CPoints = CreateFrame("Frame", nil, self)
 		self.CPoints:SetPoint('CENTER', self.Health, 'TOP', 0, 0)
@@ -1168,15 +1210,15 @@ lib.genCPoints = function(self)
 end
 
 -- ReadyCheck
-lib.ReadyCheck = function(self)
+lib.addReadyCheck = function(self)
 	rCheck = self.Health:CreateTexture(nil, "OVERLAY")
 	rCheck:SetSize(14, 14)
 	rCheck:SetPoint("BOTTOMLEFT", self.Health, "TOPRIGHT", -13, -12)
 	self.ReadyCheck = rCheck
 end
 
--- oUF_HealPred
-lib.HealPred = function(self)
+-- Heal Prediction
+lib.addHealPred = function(self)
 	if not cfg.ShowIncHeals then return end
 	
 	local mhpb = CreateFrame('StatusBar', nil, self.Health)
@@ -1214,9 +1256,83 @@ end
 
 
 -- Addons -------------------------------------------
+--AuraWatch
+local AWPostCreateIcon = function(AWatch,icon,spellID,name,self)
+	icon.cd:SetReverse()
+	local count = lib.gen_fontstring(icon,cfg.smallfont,10,"OUTLINE",0)
+	count:SetPoint("CENTER",icon,"BOTTOM",3,3)
+	icon.count=count
+	--backdrop
+	local h = CreateFrame("Frame", nil, icon)
+	h:SetFrameLevel(5)
+	h:SetPoint("TOPLEFT",-3,3)
+	h:SetPoint("BOTTOMRIGHT",3,-3)
+	lib.gen_power_backdrop(h)
+end
 
-lib.gen_Exp = function(self)
-	--if UnitLevel("self") ~= MAX_PLAYER_LEVEL then
+lib.addAuraWatch = function(self)
+		local auras = {}
+		local spellIDs = cfg.AuraWatchList
+		auras.onlyShowPresent=true
+		auras.anyUnit=true
+		auras.PostCreateIcon = AWPostCreateIcon
+		auras.icons = {}
+		for i, sid in pairs(spellIDs[playerClass]) do
+			local icon = CreateFrame("Frame", nil, self)
+			icon.spellID = sid
+			icon:SetWidth(12)
+			icon:SetHeight(12)
+			icon:SetFrameLevel(6)
+			icon:SetPoint("TOPLEFT", self, "TOPRIGHT", -14*i, 0)
+			auras.icons[sid] = icon
+		end
+		self.AuraWatch = auras
+end
+
+ 
+lib.addRaidDebuffs = function(self)
+	local raid_debuffs = cfg.DebuffWatchList
+	
+	local instDebuffs = {}
+	local instances = raid_debuffs.instances
+	local getzone = function()
+		local zone = GetInstanceInfo()
+		if instances[zone] then
+			instDebuffs = instances[zone]
+		else
+			instDebuffs = {}
+		end
+	end
+
+	local debuffs = raid_debuffs.debuffs
+	local CustomFilter = function(icons, ...)
+		local _, icon, name, _, _, _, dtype = ...
+		if instDebuffs[name] then
+			icon.priority = instDebuffs[name]
+			return true
+		elseif debuffs[name] then
+			icon.priority = debuffs[name]
+			return true
+		else
+			icon.priority = 0
+		end
+	end
+
+
+	local debuffs = CreateFrame("Frame", nil, self)
+	debuffs:SetWidth(13)
+	debuffs:SetHeight(13)
+	debuffs:SetFrameLevel(7)
+	debuffs:SetPoint("CENTER", self, "CENTER", 0, 0)
+	debuffs.size = 13
+	
+	debuffs.CustomFilter = CustomFilter
+	self.raidDebuffs = debuffs
+
+end
+
+
+lib.addExperienceBar = function(self)
 	self.Experience = CreateFrame('StatusBar', nil, self)
 	self.Experience:SetPoint('BOTTOMLEFT', self, 'BOTTOMLEFT', ((self.Health:GetWidth()-self.Portrait:GetWidth())/2), 29)
 	self.Experience:SetWidth(self.Portrait:GetWidth())
@@ -1258,18 +1374,16 @@ lib.gen_Exp = function(self)
 	h:SetBackdropBorderColor(0,0,0,0.8)
 	
 	self.Experience.Text = lib.gen_fontstring(self.Experience,cfg.smallfont,9,'OUTLINE')
-	self.Experience.Text:SetPoint("CENTER",self.Experience,"TOP",10,2)
+	self.Experience.Text:SetPoint("CENTER",self.Experience,"BOTTOM",0,0)
 	self:Tag(self.Experience.Text,"[drk:xp]")
 			
 	self.Experience.Text:SetAlpha(0)
 	self.Experience.PostUpdate = ExpOverrideText
 		
-	--end
 end
 
-
 --gen hilight texture
-lib.gen_highlight = function(f)
+lib.addHighlight = function(f)
     local OnEnter = function(f)
 		UnitFrame_OnEnter(f)
 		f.Highlight:Show()
