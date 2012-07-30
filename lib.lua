@@ -411,6 +411,13 @@ lib.addRaidMark = function(f)
     f.RaidIcon = ri
 end
 
+lib.addResurrectIcon = function(f)
+	local rezicon = f.Health:CreateTexture(nil,'OVERLAY')
+	rezicon:SetPoint('CENTER',f,'CENTER',0,0)
+	rezicon:SetSize(16,16)
+	f.ResurrectIcon = rezicon
+end
+
 -- Create Target Border
 function lib.CreateTargetBorder(self)
 	local glowBorder = {edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1}
@@ -858,24 +865,27 @@ end
 -- raid post update
 lib.PostUpdateRaidFrame = function(Health, unit, min, max)
 
-	local disconnnected = not UnitIsConnected(unit)
+	local dc = not UnitIsConnected(unit)
 	local dead = UnitIsDead(unit)
 	local ghost = UnitIsGhost(unit)
+	local inrange = UnitInRange(unit)
 	
 	Health:SetStatusBarColor(.35,.35,.35,1)
 	Health:SetAlpha(1)
 	
-	if disconnnected or dead or ghost then
+	if dc or dead or ghost then
 		Health:SetValue(max)
 		
-		if(disconnnected) then
+		if dc then
+			if not inrange then
 			--Health:SetStatusBarColor(0,0,0,1)
-			Health:SetValue(max)
-			Health:SetAlpha(.225)
-		elseif(ghost) then
+			--Health:SetValue(max)
+			Health:SetAlpha(.15)
+			end
+		elseif ghost then
 			--Health:SetStatusBarColor(.03,.03,.03,1)
 			Health:SetValue(0)
-		elseif(dead) then
+		elseif dead then
 			--Health:SetStatusBarColor(.03,.03,.03,1)
 			Health:SetValue(0)
 		end
@@ -1429,7 +1439,7 @@ lib.addRaidDebuffs = function(self)
 	debuffs:SetWidth(13)
 	debuffs:SetHeight(13)
 	debuffs:SetFrameLevel(7)
-	debuffs:SetPoint("CENTER", self, "CENTER", 0, 0)
+	debuffs:SetPoint("CENTER", self, "CENTER", 0, 4)
 	debuffs.size = 13
 	
 	debuffs.CustomFilter = CustomFilter

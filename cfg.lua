@@ -40,10 +40,14 @@ local cfg = CreateFrame("Frame")
 	
 	cfg.Castbars = true -- use built-in castbars
 	cfg.ShowIncHeals = true -- Show incoming heals in player and raid frames
---raid&party frames NYI
-	cfg.ShowParty = true -- show party frames (shown as 5man raid)  -- NYI
+--raid&party frames
+	cfg.ShowParty = true -- show party frames (shown as 5man raid)
 	cfg.ShowRaid = true -- show raid frames
 	cfg.RaidShowSolo = true -- show raid frames even when solo
+	
+	cfg.raidX = -410
+	cfg.raidY = 190
+	cfg.raidScale = 1.0
 	
 	cfg.AuraWatchList = { -- List of all buffs you want to watch on raid frames, sorted by class
 		DEATHKNIGHT={
@@ -65,16 +69,13 @@ local cfg = CreateFrame("Frame")
 		
 		},
 		SHAMAN={
-			-- Riptide
-			--Earth Shield
+			61295, -- Riptide
+			974, --Earth Shield
 		},
 		WARLOCK={
 		},
 		WARRIOR={
-			6673, --Battle Shout
-			18499,
-			85730,
-			122710, --Vigilance
+			114030, --Vigilance
 		},
 	}
 	cfg.DebuffWatchList = {
@@ -170,7 +171,6 @@ cfg.font = "Interface\\AddOns\\oUF_Drk\\media\\BigNoodleTitling.ttf"
 cfg.smallfont = "Interface\\AddOns\\oUF_Drk\\media\\semplice.ttf"
 
 cfg.ptscale = 0.8 -- scale factor for player and target frames
-cfg.raidscale = 1 -- scale factor for raid frames
 cfg.miscscale = 0.8 -- scale factor for all other frames
 
 

@@ -62,7 +62,7 @@ local UnitSpecific = {
 		if cfg.showShadoworbsbar then lib.addShadoworbs(self) end
 		
 		self:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED", cfg.updateSpec)
-
+		
 	end,
 	
 	target = function(self, ...)
@@ -257,6 +257,7 @@ local UnitSpecific = {
 		lib.addPowerBar(self)
 		lib.addRaidMark(self)
 		lib.addReadyCheck(self)
+		lib.addResurrectIcon(self)
 		
 
 		--style specific stuff
@@ -274,7 +275,6 @@ local UnitSpecific = {
 		lib.addRaidDebuffs(self)
 		self.Health.PostUpdate = lib.PostUpdateRaidFrame
 		self.Power.PostUpdate = lib.PostUpdateRaidFramePower
-		--self:RegisterEvent('UNIT_CONNECTION',lib.PostUpdateRaidFrame)
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', lib.ChangedTarget)
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', lib.ChangedTarget)
 		--self:RegisterEvent("UNIT_THREAT_LIST_UPDATE", lib.UpdateThreat)
@@ -401,11 +401,11 @@ oUF:Factory(function(self)
 			header:SetAttribute("showSolo", true)
 			header:SetAttribute("showPlayer", true) 
 			header:SetAttribute("showParty", true)
-			header:SetPoint("TOPLEFT",UIParent,"BOTTOMRIGHT",-410,190)
+			header:SetPoint("TOPLEFT",UIParent,"BOTTOMRIGHT",cfg.raidX,cfg.raidY)
 		else
 			header:SetPoint("TOPLEFT",raid[i-1],"TOPRIGHT",4,0)
 		end
-		header:SetScale(cfg.raidscale)
+		header:SetScale(cfg.raidScale)
 		raid[i] = header
 	end
 
