@@ -62,6 +62,8 @@ tags.Methods["drk:raidhp"] = function(u)
 	local missinghp = SVal(_TAGS["missinghp"](u)) or ""
 	if missinghp ~= "" then
 		return "-"..missinghp
+	else
+		return ""
 	end
   end
 end
@@ -187,14 +189,15 @@ end
 
 tags.Events["drk:xp"] = 'PLAYER_XP_UPDATE PLAYER_LEVEL_UP UNIT_PET_EXPERIENCE UPDATE_EXHAUSTION'
 tags.Methods["drk:xp"] = function(unit)
-	local curxp,maxxp
+	local curxp,maxxp,perxp
 	if(unit == "pet") then
 		curxp,maxxp = GetPetExperience()
 	else
 		curxp = UnitXP(unit)
 		maxxp = UnitXPMax(unit)
 	end
-	local perxp = math.floor((curxp / maxxp * 100 + 0.05)*10)/10
+	if maxxp and maxxp == 0 then return end
+	perxp = math.floor((curxp / maxxp * 100 + 0.05)*10)/10
 	local rested = GetXPExhaustion()
 	if(rested and rested > 0) then
 		rested = math.floor((rested / UnitXPMax(unit) * 100 + 0.05)*10)/10

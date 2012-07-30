@@ -98,7 +98,6 @@ lib.gen_fontstring = function(f, name, size, outline)
 	return fs
 end  
 
-
 --gen healthbar func
 lib.addHealthBar = function(f)
 	--statusbar
@@ -114,7 +113,7 @@ lib.addHealthBar = function(f)
 		s:SetPoint("TOP",0,0)
 		s:SetStatusBarTexture(cfg.statusbar_texture)
 		if f.mystyle=="raid" then
-			s:SetStatusBarColor(.25,.25,.25,1)
+			s:SetStatusBarColor(.35,.35,.35,1)
 		end
 	end
 	s:GetStatusBarTexture():SetHorizTile(true)
@@ -135,7 +134,7 @@ lib.addHealthBar = function(f)
 	local b = s:CreateTexture(nil, "BACKGROUND")
 	b:SetTexture(cfg.statusbar_texture)
 	if f.mystyle == "raid" then
-		b:SetVertexColor(.07,.07,.07,.8)
+		b:SetVertexColor(.03,.03,.03,1)
 	end
 	b:SetAllPoints(s)
 	f.Health = s
@@ -155,13 +154,13 @@ lib.addStrings = function(f)
 		f:Tag(name,"[name]")
 		f:Tag(hpval,"[drk:hp]")
 	else
-		local name = lib.gen_fontstring(f.Health, cfg.font, retVal(f,14,12,12), "NONE")
+		local name = lib.gen_fontstring(f.Health, cfg.font, retVal(f,14,12,13), retVal(f,"NONE","NONE","OUTLINE"))
 		name:SetPoint("LEFT", f.Health, "TOPLEFT", retVal(f,5,3,2), retVal(f,-10,-10,-7))
 		name:SetJustifyH("LEFT")
 		name.frequentUpdates = 0.1
 		local powerval = lib.gen_fontstring(f.Health, cfg.font, 14, "THINOUTLINE")
 		powerval:SetPoint("LEFT", f.Health, "BOTTOMRIGHT", 3, -16)
-		local hpval = lib.gen_fontstring(f.Health, cfg.font, retVal(f,14,12,11.5), "NONE")
+		local hpval = lib.gen_fontstring(f.Health, cfg.font, retVal(f,14,12,13), retVal(f,"NONE","NONE","OUTLINE"))
 		hpval:SetPoint("RIGHT", f.Health, retVal(f,"TOPRIGHT","TOPRIGHT","BOTTOMRIGHT"), retVal(f,-3,-3,0), retVal(f,-10,-10,6))
 		--this will make the name go "..." when its too long
 		if f.mystyle == "raid" then
@@ -402,10 +401,12 @@ lib.addRaidMark = function(f)
     local ri = h:CreateTexture(nil,'OVERLAY',h)
 	if f.mystyle == 'player' or f.mystyle == 'target' then
 		ri:SetPoint("RIGHT", f, "LEFT", 5, 6)
+	elseif f.mystyle == 'raid' then	
+		ri:SetPoint("CENTER", f, "TOP",0,0)
 	else
 		ri:SetPoint("CENTER", f, "TOP", 0, 2)
 	end
-	local size = retVal(f, 20, 18, 10)
+	local size = retVal(f, 20, 18, 12)
     ri:SetSize(size, size)
     f.RaidIcon = ri
 end
@@ -466,9 +467,9 @@ lib.addCastBar = function(f)
     local s = CreateFrame("StatusBar", "oUF_DrkCastbar"..f.mystyle, f)
 
     if f.mystyle == "player" or f.mystyle == "target" then
-		s:SetPoint("TOPLEFT",f.Portrait,"TOPLEFT",21,.5)
+		s:SetPoint("TOPLEFT",f.Portrait,"TOPLEFT",20,.5)
 		s:SetHeight(f.Portrait:GetHeight()+1.5)
-		s:SetWidth(f:GetWidth()-38.45)
+		s:SetWidth(f:GetWidth()-37.45)
 	elseif f.mystyle=="boss" then
 		s:SetPoint("TOP",f.Power,"TOP",13,0)
 		s:SetHeight(20)
@@ -861,19 +862,21 @@ lib.PostUpdateRaidFrame = function(Health, unit, min, max)
 	local dead = UnitIsDead(unit)
 	local ghost = UnitIsGhost(unit)
 	
-	Health:SetStatusBarColor(.25,.25,.25,1)
+	Health:SetStatusBarColor(.35,.35,.35,1)
+	Health:SetAlpha(1)
 	
 	if disconnnected or dead or ghost then
-		--Health:SetValue(max)
+		Health:SetValue(max)
 		
 		if(disconnnected) then
-			--Health:SetStatusBarColor(0,0,0,0.6)
-			Health:SetValue(0)
+			--Health:SetStatusBarColor(0,0,0,1)
+			Health:SetValue(max)
+			Health:SetAlpha(.225)
 		elseif(ghost) then
-			Health:SetStatusBarColor(.15,.15,.15,0.5)
+			--Health:SetStatusBarColor(.03,.03,.03,1)
 			Health:SetValue(0)
 		elseif(dead) then
-			--Health:SetStatusBarColor(.15,.15,.15,0.7)
+			--Health:SetStatusBarColor(.03,.03,.03,1)
 			Health:SetValue(0)
 		end
 	else
@@ -882,6 +885,29 @@ lib.PostUpdateRaidFrame = function(Health, unit, min, max)
 			Health:SetStatusBarColor(143/255, 194/255, 32/255)
 		end
 	end
+end
+
+lib.PostUpdateRaidFramePower = function(Power, unit, min, max)
+	local disconnnected = not UnitIsConnected(unit)
+	local dead = UnitIsDead(unit)
+	local ghost = UnitIsGhost(unit)
+	
+	Power:SetAlpha(1)
+	
+	if disconnnected or dead or ghost then
+		if(disconnnected) then
+			Power:SetAlpha(.3)
+		elseif(ghost) then
+			Power:SetAlpha(.3)
+		elseif(dead) then
+			Power:SetAlpha(.3)
+		end
+	end
+
+end
+
+lib.updateRaidFramePosition = function(self)
+	print("RaidFramePosition")
 end
 
 lib.addEclipseBar = function(self)
@@ -978,14 +1004,85 @@ lib.addEclipseBar = function(self)
 
 end
 
---lib.PostUpdateHarmonyBar = function(unit)
-	--local maxChi = UnitPowerMax('player', SPELL_POWER_LIGHT_FORCE)
-	--self.Harmony[i]:SetWidth(self.Harmony:GetWidth()/maxChi-2)
---end
 --Monk harmony bar
+local chi
+local chibar
+local chinum
+local chipoints = {}
+
+local UpdateChi = function()
+	local chi = UnitPower("player",SPELL_POWER_LIGHT_FORCE)
+	local chimax = UnitPowerMax("player",SPELL_POWER_LIGHT_FORCE)
+	if chinum ~= chimax then
+		if chimax == 4 then
+			chipoints[5]:Hide()
+			for i = 1,4 do
+				chipoints[i]:SetWidth(chibar:GetWidth()/4-2)
+			end
+		elseif chimax == 5 then
+			chipoints[5]:Show()
+			for i = 1,5 do
+				chipoints[i]:SetWidth(chibar:GetWidth()/5-2)
+			end
+		end
+	end
+	chinum = chimax
+	for i = 1,chimax do
+		if i <= chi then
+			chipoints[i]:Show()
+		else
+			chipoints[i]:Hide()
+		end
+	end
+end
+
+local CreateChi = function()
+	chibar:RegisterEvent("UNIT_POWER")
+	chibar:RegisterEvent("UNIT_DISPLAYPOWER")
+	chibar:SetScript("OnEvent",UpdateChi)
+	
+	for i=1,5 do
+		chipoints[i] = CreateFrame("StatusBar","chipoints"..i,chibar)
+		chipoints[i]:SetHeight(5)
+		chipoints[i]:SetWidth(chibar:GetWidth()/5)
+		chipoints[i]:SetFrameLevel(11)
+		chipoints[i]:SetStatusBarTexture(cfg.statusbar_texture)
+		chipoints[i]:SetStatusBarColor(.9,.99,.9)
+		
+		local h = CreateFrame("Frame",nil,chipoints[i])
+		h:SetFrameLevel(10)
+		h:SetPoint("TOPLEFT",-3,3)
+		h:SetPoint("BOTTOMRIGHT",3,-3)
+		lib.gen_power_backdrop(h)
+	
+		if i==1 then
+			chipoints[i]:SetPoint("LEFT",chibar,"LEFT",1,0)
+		else
+			chipoints[i]:SetPoint("TOPLEFT",chipoints[i-1], "TOPRIGHT",2,0)
+		end
+		chipoints[i]:Hide()
+	end
+end
+
 lib.addHarmony = function(self)
 	if playerClass ~= "MONK" then return end
-		
+	chi = SPELL_POWER_LIGHT_FORCE
+	local coloron = {.9, .9, .9, 1}
+	local coloroff = {.2, .2, .2, 1}
+
+	
+	chibar = CreateFrame("Frame",nil,self)
+	chibar:SetPoint("CENTER",self.Health,"TOP",0,0)
+	chibar:SetHeight(5)
+	chibar:SetWidth(self.Health:GetWidth()/2+75)
+	chibar:SetFrameLevel(11)
+	
+
+	
+	chibar:RegisterEvent("PLAYER_ENTERING_WORLD")
+	chibar:SetScript("OnEvent", CreateChi)
+	
+	--[[	
 	self.Harmony = CreateFrame("Frame", nil, self)
 	self.Harmony:SetPoint('CENTER', self.Health, 'TOP', 0, 0)
 	self.Harmony:SetHeight(5)
@@ -1019,7 +1116,8 @@ lib.addHarmony = function(self)
 			self.Harmony[i]:SetPoint('TOPLEFT', self.Harmony[i-1], 'TOPRIGHT', 2, 0)
 		end
 	end
-	
+	]]
+	--self.Harmony.Override = HarmonyOverride
 end
 
 --Shadow Orbs bar
@@ -1289,7 +1387,7 @@ lib.addAuraWatch = function(self)
 			icon:SetWidth(12)
 			icon:SetHeight(12)
 			icon:SetFrameLevel(6)
-			icon:SetPoint("TOPLEFT", self, "TOPRIGHT", -14*i, 0)
+			icon:SetPoint("BOTTOMRIGHT", self, "BOTTOMLEFT", 14*i, 4)
 			auras.icons[sid] = icon
 		end
 		self.AuraWatch = auras
@@ -1299,6 +1397,7 @@ end
 lib.addRaidDebuffs = function(self)
 	local raid_debuffs = cfg.DebuffWatchList
 	
+	--[[
 	local instDebuffs = {}
 	local instances = raid_debuffs.instances
 	local getzone = function()
@@ -1309,14 +1408,15 @@ lib.addRaidDebuffs = function(self)
 			instDebuffs = {}
 		end
 	end
-
+	]]
 	local debuffs = raid_debuffs.debuffs
 	local CustomFilter = function(icons, ...)
 		local _, icon, name, _, _, _, dtype = ...
-		if instDebuffs[name] then
-			icon.priority = instDebuffs[name]
-			return true
-		elseif debuffs[name] then
+		--if instDebuffs[spellID] then
+		--	icon.priority = instDebuffs[spellID]
+		--	return true
+		--spellID = ""..spellID
+		if debuffs[name] then
 			icon.priority = debuffs[name]
 			return true
 		else

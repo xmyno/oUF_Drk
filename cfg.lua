@@ -21,8 +21,8 @@ local cfg = CreateFrame("Frame")
 	cfg.bossX = 15 -- x-coordinate of boss frames
 	cfg.bossY = -40 -- y-coordinate is for the first bossframe, additional frames will grow upwards (75px each)
 --auras
-	cfg.playerAuras = true -- show player buffs and debuffs, disables Blizzard buff bar
-	cfg.AltPowerBarPlayer = true --show altpowerbar on player frame, false = blizzard standard
+	cfg.playerAuras = false -- show player buffs and debuffs, disables Blizzard buff bar
+	cfg.AltPowerBarPlayer = false --show altpowerbar on player frame, false = blizzard standard
 	cfg.targetBuffs = true -- show target buff frame
 	cfg.targetDebuffs = true -- show target debuff frame
 	cfg.totBuffs = false -- show target-of-target buffs (only one can be active)
@@ -74,12 +74,79 @@ local cfg = CreateFrame("Frame")
 			6673, --Battle Shout
 			18499,
 			85730,
-			--Vigilance
+			122710, --Vigilance
 		},
 	}
 	cfg.DebuffWatchList = {
 		debuffs = {
-			["Strange Aura"] = 5,
+			--?? USAGE: ["DEBUFF_NAME"] = PRIORITY, ??--
+			--?? PRIORITY -> 10: high, 9: medium, 8: low, dispellable debuffs have standard priority of 5. ??--
+			
+			--## MISTS OF PANDARIA ##--
+			--World Bosses
+				--Sha of Fear
+					["Growing Anger"] = 8,
+					["Aggressive Behavior"] = 9,
+			--Heart of Fear
+				--Imperial Vizier Zor'lok
+					["Noise Cancelling"] = 9,
+					["Convert"] = 10,
+				--Blade Lord Ta'yak
+					["Overwhelming Assault"] = 8,
+					["Wind Step"] = 9,
+				--Garalon
+					["Pheromones"] = 8,
+					["Pungency"] = 10,
+				--Wind Lord Mel'jarak
+					["Amber Prison"] = 10,
+					["Residue"] = 9,
+					["Corrosive Resin"] = 8,
+				--Amber-Shaper Un'sok
+					["Reshape Life"] = 9,
+					["Parasitic Growth"] = 10,
+					["Amber Globule"] = 9,
+				--Grand Empress Shek'zeer
+					["Eyes of the Empress"] = 8,
+					["Sticky Resin"] = 8,
+					["Visions of Demise"] = 8,
+			--Mogu'shan Vaults
+				--The Stone Guard
+					["Cobalt Mine"] = 8,
+					["Jasper Chains"] = 10,
+					["Living Jade"] = 9,
+					["Living Jasper"] = 9,
+					["Living Cobalt"] = 9,
+					["Living Amethyst"] = 9,
+				--Feng the Accursed
+					["Flaming Spear"] = 8,
+					["Wildfire Spark"] = 9,
+					["Arcane Resonance"] = 10,
+				--Gara'jal the Spiritbinder
+					["Frail Soul"] = 8,
+					["Voodoo Dolls"] = 9,
+				--The Spirit Kings
+					["Maddening Shout"] = 8,
+					["Pillage"] = 9,
+					["Pinning Arrow"] = 9,
+					["Robbed Blind"] = 8,
+					["Undying Shadows"] = 9,
+				--Elegon
+					["Overcharged"] = 8,
+					["Closed Circuit"] = 9,
+				--Will of the Emperor
+					["Focused Energy"] = 10,
+			--Terrace of Endless Spring
+				--Protectors of the Endless
+					["Lightning Prison"] = 10,
+					["Corrupted Essence"] = 8,
+				--Tsulong
+					["Nightmares"] = 8,
+					["Terrorize"] = 8,
+				--Lei Shi
+					["Scary Fog"] = 10,
+					["Spray"] = 8,
+				--Sha of Fear
+					["Dread Spray"] = 8,
 		},
 	}
 --cfg.RaidShowAllGroups = false -- show raid groups 6, 7 and 8 (more than 25man raid)
@@ -92,10 +159,12 @@ local cfg = CreateFrame("Frame")
 --media files
 cfg.statusbar_texture = "Interface\\AddOns\\oUF_Drk\\media\\Statusbar"
 cfg.powerbar_texture = "Interface\\AddOns\\oUF_Drk\\media\\Aluminium"
-cfg.backdrop_texture = "Interface\\AddOns\\oUF_Drk\\media\\backdrop"
 cfg.highlight_texture = "Interface\\AddOns\\oUF_Drk\\media\\raidbg"
 cfg.portrait_texture = "Interface\\AddOns\\oUF_Drk\\media\\portrait"
+cfg.backdrop_texture = "Interface\\AddOns\\oUF_Drk\\media\\backdrop"
 cfg.backdrop_edge_texture = "Interface\\AddOns\\oUF_Drk\\media\\backdrop_edge"
+cfg.debuff_border_texture = "Interface\\AddOns\\oUF_Drk\\media\\iconborder"
+
 
 cfg.font = "Interface\\AddOns\\oUF_Drk\\media\\BigNoodleTitling.ttf"
 cfg.smallfont = "Interface\\AddOns\\oUF_Drk\\media\\semplice.ttf"
@@ -104,6 +173,15 @@ cfg.ptscale = 0.8 -- scale factor for player and target frames
 cfg.raidscale = 1 -- scale factor for raid frames
 cfg.miscscale = 0.8 -- scale factor for all other frames
 
+
+cfg.spec = nil
+cfg.updateSpec = function()
+	local activespec = GetSpecialization()
+	if activespec then
+		id, name, desc, icon, bg, role = GetSpecializationInfo(activespec)
+		spec = name
+	end
+end
 
 -----------------------------
 -- HANDOVER

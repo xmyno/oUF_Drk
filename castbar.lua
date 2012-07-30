@@ -64,7 +64,9 @@ cast.OnCastbarUpdate = function(self, elapsed)
 				self.Time:SetFormattedText('%.1f | |cffff0000%.1f|r', duration, self.casting and self.max + self.delay or self.max - self.delay)
 			else
 				self.Time:SetFormattedText('%.1f | %.1f', duration, self.max)
-				self.Lag:SetFormattedText("%d ms", self.SafeZone.timeDiff * 1000)
+				if self.SafeZone.timeDiff then
+					self.Lag:SetFormattedText("%d ms", self.SafeZone.timeDiff * 1000)
+				end
 			end
 		else
 			self.Time:SetFormattedText('%.1f | %.1f', duration, self.casting and self.max + self.delay or self.max - self.delay)
@@ -97,10 +99,13 @@ cast.PostCastStart = function(self, unit, name, rank, text)
 	self:SetStatusBarColor(unpack(self.casting and self.CastingColor or self.ChannelingColor))
 	if unit == "player" then
 		local sf = self.SafeZone
-		sf.timeDiff = GetTime() - sf.sendTime
+		if not sf.sendTime == nil then
+			sf.timeDiff = GetTime() - sf.sendTime
 		sf.timeDiff = sf.timeDiff > self.max and self.max or sf.timeDiff
 		sf:SetWidth(self:GetWidth() * sf.timeDiff / self.max)
 		sf:Show()
+		end
+		
 		if self.casting then
 			cast.setBarTicks(self, 0)
 		else

@@ -2,7 +2,7 @@
   
   local cfg = ns.cfg
   local lib = ns.lib
-  
+
 
   -----------------------------
   -- STYLE FUNCTIONS
@@ -60,6 +60,8 @@ local UnitSpecific = {
 		if cfg.showShardbar then lib.addShards(self) end
 		if cfg.showEclipsebar then lib.addEclipseBar(self) end
 		if cfg.showShadoworbsbar then lib.addShadoworbs(self) end
+		
+		self:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED", cfg.updateSpec)
 
 	end,
 	
@@ -77,6 +79,7 @@ local UnitSpecific = {
 		lib.addHighlight(self)
 		lib.addPowerBar(self)
 		lib.addPortrait(self)
+
 		self.Portrait.PostUpdate = lib.PortraitPostUpdate
 		lib.addRaidMark(self)
 		lib.addInfoIcons(self)
@@ -101,6 +104,8 @@ local UnitSpecific = {
 		if cfg.targetDebuffs then lib.addDebuffs(self) end
 		if cfg.showComboPoints then lib.addCPoints(self) end
 		lib.addHealPred(self)
+		lib.addAltPowerBar(self)
+		lib.addAltPowerBarString(self)
 	end,
 	
 	focus = function(self, ...)
@@ -255,23 +260,28 @@ local UnitSpecific = {
 		
 
 		--style specific stuff
-		self.colors.health = { r=.1, g=.1, b=.1, a=.9 }
+		self.colors.health = { r=.4, g=.4, b=.4, a=1 }
 		self.Health.colorHealth = true
 		self.Health.bg.multiplier = 0.2
 		self.Power.colorClass = true
 		self.Power.bg.multiplier = 0.35
 		
-		lib.addInfoIcons(self)
+		--lib.addInfoIcons(self)
 		lib.CreateTargetBorder(self)
 		--lib.CreateThreatBorder(self)
 		lib.addHealPred(self)
 		lib.addAuraWatch(self)
 		lib.addRaidDebuffs(self)
 		self.Health.PostUpdate = lib.PostUpdateRaidFrame
+		self.Power.PostUpdate = lib.PostUpdateRaidFramePower
+		--self:RegisterEvent('UNIT_CONNECTION',lib.PostUpdateRaidFrame)
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', lib.ChangedTarget)
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', lib.ChangedTarget)
 		--self:RegisterEvent("UNIT_THREAT_LIST_UPDATE", lib.UpdateThreat)
 		--self:RegisterEvent("UNIT_THREAT_SITUATION_UPDATE", lib.UpdateThreat)
+		
+		--lib.updateRaidFramePosition(raid)
+		--raid:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', lib.updateRaidFramePosition)
 	end,
 }
 
@@ -398,12 +408,13 @@ oUF:Factory(function(self)
 		header:SetScale(cfg.raidscale)
 		raid[i] = header
 	end
+
 end)
 
 oUF:RegisterStyle("oUF_BossBars", CreateUnitFrame)
 
 oUF:SetActiveStyle("oUF_BossBars")
-local boss1 = oUF:Spawn("player", "oUF_Boss1")
+local boss1 = oUF:Spawn("boss1", "oUF_Boss1")
 boss1:SetPoint("TOPLEFT", UIParent, "LEFT", cfg.bossX, cfg.bossY)
 local boss2 = oUF:Spawn("boss2", "oUF_Boss2")
 boss2:SetPoint("TOPLEFT", UIParent, "LEFT", cfg.bossX, cfg.bossY+75)

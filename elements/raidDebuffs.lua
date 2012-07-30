@@ -3,6 +3,23 @@ local cfg = ns.cfg
 local lib = ns.lib
 local oUF = ns.oUF or oUF
 
+local candispell = {
+	Magic = {
+		["Holy"] = true,
+		["Mistweaver"] = true,
+	},
+	Curse = {
+		
+	},
+	Disease = {
+		["Mistweaver"] = true,
+	},
+	Poison = {
+		["Mistweaver"] = true,
+	}
+}
+
+local border
 local backdrop_tab = { 
 	bgFile = cfg.backdrop_texture, 
 	edgeFile = cfg.backdrop_edge_texture,
@@ -16,10 +33,10 @@ local backdrop_tab = {
 		bottom = 3,
 	},
 }
-local gen_backdrop = function(f)
+local gen_backdrop = function(f,r,g,b)
 	f:SetBackdrop(backdrop_tab);
-	f:SetBackdropColor(0,0,0,1)
-	f:SetBackdropBorderColor(0,0,0,0.8)
+	f:SetBackdropColor(r,g,b,1)
+	f:SetBackdropBorderColor(r,g,b,0.8)
 end
 
 local createAuraIcon = function(debuffs)
@@ -36,11 +53,11 @@ local createAuraIcon = function(debuffs)
 	icon:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",1.3,-1.3)
 	icon:SetTexCoord(.15, .8, .15, .8)
 	
-	local h = CreateFrame("Frame", nil, button)
-	h:SetFrameLevel(4)
-	h:SetPoint("TOPLEFT",-5,5)
-	h:SetPoint("BOTTOMRIGHT",5,-5)
-	gen_backdrop(h)
+	border = CreateFrame("Frame", nil, button)
+	border:SetFrameLevel(4)
+	border:SetPoint("TOPLEFT",-7,6)
+	border:SetPoint("BOTTOMRIGHT",6,-7)
+	gen_backdrop(border,0,0,0)
 	
 	
 	local count = button:CreateFontString(nil, "OVERLAY")
@@ -50,10 +67,10 @@ local createAuraIcon = function(debuffs)
 	count:SetPoint("LEFT", button, "BOTTOM", 3, 2)
 
 	local overlay = button:CreateTexture(nil, "OVERLAY")
-	overlay:SetTexture(cfg.debuffBorder)
-	overlay:SetPoint("TOPLEFT", button, "TOPLEFT", -2, 2)
+	overlay:SetTexture(cfg.debuff_border_texture)
+	overlay:SetPoint("TOPLEFT", button, "TOPLEFT", -3, 2)
 	overlay:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
-	overlay:SetTexCoord(0.03, 0.97, 0.03, 0.97)
+	overlay:SetTexCoord(0.03, 0.97, 0.03, 0.99)
 	button.overlay = overlay
 	
 	button:SetPoint("BOTTOMLEFT", debuffs, "BOTTOMLEFT")
@@ -69,7 +86,7 @@ end
 local updateDebuff = function(icon, texture, count, dtype, duration, timeLeft)
 	local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
 
-	icon.overlay:SetVertexColor(color.r, color.g, color.b)
+	icon.overlay:SetVertexColor(color.r,color.g,color.b)
 	icon.overlay:Show()
 
 	icon.icon:SetTexture(texture)
@@ -81,11 +98,19 @@ local updateIcon = function(unit, debuffs)
 	local hide = true
 	local index = 1
 	while true do
+		--local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, 'HARMFUL')
 		local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, 'HARMFUL')
 		if not name then break end
 		
 		local icon = debuffs.button
 		local show = debuffs.CustomFilter(debuffs, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID)
+		
+		if not show then
+			if dtype and candispell[dtype][cfg.spec] then
+				show = true
+				icon.priority = 5
+			end
+		end
 		
 		if(show) then
 			if not cur then
@@ -120,8 +145,8 @@ end
 local Enable = function(self)
 	if(self.raidDebuffs) then
 		createAuraIcon(self.raidDebuffs)
+		cfg.updateSpec()
 		self:RegisterEvent("UNIT_AURA", Update)
-
 		return true
 	end
 end
@@ -129,6 +154,7 @@ end
 local Disable = function(self)
 	if(self.raidDebuffs) then
 		self:UnregisterEvent("UNIT_AURA", Update)
+		--self:UnregisterEvent("PLAYER_SPECIALIZATION_CHANGED")
 	end
 end
 
