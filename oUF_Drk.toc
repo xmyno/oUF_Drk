@@ -11,6 +11,7 @@ cfg.lua
 tags.lua
 castbar.lua
 elements\raidDebuffs.lua
+elements\oUF_WarlockSpecBars.lua
 lib.lua
 core.lua
 elements\Indicators.lua

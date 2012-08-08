@@ -1170,9 +1170,58 @@ end
 -- SoulShard bar
 
 lib.addShards = function(self)
---[[	
-if playerClass ~= "WARLOCK" then return end
+
+	if playerClass ~= "WARLOCK" then return end
 	
+	local wb = CreateFrame("Frame", "TukuiWarlockSpecBars", self)
+	wb:SetPoint("CENTER", self.Health, "TOP", 0, 0)
+	wb:SetWidth(self.Health:GetWidth()/2+50)
+	wb:SetHeight(5)
+	
+	--wb:SetBackdrop({
+	--  bgFile = texture, 
+	--  edgeFile = C.media.blank, 
+	--  tile = false, tileSize = 0, edgeSize = 1, 
+	--  insets = { left = -1, right = -1, top = -1, bottom = -1}
+	--})
+	--wb:SetBackdropColor(0,0,0)
+	--wb:SetBackdropBorderColor(unpack(C.media.backdropcolor))
+	
+	for i = 1, 4 do
+		wb[i] = CreateFrame("StatusBar", "TukuiWarlockSpecBars"..i, wb)
+		wb[i]:SetHeight(5)
+		wb[i]:SetStatusBarTexture(cfg.statusbar_texture)
+		wb[i]:SetStatusBarColor(.86,.22,1)
+		wb[i]:SetFrameLevel(11)
+		wb[i].bg = wb[i]:CreateTexture(nil,"BORDER")
+		wb[i].bg:SetTexture(cfg.statusbar_texture)
+		wb[i].bg:SetVertexColor(0,0,0)
+		wb[i].bg:SetPoint("TOPLEFT",wb[i],"TOPLEFT",0,0)
+		wb[i].bg:SetPoint("BOTTOMRIGHT",wb[i],"BOTTOMRIGHT",0,0)
+		wb[i].bg.multiplier = .3
+		
+		local h = CreateFrame("Frame",nil,wb[i])
+		h:SetFrameLevel(10)
+		h:SetPoint("TOPLEFT",-3,3)
+		h:SetPoint("BOTTOMRIGHT",3,-3)
+		lib.gen_power_backdrop(h)
+		
+		if i == 1 then
+			wb[i]:SetPoint("LEFT", wb, "LEFT", 1, 0)
+		else
+			wb[i]:SetPoint("LEFT", wb[i-1], "RIGHT", 2, 0)
+		end
+	end
+	
+	self.WarlockSpecBars = wb
+end
+	
+	
+	
+	
+	
+	
+--[[
 	self.SoulShards = CreateFrame("Frame", nil, self)
 	self.SoulShards:SetPoint('TOPLEFT', self.Power, 'BOTTOMLEFT', -1, -3)
 	self.SoulShards:SetHeight(4)
@@ -1205,7 +1254,7 @@ if playerClass ~= "WARLOCK" then return end
 
 	end
 --]]
-end
+
 
 
 -- HolyPowerbar
