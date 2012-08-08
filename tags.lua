@@ -381,11 +381,11 @@ end
 tags.Events["Warrior:Vigilance"] = 'UNIT_AURA'
 tags.Methods["Warrior:Vigilance"] = function(unit)
 	local name,_,_,_,_,_,timeLeft,_ = UnitAura(unit,GetSpellInfo(114030))
-	return "|cff33cc00"..getTime(timeLeft).."|r "
+	if name then return "|cff33cc00"..getTime(timeLeft).."|r " end
 end
 
 tags.Events["Warrior:Safeguard"] = 'UNIT_AURA'
 tags.Methods["Warrior:Safeguard"] = function(unit)
 	local name,_,_,_,_,_,timeLeft,_ = UnitAura(unit,GetSpellInfo(114029))
-	return "|cff33cc00"..getTime(timeLeft).."|r "
+	if name then return "|cff33cc00"..getTime(timeLeft).."|r " end
 end
