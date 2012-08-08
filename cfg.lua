@@ -49,6 +49,35 @@ local cfg = CreateFrame("Frame")
 	cfg.raidY = 190
 	cfg.raidScale = 1.0
 	
+	cfg.IndicatorList = {
+		["NUMBERS"] = {
+			--["DEATHKNIGHT"] 	= ,
+			["DRUID"]			= "[Druid:Lifebloom][Druid:Rejuv][Druid:Regrowth]",
+			--["HUNTER"]		= missdirect,
+			--MAGE				= ,
+			["MONK"]			= "[Monk:EnvelopingMist][Monk:RenewingMist]",
+			--["PALADIN"]		= ,
+			["PRIEST"]			= "[Priest:Renew][Priest:PowerWordShield]",
+			--["ROGUE"]			= tricks,
+			["SHAMAN"]			= "[Shaman:Riptide][Shaman:EarthShield]",
+			--["WARLOCK"]		= ,
+			["WARRIOR"]			= "[Warrior:Vigilance][Warrior:Safeguard]",
+		},
+		["SQUARE"] = {
+			--["DEATHKNIGHT"] 	= ,
+			--["DRUID"]			= ,
+			--["HUNTER"]		= ,
+			--MAGE				= ,
+			--["MONK"]			= "",
+			["PALADIN"]			= "[Paladin:Forbearance][Paladin:Beacon]",
+			--["PRIEST"]		= ,
+			--["ROGUE"]			= ,
+			--["SHAMAN"]		= ,
+			--["WARLOCK"]		= darkintent,
+			--["WARRIOR"]		= ,
+		},
+	}
+	
 	cfg.AuraWatchList = { -- List of all buffs you want to watch on raid frames, sorted by class
 		DEATHKNIGHT={
 		},
@@ -69,7 +98,7 @@ local cfg = CreateFrame("Frame")
 		
 		},
 		SHAMAN={
-			61295, -- Riptide
+			61295, --Riptide
 			974, --Earth Shield
 		},
 		WARLOCK={
@@ -85,7 +114,8 @@ local cfg = CreateFrame("Frame")
 			
 			--## MISTS OF PANDARIA ##--
 			--World Bosses
-				--Sha of Fear
+				--Sha of Anger
+					["Strange Aura"] = 10,
 					["Growing Anger"] = 8,
 					["Aggressive Behavior"] = 9,
 			--Heart of Fear
@@ -124,7 +154,8 @@ local cfg = CreateFrame("Frame")
 					["Arcane Resonance"] = 10,
 				--Gara'jal the Spiritbinder
 					["Frail Soul"] = 8,
-					["Voodoo Dolls"] = 9,
+					["Voodoo Doll"] = 9,
+					["Conduit to the Spirit Realm"] = 10,
 				--The Spirit Kings
 					["Maddening Shout"] = 8,
 					["Pillage"] = 9,
@@ -160,6 +191,7 @@ local cfg = CreateFrame("Frame")
 --media files
 cfg.statusbar_texture = "Interface\\AddOns\\oUF_Drk\\media\\Statusbar"
 cfg.powerbar_texture = "Interface\\AddOns\\oUF_Drk\\media\\Aluminium"
+cfg.raid_texture = "Interface\\AddOns\\oUF_Drk\\media\\Minimalist"
 cfg.highlight_texture = "Interface\\AddOns\\oUF_Drk\\media\\raidbg"
 cfg.portrait_texture = "Interface\\AddOns\\oUF_Drk\\media\\portrait"
 cfg.backdrop_texture = "Interface\\AddOns\\oUF_Drk\\media\\backdrop"
@@ -169,6 +201,8 @@ cfg.debuff_border_texture = "Interface\\AddOns\\oUF_Drk\\media\\iconborder"
 
 cfg.font = "Interface\\AddOns\\oUF_Drk\\media\\BigNoodleTitling.ttf"
 cfg.smallfont = "Interface\\AddOns\\oUF_Drk\\media\\semplice.ttf"
+cfg.raidfont = "Interface\\AddOns\\oUF_Drk\\media\\vibroceb.ttf"
+cfg.squarefont = "Interface\\AddOns\\oUF_Drk\\media\\squares.ttf"
 
 cfg.ptscale = 0.8 -- scale factor for player and target frames
 cfg.miscscale = 0.8 -- scale factor for all other frames

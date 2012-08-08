@@ -42,7 +42,7 @@ end
 local createAuraIcon = function(debuffs)
 	local button = CreateFrame("Button", nil, debuffs)
 	button:EnableMouse(false)
-	button:SetFrameLevel(30)
+	button:SetFrameLevel(5)
 	
 	button:SetSize(debuffs.size, debuffs.size)
 
@@ -61,16 +61,16 @@ local createAuraIcon = function(debuffs)
 	
 	
 	local count = button:CreateFontString(nil, "OVERLAY")
-	count:SetFont(cfg.smallfont,8,"OUTLINE")
+	count:SetFont(cfg.smallfont,9,"OUTLINE")
 	count:SetShadowColor(0,0,0,0.8)
 	count:SetShadowOffset(1,-1)
-	count:SetPoint("LEFT", button, "BOTTOM", 3, 2)
+	count:SetPoint("LEFT", button, "BOTTOM", 0, 4)
 
 	local overlay = button:CreateTexture(nil, "OVERLAY")
 	overlay:SetTexture(cfg.debuff_border_texture)
 	overlay:SetPoint("TOPLEFT", button, "TOPLEFT", -3, 2)
 	overlay:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
-	overlay:SetTexCoord(0.03, 0.97, 0.03, 0.99)
+	overlay:SetTexCoord(0.03, 0.97, 0.03, 0.97)
 	button.overlay = overlay
 	
 	button:SetPoint("BOTTOMLEFT", debuffs, "BOTTOMLEFT")

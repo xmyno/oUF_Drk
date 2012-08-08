@@ -247,7 +247,7 @@ local UnitSpecific = {
 		self.scale = cfg.raidscale
 		self.Range = {
 			insideAlpha = 1,
-			outsideAlpha = .4,
+			outsideAlpha = .6,
 		}
 
 		-- Generate Bars
@@ -261,18 +261,20 @@ local UnitSpecific = {
 		
 
 		--style specific stuff
-		self.colors.health = { r=.4, g=.4, b=.4, a=1 }
+		self.colors.health = { r=.12, g=.12, b=.12, a=1 }
 		self.Health.colorHealth = true
 		self.Health.bg.multiplier = 0.2
 		self.Power.colorClass = true
 		self.Power.bg.multiplier = 0.35
+		self.Power:SetAlpha(.9)
 		
 		--lib.addInfoIcons(self)
 		lib.CreateTargetBorder(self)
 		--lib.CreateThreatBorder(self)
 		lib.addHealPred(self)
-		lib.addAuraWatch(self)
+		--lib.addAuraWatch(self)
 		lib.addRaidDebuffs(self)
+		self.DrkIndicators = true
 		self.Health.PostUpdate = lib.PostUpdateRaidFrame
 		self.Power.PostUpdate = lib.PostUpdateRaidFramePower
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', lib.ChangedTarget)

@@ -111,9 +111,11 @@ lib.addHealthBar = function(f)
 		s:SetHeight(retVal(f,34,19,29))
 		s:SetWidth(f:GetWidth())
 		s:SetPoint("TOP",0,0)
-		s:SetStatusBarTexture(cfg.statusbar_texture)
 		if f.mystyle=="raid" then
-			s:SetStatusBarColor(.35,.35,.35,1)
+			s:SetStatusBarColor(.12,.12,.12,1)
+			s:SetStatusBarTexture(cfg.raid_texture)
+		else
+			s:SetStatusBarTexture(cfg.statusbar_texture)
 		end
 	end
 	s:GetStatusBarTexture():SetHorizTile(true)
@@ -134,7 +136,7 @@ lib.addHealthBar = function(f)
 	local b = s:CreateTexture(nil, "BACKGROUND")
 	b:SetTexture(cfg.statusbar_texture)
 	if f.mystyle == "raid" then
-		b:SetVertexColor(.03,.03,.03,1)
+		b:SetVertexColor(.4,.4,.4,1)
 	end
 	b:SetAllPoints(s)
 	f.Health = s
@@ -154,17 +156,17 @@ lib.addStrings = function(f)
 		f:Tag(name,"[name]")
 		f:Tag(hpval,"[drk:hp]")
 	else
-		local name = lib.gen_fontstring(f.Health, cfg.font, retVal(f,14,12,13), retVal(f,"NONE","NONE","OUTLINE"))
-		name:SetPoint("LEFT", f.Health, "TOPLEFT", retVal(f,5,3,2), retVal(f,-10,-10,-7))
+		local name = lib.gen_fontstring(f.Health, retVal(f,cfg.font,cfg.font,cfg.raidfont), retVal(f,14,12,12), retVal(f,"NONE","NONE","NONE"))
+		name:SetPoint("LEFT", f.Health, "TOPLEFT", retVal(f,5,3,1), retVal(f,-10,-10,-6))
 		name:SetJustifyH("LEFT")
-		name.frequentUpdates = 0.1
+		name.frequentUpdates = true
 		local powerval = lib.gen_fontstring(f.Health, cfg.font, 14, "THINOUTLINE")
 		powerval:SetPoint("LEFT", f.Health, "BOTTOMRIGHT", 3, -16)
 		local hpval = lib.gen_fontstring(f.Health, cfg.font, retVal(f,14,12,13), retVal(f,"NONE","NONE","OUTLINE"))
-		hpval:SetPoint("RIGHT", f.Health, retVal(f,"TOPRIGHT","TOPRIGHT","BOTTOMRIGHT"), retVal(f,-3,-3,0), retVal(f,-10,-10,6))
+		hpval:SetPoint(retVal(f,"RIGHT","RIGHT","LEFT"), f.Health, retVal(f,"TOPRIGHT","TOPRIGHT","BOTTOMLEFT"), retVal(f,-3,-3,0), retVal(f,-10,-10,6))
 		--this will make the name go "..." when its too long
 		if f.mystyle == "raid" then
-			name:SetPoint("RIGHT", f, "RIGHT", -1, 0) --NYI
+			name:SetPoint("RIGHT", f, "RIGHT", -1, 0)
 		else
 			name:SetPoint("RIGHT", hpval, "LEFT", -2, 0)
 		end
@@ -174,7 +176,7 @@ lib.addStrings = function(f)
 			f:Tag(name, "[drk:level] [drk:color][name][drk:afkdnd]")
 			f:Tag(powerval, "[my:power]")
 		elseif f.mystyle == "raid" then
-			f:Tag(name, "[drk:color][name][drk:afkdnd]") --NYI
+			f:Tag(name, "[drk:color][name][drk:raidafkdnd]")
 		else
 			f:Tag(name, "[drk:color][name]")
 		end
@@ -413,7 +415,7 @@ end
 
 lib.addResurrectIcon = function(f)
 	local rezicon = f.Health:CreateTexture(nil,'OVERLAY')
-	rezicon:SetPoint('CENTER',f,'CENTER',0,0)
+	rezicon:SetPoint('CENTER',f,'CENTER',0,-3)
 	rezicon:SetSize(16,16)
 	f.ResurrectIcon = rezicon
 end
@@ -870,18 +872,14 @@ lib.PostUpdateRaidFrame = function(Health, unit, min, max)
 	local ghost = UnitIsGhost(unit)
 	local inrange = UnitInRange(unit)
 	
-	Health:SetStatusBarColor(.35,.35,.35,1)
+	Health:SetStatusBarColor(.12,.12,.12,1)
 	Health:SetAlpha(1)
 	
 	if dc or dead or ghost then
 		Health:SetValue(max)
 		
 		if dc then
-			if not inrange then
-			--Health:SetStatusBarColor(0,0,0,1)
-			--Health:SetValue(max)
-			Health:SetAlpha(.15)
-			end
+			Health:SetAlpha(.225)
 		elseif ghost then
 			--Health:SetStatusBarColor(.03,.03,.03,1)
 			Health:SetValue(0)
@@ -892,20 +890,20 @@ lib.PostUpdateRaidFrame = function(Health, unit, min, max)
 	else
 		Health:SetValue(min)
 		if(unit == 'vehicle') then
-			Health:SetStatusBarColor(143/255, 194/255, 32/255)
+			Health:SetStatusBarColor(143/255, 194/255, 52/255)
 		end
 	end
 end
 
 lib.PostUpdateRaidFramePower = function(Power, unit, min, max)
-	local disconnnected = not UnitIsConnected(unit)
+	local dc = not UnitIsConnected(unit)
 	local dead = UnitIsDead(unit)
 	local ghost = UnitIsGhost(unit)
 	
 	Power:SetAlpha(1)
 	
-	if disconnnected or dead or ghost then
-		if(disconnnected) then
+	if dc or dead or ghost then
+		if(dc) then
 			Power:SetAlpha(.3)
 		elseif(ghost) then
 			Power:SetAlpha(.3)
@@ -1370,7 +1368,7 @@ end
 
 
 -- Addons -------------------------------------------
---AuraWatch
+--[[AuraWatch
 local AWPostCreateIcon = function(AWatch,icon,spellID,name,self)
 	icon.cd:SetReverse()
 	local count = lib.gen_fontstring(icon,cfg.smallfont,10,"OUTLINE",0)
@@ -1402,8 +1400,7 @@ lib.addAuraWatch = function(self)
 		end
 		self.AuraWatch = auras
 end
-
- 
+]]
 lib.addRaidDebuffs = function(self)
 	local raid_debuffs = cfg.DebuffWatchList
 	
@@ -1436,11 +1433,11 @@ lib.addRaidDebuffs = function(self)
 
 
 	local debuffs = CreateFrame("Frame", nil, self)
-	debuffs:SetWidth(13)
-	debuffs:SetHeight(13)
+	debuffs:SetWidth(12)
+	debuffs:SetHeight(12)
 	debuffs:SetFrameLevel(7)
-	debuffs:SetPoint("CENTER", self, "CENTER", 0, 4)
-	debuffs.size = 13
+	debuffs:SetPoint("TOPRIGHT", self, "TOPRIGHT", -4, -4)
+	debuffs.size = 12
 	
 	debuffs.CustomFilter = CustomFilter
 	self.raidDebuffs = debuffs

@@ -93,6 +93,11 @@ tags.Methods["drk:afkdnd"] = function(unit)
 	return UnitIsAFK(unit) and "|cffCFCFCF <afk>|r" or UnitIsDND(unit) and "|cffCFCFCF <dnd>|r" or ""
 end
 
+tags.Events["drk:raidafkdnd"] = 'PLAYER_FLAGS_CHANGED'
+tags.Methods["drk:raidafkdnd"] = function(unit) 
+	return UnitIsAFK(unit) and "|cffCFCFCF AFK|r" or UnitIsDND(unit) and "|cffCFCFCF DND|r" or ""
+end
+
 tags.Events["drk:DDG"] = 'UNIT_HEALTH'
 tags.Methods["drk:DDG"] = function(u)
 	if UnitIsDead(u) then
@@ -257,4 +262,130 @@ tags.Methods["Drk:AltPowerBar"] = function(unit)
 	else
 		return ""
 	end
+end
+
+
+-- CLASS BUFF INDICATORS
+
+local GetTime = GetTime
+
+local numberize = function(val)
+	if val >= 1e6 then
+		return ("%.1fm"):format(val/1e6)
+	elseif val >= 1e3 then
+		return ("%.1fk"):format(val/1e3)
+	else
+		return ("%d"):format(val)
+	end
+end
+
+local getTime = function(expirationTime)
+    local expire = (expirationTime-GetTime())
+	local timeLeft = numberize(expire)
+    return timeLeft
+end
+
+
+tags.Events["Shaman:EarthShield"] = 'UNIT_AURA'
+tags.Methods["Shaman:EarthShield"] = function(unit)
+	local esCount = select(4, UnitAura(unit,GetSpellInfo(974)))
+	if esCount then
+		if esCount > 3 then 
+			return "|cff33cc00"..esCount.."|r "
+		else
+			return "|cffffcc00"..esCount.."|r "
+		end
+	end
+end
+
+tags.Events["Shaman:Riptide"] = 'UNIT_AURA'
+tags.Methods["Shaman:Riptide"] = function(unit)
+	local name,_,_,_,_,_,timeLeft,source = UnitAura(unit,GetSpellInfo(61295))
+	if source == "player" then return "|cff0099cc"..getTime(timeLeft).."|r " end
+end
+
+tags.Events["Priest:PowerWordShield"] = 'UNIT_AURA'
+tags.Methods["Priest:PowerWordShield"] = function(unit)
+	local name,_,_,_,_,_,timeLeft,source = UnitAura(unit,GetSpellInfo(17))
+	if name then
+		return "|cffffcc00"..getTime(timeLeft).."|r"
+	else
+		local name,_,_,_,_,_,timeLeft,source = UnitDebuff(unit,GetSpellInfo(6788))
+		if name then return "|cffaa0000"..getTime(timeLeft).."|r " end
+	end
+end
+
+tags.Events["Priest:Renew"] = 'UNIT_AURA'
+tags.Methods["Priest:Renew"] = function(unit)
+	local name,_,_,_,_,_,timeLeft,source = UnitAura(unit,GetSpellInfo(139))
+	if source == "player" then return "|cff33cc00"..getTime(timeLeft).."|r " end
+end
+
+tags.Events["Druid:Lifebloom"] = 'UNIT_AURA'
+tags.Methods["Druid:Lifebloom"] = function(unit)
+	local name,_,_,c,_,_,timeLeft,source = UnitAura(unit,GetSpellInfo(33763))
+	if source == "player" then
+		if c == 1 then
+			return "|cffcc0000"..getTime(timeLeft).."|r "
+		elseif c == 2 then
+			return "|cffff6314"..getTime(timeLeft).."|r "
+		elseif c == 3 then
+			return "|cffffcc00"..getTime(timeLeft).."|r "
+		end
+	end
+end
+
+tags.Events["Druid:Rejuv"] = 'UNIT_AURA'
+tags.Methods["Druid:Rejuv"] = function(unit)
+	local name,_,_,_,_,_,timeLeft,source = UnitAura(unit,GetSpellInfo(774))
+	if source == "player" then return "|cffd814ff"..getTime(timeLeft).."|r " end
+end
+
+tags.Events["Druid:Regrowth"] = 'UNIT_AURA'
+tags.Methods["Druid:Regrowth"] = function(unit)
+	local name,_,_,_,_,_,timeLeft,source = UnitAura(unit,GetSpellInfo(8936))
+	if source == "player" then return "|cff33cc00"..getTime(timeLeft).."|r " end
+end
+
+
+
+tags.Events["Paladin:Beacon"] = 'UNIT_AURA'
+tags.Methods["Paladin:Beacon"] = function(unit)
+	local name,_,_,_,_,_,_,source = UnitAura(unit,GetSpellInfo(53563))
+	if name then
+		if source == "player" then
+			return "|cffffff33M|r "
+		else
+			return "|cffffcc00M|r "
+		end
+	end
+end
+
+tags.Events["Paladin:Forbearance"] = 'UNIT_AURA'
+tags.Methods["Paladin:Forbearance"] = function(unit)
+	if UnitDebuff(unit,GetSpellInfo(25771)) then return "|cffaa0000M|r " end
+end
+
+tags.Events["Monk:EnvelopingMist"] = 'UNIT_AURA'
+tags.Methods["Monk:EnvelopingMist"] = function(unit)
+	local name,_,_,_,_,_,timeLeft,source = UnitAura(unit,GetSpellInfo(124682))
+	if source == "player" then return "|cff33cc00"..getTime(timeLeft).."|r " end
+end
+
+tags.Events["Monk:RenewingMist"] = 'UNIT_AURA'
+tags.Methods["Monk:RenewingMist"] = function(unit)
+	local name,_,_,_,_,_,timeLeft,source = UnitAura(unit,GetSpellInfo(119611))
+	if source == "player" then return "|cff0099cc"..getTime(timeLeft).."|r " end
+end
+
+tags.Events["Warrior:Vigilance"] = 'UNIT_AURA'
+tags.Methods["Warrior:Vigilance"] = function(unit)
+	local name,_,_,_,_,_,timeLeft,_ = UnitAura(unit,GetSpellInfo(114030))
+	return "|cff33cc00"..getTime(timeLeft).."|r "
+end
+
+tags.Events["Warrior:Safeguard"] = 'UNIT_AURA'
+tags.Methods["Warrior:Safeguard"] = function(unit)
+	local name,_,_,_,_,_,timeLeft,_ = UnitAura(unit,GetSpellInfo(114029))
+	return "|cff33cc00"..getTime(timeLeft).."|r "
 end
