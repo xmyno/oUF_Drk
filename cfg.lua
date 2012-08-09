@@ -39,9 +39,9 @@ local cfg = CreateFrame("Frame")
 	cfg.showComboPoints = true -- show Rogue Combo Points
 --castbar
 	cfg.Castbars = true -- use built-in castbars
-	cfg.castBarOnUnitframe = false
+	cfg.castBarOnUnitframe = true
 	cfg.castBarX = 0
-	cfg.castBarY = 800
+	cfg.castBarY = 700
 	cfg.castBarWidth = 300
 	cfg.castBarHeight = 30
 --raid&party frames
