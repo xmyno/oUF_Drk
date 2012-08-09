@@ -1,4 +1,4 @@
-## Interface: 50001
+## Interface: 50003
 ## Author: Drakull, xmyno
 ## Title: oUF_Drk Fanupdate
 ## Version: r2

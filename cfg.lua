@@ -37,13 +37,18 @@ local cfg = CreateFrame("Frame")
 	cfg.showHarmonybar = true -- show Monk Harmony bar
 	cfg.showShadoworbsbar = true -- show Shadow Priest Shadow Orbs bar
 	cfg.showComboPoints = true -- show Rogue Combo Points
-	
+--castbar
 	cfg.Castbars = true -- use built-in castbars
-	cfg.ShowIncHeals = true -- Show incoming heals in player and raid frames
+	cfg.castBarOnUnitframe = false
+	cfg.castBarX = 0
+	cfg.castBarY = 800
+	cfg.castBarWidth = 300
+	cfg.castBarHeight = 30
 --raid&party frames
 	cfg.ShowParty = true -- show party frames (shown as 5man raid)
 	cfg.ShowRaid = true -- show raid frames
 	cfg.RaidShowSolo = true -- show raid frames even when solo
+	cfg.ShowIncHeals = true -- Show incoming heals in player and raid frames
 	
 	cfg.raidX = -410
 	cfg.raidY = 190
@@ -61,7 +66,7 @@ local cfg = CreateFrame("Frame")
 			--["ROGUE"]			= tricks,
 			["SHAMAN"]			= "[Shaman:Riptide][Shaman:EarthShield]",
 			--["WARLOCK"]		= ,
-			["WARRIOR"]			= "[Warrior:Vigilance][Warrior:Safeguard]",
+			["WARRIOR"]			= "[Warrior:Vigilance]",
 		},
 		["SQUARE"] = {
 			--["DEATHKNIGHT"] 	= ,
@@ -115,7 +120,7 @@ local cfg = CreateFrame("Frame")
 			--## MISTS OF PANDARIA ##--
 			--World Bosses
 				--Sha of Anger
-					["Strange Aura"] = 10,
+					--["Strange Aura"] = 10,
 					["Growing Anger"] = 8,
 					["Aggressive Behavior"] = 9,
 			--Heart of Fear

@@ -474,8 +474,17 @@ end
 lib.addCastBar = function(f)
 	if not cfg.Castbars then return end
     local s = CreateFrame("StatusBar", "oUF_DrkCastbar"..f.mystyle, f)
-
-    if f.mystyle == "player" or f.mystyle == "target" then
+	if f.mystyle == "player" then
+		if cfg.castBarOnUnitframe then
+			s:SetPoint("TOPLEFT",f.Portrait,"TOPLEFT",20,.5)
+			s:SetHeight(f.Portrait:GetHeight()+1.5)
+			s:SetWidth(f:GetWidth()-37.45)
+		else
+			s:SetPoint("BOTTOM",UIParent,"BOTTOM",cfg.castBarX,cfg.castBarY)
+			s:SetHeight(cfg.castBarHeight)
+			s:SetWidth(cfg.castBarWidth)
+		end
+    elseif f.mystyle == "target" then
 		s:SetPoint("TOPLEFT",f.Portrait,"TOPLEFT",20,.5)
 		s:SetHeight(f.Portrait:GetHeight()+1.5)
 		s:SetWidth(f:GetWidth()-37.45)
@@ -525,7 +534,15 @@ lib.addCastBar = function(f)
     --icon
     local i = s:CreateTexture(nil, "ARTWORK")
    
-	if f.mystyle=='player' or f.mystyle=='target' then
+	if f.mystyle=='player' then
+		if cfg.castBarOnUnitframe then
+			i:SetPoint("RIGHT", s, "LEFT", 0, 0)
+			i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
+		else
+			i:SetPoint("RIGHT",s,"LEFT",-5,0)
+			i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
+		end
+	elseif f.mystyle=='target' then
 		i:SetPoint("RIGHT", s, "LEFT", 0, 0)
 		i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
 	else
