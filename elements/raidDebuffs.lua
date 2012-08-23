@@ -3,19 +3,39 @@ local cfg = ns.cfg
 local lib = ns.lib
 local oUF = ns.oUF or oUF
 
+local playerClass = select(2,UnitClass("player"))
 local candispell = {
 	Magic = {
-		["Holy"] = true,
-		["Mistweaver"] = true,
+		PRIEST = { ["Holy"] = true, ["Discpline"] = true, },
+		SHAMAN = { ["Restoration"] = true, },
+		PALADIN = { ["Holy"] = true, },
+		MAGE = { },
+		DRUID = { ["Restoration"] = true, },
+		MONK = { ["Mistweaver"] = true, },
 	},
 	Curse = {
-		
+		PRIEST = { },
+		SHAMAN = { ["Restoration"] = true, ["Enhancement"] = true, ["Elemental"] = true, },
+		PALADIN = { },
+		MAGE = { ["Frost"] = true, ["Fire"] = true, ["Arcane"] = true, },
+		DRUID = { ["Restoration"] = true, ["Guardian"] = true, ["Feral"] = true, ["Balance"] = true, },
+		MONK = { },
 	},
 	Disease = {
-		["Mistweaver"] = true,
+		PRIEST = { ["Holy"] = true, ["Discipline"] = true, ["Shadow"] = true, },
+		SHAMAN = { },
+		PALADIN = { ["Holy"] = true, ["Protection"] = true, ["Retribution"] = true, },
+		MAGE = { },
+		DRUID = { },
+		MONK = { ["Mistweaver"] = true, ["Brewmaster"] = true, ["Windwalker"] = true, },
 	},
 	Poison = {
-		["Mistweaver"] = true,
+		PRIEST = { },
+		SHAMAN = { },
+		PALADIN = { ["Holy"] = true, ["Protection"] = true, ["Retribution"] = true, },
+		MAGE = { },
+		DRUID = { ["Restoration"] = true, ["Guardian"] = true, ["Feral"] = true, ["Balance"] = true, },
+		MONK = { ["Mistweaver"] = true, ["Brewmaster"] = true, ["Windwalker"] = true, },
 	}
 }
 
@@ -106,7 +126,7 @@ local updateIcon = function(unit, debuffs)
 		local show = debuffs.CustomFilter(debuffs, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID)
 		
 		if not show then
-			if dtype and candispell[dtype][cfg.spec] then
+			if dtype and candispell[dtype][playerClass][cfg.spec] then
 				show = true
 				icon.priority = 5
 			end

@@ -766,11 +766,7 @@ lib.addDebuffs = function(f)
     b:SetHeight(b.size)
     b:SetWidth(f:GetWidth())
 	
-	if f.AltPowerBar then
-		b:SetPoint("TOPLEFT", f.AltPowerBar, "BOTTOMLEFT", .5, -5)
-	else
-		b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", .5, -5)
-	end
+	b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", .5, -5)
     b.initialAnchor = "TOPLEFT"
     b["growth-x"] = "RIGHT"
     b["growth-y"] = "DOWN"
@@ -907,7 +903,7 @@ lib.PostUpdateRaidFrame = function(Health, unit, min, max)
 	else
 		Health:SetValue(min)
 		if(unit == 'vehicle') then
-			Health:SetStatusBarColor(143/255, 194/255, 52/255)
+			Health:SetStatusBarColor(.12,.12,.12,1)
 		end
 	end
 end
@@ -983,8 +979,7 @@ lib.addEclipseBar = function(self)
 		EBText:SetText("")
 		EBText2:SetText("")
 	end
-	
-	
+		
 	--self:Tag(EBText, '[pereclipse]')
 	self.EclipseBar.PostUpdatePower = function(unit)
 
@@ -1029,120 +1024,41 @@ lib.addEclipseBar = function(self)
 
 end
 
---Monk harmony bar
-local chi
-local chibar
-local chinum
-local chipoints = {}
-
-local UpdateChi = function()
-	local chi = UnitPower("player",SPELL_POWER_LIGHT_FORCE)
-	local chimax = UnitPowerMax("player",SPELL_POWER_LIGHT_FORCE)
-	if chinum ~= chimax then
-		if chimax == 4 then
-			chipoints[5]:Hide()
-			for i = 1,4 do
-				chipoints[i]:SetWidth(chibar:GetWidth()/4-2)
-			end
-		elseif chimax == 5 then
-			chipoints[5]:Show()
-			for i = 1,5 do
-				chipoints[i]:SetWidth(chibar:GetWidth()/5-2)
-			end
-		end
-	end
-	chinum = chimax
-	for i = 1,chimax do
-		if i <= chi then
-			chipoints[i]:Show()
-		else
-			chipoints[i]:Hide()
-		end
-	end
-end
-
-local CreateChi = function()
-	chibar:RegisterEvent("UNIT_POWER")
-	chibar:RegisterEvent("UNIT_DISPLAYPOWER")
-	chibar:SetScript("OnEvent",UpdateChi)
-	
-	for i=1,5 do
-		chipoints[i] = CreateFrame("StatusBar","chipoints"..i,chibar)
-		chipoints[i]:SetHeight(5)
-		chipoints[i]:SetWidth(chibar:GetWidth()/5)
-		chipoints[i]:SetFrameLevel(11)
-		chipoints[i]:SetStatusBarTexture(cfg.statusbar_texture)
-		chipoints[i]:SetStatusBarColor(.9,.99,.9)
-		
-		local h = CreateFrame("Frame",nil,chipoints[i])
-		h:SetFrameLevel(10)
-		h:SetPoint("TOPLEFT",-3,3)
-		h:SetPoint("BOTTOMRIGHT",3,-3)
-		lib.gen_power_backdrop(h)
-	
-		if i==1 then
-			chipoints[i]:SetPoint("LEFT",chibar,"LEFT",1,0)
-		else
-			chipoints[i]:SetPoint("TOPLEFT",chipoints[i-1], "TOPRIGHT",2,0)
-		end
-		chipoints[i]:Hide()
-	end
-end
-
 lib.addHarmony = function(self)
 	if playerClass ~= "MONK" then return end
-	chi = SPELL_POWER_LIGHT_FORCE
-	local coloron = {.9, .9, .9, 1}
-	local coloroff = {.2, .2, .2, 1}
-
 	
-	chibar = CreateFrame("Frame",nil,self)
-	chibar:SetPoint("CENTER",self.Health,"TOP",0,0)
-	chibar:SetHeight(5)
-	chibar:SetWidth(self.Health:GetWidth()/2+75)
-	chibar:SetFrameLevel(11)
+	local mhb = CreateFrame("Frame", "MonkHarmonyBar", self)
+	mhb:SetPoint("CENTER", self.Health, "TOP", 0, 1)
+	mhb:SetWidth(self.Health:GetWidth()/2+75)
+	mhb:SetHeight(5)
+	mhb:SetFrameLevel(10)
 	
-
-	
-	chibar:RegisterEvent("PLAYER_ENTERING_WORLD")
-	chibar:SetScript("OnEvent", CreateChi)
-	
-	--[[	
-	self.Harmony = CreateFrame("Frame", nil, self)
-	self.Harmony:SetPoint('CENTER', self.Health, 'TOP', 0, 0)
-	self.Harmony:SetHeight(5)
-	self.Harmony:SetWidth(self.Health:GetWidth()/2+75)
-	
-	local maxChi = UnitPowerMax('player', SPELL_POWER_LIGHT_FORCE)
-	
-	for i = 1,maxChi do
-		self.Harmony[i] = CreateFrame("StatusBar", self:GetName().."_Harmony"..i, self)
-		self.Harmony[i]:SetHeight(5)
-		self.Harmony[i]:SetWidth(self.Harmony:GetWidth()/maxChi-2)
-		self.Harmony[i]:SetStatusBarTexture(cfg.statusbar_texture)
-		self.Harmony[i]:SetStatusBarColor(.90,.99,.90)
-		self.Harmony[i]:SetFrameLevel(11)
-		self.Harmony[i].bg = self.Harmony[i]:CreateTexture(nil, "BORDER")
-		self.Harmony[i].bg:SetTexture(cfg.statusbar_texture)
-		self.Harmony[i].bg:SetPoint("TOPLEFT", self.Harmony[i], "TOPLEFT", 0, 0)
-		self.Harmony[i].bg:SetPoint("BOTTOMRIGHT", self.Harmony[i], "BOTTOMRIGHT", 0, 0)
-		self.Harmony[i].bg.multiplier = 0.3
+	for i = 1, 5 do
+		mhb[i] = CreateFrame("StatusBar", "MonkHarmonyBar"..i, mhb)
+		mhb[i]:SetHeight(5)
+		mhb[i]:SetStatusBarTexture(cfg.statusbar_texture)
+		mhb[i]:SetStatusBarColor(.9,.99,.9)
+		mhb[i].bg = mhb[i]:CreateTexture(nil,"BORDER")
+		mhb[i].bg:SetTexture(cfg.statusbar_texture)
+		mhb[i].bg:SetVertexColor(0,0,0)
+		mhb[i].bg:SetPoint("TOPLEFT",mhb[i],"TOPLEFT",0,0)
+		mhb[i].bg:SetPoint("BOTTOMRIGHT",mhb[i],"BOTTOMRIGHT",0,0)
+		mhb[i].bg.multiplier = .3
 		
-		--helper backdrop
-		local h = CreateFrame("Frame", nil, self.Harmony[i])
-		h:SetFrameLevel(10)
+		local h = CreateFrame("Frame",nil,mhb[i])
+		h:SetFrameLevel(mhb:GetFrameLevel())
 		h:SetPoint("TOPLEFT",-3,3)
 		h:SetPoint("BOTTOMRIGHT",3,-3)
 		lib.gen_power_backdrop(h)
 		
-		if (i == 1) then
-			self.Harmony[i]:SetPoint('LEFT', self.Harmony, 'LEFT', 1, 0)
+		if i == 1 then
+			mhb[i]:SetPoint("LEFT", mhb, "LEFT", 1, 0)
 		else
-			self.Harmony[i]:SetPoint('TOPLEFT', self.Harmony[i-1], 'TOPRIGHT', 2, 0)
+			mhb[i]:SetPoint("LEFT", mhb[i-1], "RIGHT", 2, 0)
 		end
 	end
-	]]
-	--self.Harmony.Override = HarmonyOverride
+	
+	self.MonkHarmonyBar = mhb
 end
 
 --Shadow Orbs bar
@@ -1150,7 +1066,7 @@ lib.addShadoworbs = function(self)
 	if playerClass ~= "PRIEST" then return end
 	
 	self.ShadowOrbs = CreateFrame("Frame", nil, self)
-	self.ShadowOrbs:SetPoint('CENTER', self.Health, 'TOP', 0, 0)
+	self.ShadowOrbs:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
 	self.ShadowOrbs:SetHeight(5)
 	self.ShadowOrbs:SetWidth(self.Health:GetWidth()/2)
 	
@@ -1190,96 +1106,46 @@ lib.addShards = function(self)
 
 	if playerClass ~= "WARLOCK" then return end
 	
-	local wb = CreateFrame("Frame", "TukuiWarlockSpecBars", self)
-	wb:SetPoint("CENTER", self.Health, "TOP", 0, 0)
-	wb:SetWidth(self.Health:GetWidth()/2+50)
-	wb:SetHeight(5)
-	
-	--wb:SetBackdrop({
-	--  bgFile = texture, 
-	--  edgeFile = C.media.blank, 
-	--  tile = false, tileSize = 0, edgeSize = 1, 
-	--  insets = { left = -1, right = -1, top = -1, bottom = -1}
-	--})
-	--wb:SetBackdropColor(0,0,0)
-	--wb:SetBackdropBorderColor(unpack(C.media.backdropcolor))
+	local wsb = CreateFrame("Frame", "WarlockSpecBars", self)
+	wsb:SetPoint("CENTER", self.Health, "TOP", 0, 1)
+	wsb:SetWidth(self.Health:GetWidth()/2+50)
+	wsb:SetHeight(5)
+	wsb:SetFrameLevel(10)
 	
 	for i = 1, 4 do
-		wb[i] = CreateFrame("StatusBar", "TukuiWarlockSpecBars"..i, wb)
-		wb[i]:SetHeight(5)
-		wb[i]:SetStatusBarTexture(cfg.statusbar_texture)
-		wb[i]:SetStatusBarColor(.86,.22,1)
-		wb[i]:SetFrameLevel(11)
-		wb[i].bg = wb[i]:CreateTexture(nil,"BORDER")
-		wb[i].bg:SetTexture(cfg.statusbar_texture)
-		wb[i].bg:SetVertexColor(0,0,0)
-		wb[i].bg:SetPoint("TOPLEFT",wb[i],"TOPLEFT",0,0)
-		wb[i].bg:SetPoint("BOTTOMRIGHT",wb[i],"BOTTOMRIGHT",0,0)
-		wb[i].bg.multiplier = .3
+		wsb[i] = CreateFrame("StatusBar", "WarlockSpecBars"..i, wsb)
+		wsb[i]:SetHeight(5)
+		wsb[i]:SetStatusBarTexture(cfg.statusbar_texture)
+		wsb[i]:SetStatusBarColor(.86,.22,1)
+		wsb[i].bg = wsb[i]:CreateTexture(nil,"BORDER")
+		wsb[i].bg:SetTexture(cfg.statusbar_texture)
+		wsb[i].bg:SetVertexColor(0,0,0)
+		wsb[i].bg:SetPoint("TOPLEFT",wsb[i],"TOPLEFT",0,0)
+		wsb[i].bg:SetPoint("BOTTOMRIGHT",wsb[i],"BOTTOMRIGHT",0,0)
+		wsb[i].bg.multiplier = .3
 		
-		local h = CreateFrame("Frame",nil,wb[i])
+		local h = CreateFrame("Frame",nil,wsb[i])
 		h:SetFrameLevel(10)
 		h:SetPoint("TOPLEFT",-3,3)
 		h:SetPoint("BOTTOMRIGHT",3,-3)
 		lib.gen_power_backdrop(h)
 		
 		if i == 1 then
-			wb[i]:SetPoint("LEFT", wb, "LEFT", 1, 0)
+			wsb[i]:SetPoint("LEFT", wsb, "LEFT", 1, 0)
 		else
-			wb[i]:SetPoint("LEFT", wb[i-1], "RIGHT", 2, 0)
+			wsb[i]:SetPoint("LEFT", wsb[i-1], "RIGHT", 2, 0)
 		end
 	end
 	
-	self.WarlockSpecBars = wb
+	self.WarlockSpecBars = wsb
 end
 	
-	
-	
-	
-	
-	
---[[
-	self.SoulShards = CreateFrame("Frame", nil, self)
-	self.SoulShards:SetPoint('TOPLEFT', self.Power, 'BOTTOMLEFT', -1, -3)
-	self.SoulShards:SetHeight(4)
-	self.SoulShards:SetWidth(self.Health:GetWidth())
-		
-	for i = 1, 3 do
-		self.SoulShards[i] = CreateFrame("StatusBar", self:GetName().."_SoulShards"..i, self)
-		self.SoulShards[i]:SetHeight(4)
-		self.SoulShards[i]:SetWidth((self.Health:GetWidth() / 3)-1)
-		self.SoulShards[i]:SetStatusBarTexture(cfg.statusbar_texture)
-		self.SoulShards[i]:SetStatusBarColor(.86,.44, 1)
-		self.SoulShards[i]:SetFrameLevel(11)
-		self.SoulShards[i].bg = self.SoulShards[i]:CreateTexture(nil, "BORDER")
-		self.SoulShards[i].bg:SetTexture(cfg.statusbar_texture)
-		self.SoulShards[i].bg:SetPoint("TOPLEFT", self.SoulShards[i], "TOPLEFT", 0, 0)
-		self.SoulShards[i].bg:SetPoint("BOTTOMRIGHT", self.SoulShards[i], "BOTTOMRIGHT", 0, 0)
-		self.SoulShards[i].bg.multiplier = 0.3
-
-		local h = CreateFrame("Frame", nil, self.SoulShards[i])
-		h:SetFrameLevel(10)
-		h:SetPoint("TOPLEFT",-4,4)
-		h:SetPoint("BOTTOMRIGHT",4,-4)
-		lib.gen_backdrop(h)
-		
-		if (i == 1) then
-			self.SoulShards[i]:SetPoint('LEFT', self.SoulShards, 'LEFT', 1, 0)
-		else
-			self.SoulShards[i]:SetPoint('TOPLEFT', self.SoulShards[i-1], "TOPRIGHT", 2, 0)
-		end
-
-	end
---]]
-
-
-
 -- HolyPowerbar
 lib.addHolyPower = function(self)
 	if playerClass ~= "PALADIN" then return end
 	
 	self.HolyPower = CreateFrame("Frame", nil, self)
-	self.HolyPower:SetPoint('CENTER', self.Health, 'TOP', 0, 0)
+	self.HolyPower:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
 	self.HolyPower:SetHeight(5)
 	self.HolyPower:SetWidth(self.Health:GetWidth()/2+75)
 	
@@ -1316,7 +1182,7 @@ lib.addRunes = function(self)
 	if playerClass ~= "DEATHKNIGHT" then return end
 
 	self.Runes = CreateFrame("Frame", nil, self)
-	self.Runes:SetPoint('CENTER', self.Health, 'TOP', 0, 0)
+	self.Runes:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
 	self.Runes:SetHeight(5)
 	self.Runes:SetWidth(self.Health:GetWidth()-15)
 
@@ -1351,7 +1217,7 @@ end
 lib.addCPoints = function(self)
 	if (playerClass == "ROGUE" or playerClass == "DRUID") then
 		self.CPoints = CreateFrame("Frame", nil, self)
-		self.CPoints:SetPoint('CENTER', self.Health, 'TOP', 0, 0)
+		self.CPoints:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
 		self.CPoints:SetHeight(5)
 		self.CPoints:SetWidth(self.Health:GetWidth()/2+75)
 
