@@ -248,7 +248,7 @@ tags.Methods["drk:level"] = function(unit)
 	return str
 end
 
-tags.Events["Drk:AltPowerBar"] = 'UNIT_POWER'
+tags.Events["Drk:AltPowerBar"] = 'UNIT_POWER UNIT_DISPLAYPOWER'
 tags.Methods["Drk:AltPowerBar"] = function(unit)
 	local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX
 	local cur = UnitPower(unit, ALTERNATE_POWER_INDEX)

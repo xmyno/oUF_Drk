@@ -45,11 +45,12 @@ local cfg = CreateFrame("Frame")
 	cfg.castBarWidth = 300
 	cfg.castBarHeight = 30
 --raid&party frames
-	cfg.ShowParty = true -- show party frames (shown as 5man raid)
 	cfg.ShowRaid = true -- show raid frames
+	cfg.ShowParty = true -- show party frames (shown as 5man raid)
 	cfg.RaidShowSolo = true -- show raid frames even when solo
 	cfg.ShowIncHeals = true -- Show incoming heals in player and raid frames
 	
+	cfg.raidOrientationHorizontal = true
 	cfg.raidX = -410
 	cfg.raidY = 190
 	cfg.raidScale = 1.0
@@ -59,7 +60,7 @@ local cfg = CreateFrame("Frame")
 			--["DEATHKNIGHT"] 	= ,
 			["DRUID"]			= "[Druid:Lifebloom][Druid:Rejuv][Druid:Regrowth]",
 			--["HUNTER"]		= missdirect,
-			--MAGE				= ,
+			--["MAGE"]			= ,
 			["MONK"]			= "[Monk:EnvelopingMist][Monk:RenewingMist]",
 			--["PALADIN"]		= ,
 			["PRIEST"]			= "[Priest:Renew][Priest:PowerWordShield]",
@@ -72,7 +73,7 @@ local cfg = CreateFrame("Frame")
 			--["DEATHKNIGHT"] 	= ,
 			--["DRUID"]			= ,
 			--["HUNTER"]		= ,
-			--MAGE				= ,
+			--["MAGE"]			= ,
 			--["MONK"]			= "",
 			["PALADIN"]			= "[Paladin:Forbearance][Paladin:Beacon]",
 			--["PRIEST"]		= ,
@@ -82,45 +83,31 @@ local cfg = CreateFrame("Frame")
 			--["WARRIOR"]		= ,
 		},
 	}
-	
-	cfg.AuraWatchList = { -- List of all buffs you want to watch on raid frames, sorted by class
-		DEATHKNIGHT={
-		},
-		DRUID={
-		},
-		HUNTER={
-		},
-		MAGE={
-		},
-		MONK={
-		},
-		PALADIN={
-		
-		},
-		PRIEST={
-		},
-		ROGUE={
-		
-		},
-		SHAMAN={
-			61295, --Riptide
-			974, --Earth Shield
-		},
-		WARLOCK={
-		},
-		WARRIOR={
-			114030, --Vigilance
-		},
-	}
+
 	cfg.DebuffWatchList = {
 		debuffs = {
-			--?? USAGE: ["DEBUFF_NAME"] = PRIORITY, ??--
-			--?? PRIORITY -> 10: high, 9: medium, 8: low, dispellable debuffs have standard priority of 5. ??--
-			
+			--## USAGE: ["DEBUFF_NAME"] = PRIORITY, ##--
+			--## PRIORITY -> 10: high, 9: medium, 8: low, dispellable debuffs have standard priority of 5. ##--
+			--## CATACLYSM ##--
+			--Dragon Soul
+				--Warlord Zon'ozz
+					["Disrupting Shadows"] = 9,
+				--Yor'sahj the Unsleeping
+					["Deep Corruption"] = 9,
+				--Hagara the Stormbinder
+					["Frostflake"] = 9,
+				--Ultraxion
+					["Fading Light"] = 9,
+				--Spine of Deathwing
+					["Searing Plasma"] = 9,
+					["Blood Corruption: Death"] = 10,
+					["Blood Corruption: Earth"] = 10,
+				--Madness of Deathwing
+					["Corrupting Parasite"] = 9,
+					["Shrapnel"] = 9,
 			--## MISTS OF PANDARIA ##--
 			--World Bosses
 				--Sha of Anger
-					--["Strange Aura"] = 10,
 					["Growing Anger"] = 8,
 					["Aggressive Behavior"] = 9,
 			--Heart of Fear
@@ -186,11 +173,6 @@ local cfg = CreateFrame("Frame")
 					["Dread Spray"] = 8,
 		},
 	}
---cfg.RaidShowAllGroups = false -- show raid groups 6, 7 and 8 (more than 25man raid)
---cfg.RCheckIcon = false -- show raid check icon
---other stuff
-
-	
 	
 	
 --media files
@@ -218,7 +200,7 @@ cfg.updateSpec = function()
 	local activespec = GetSpecialization()
 	if activespec then
 		id, name, desc, icon, bg, role = GetSpecializationInfo(activespec)
-		spec = name
+		cfg.spec = name
 	end
 end
 

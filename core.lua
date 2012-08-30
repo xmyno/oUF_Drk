@@ -366,55 +366,66 @@ oUF:Factory(function(self)
 	self:Spawn('focus'):SetPoint("BOTTOMRIGHT",oUF_drkPlayer,"TOPRIGHT", 0, 7)
 	self:Spawn('focustarget'):SetPoint("BOTTOMLEFT",oUF_drkTarget,"TOPLEFT", 0, 7)
 	
-	local soloraid
-	if cfg.RaidShowSolo then
-		soloraid = "custom show"
-	else
-		soloraid = "raid"
-	end
-		
-	self:SetActiveStyle('drkGroup')
-	local raid = {}
-	for i = 1, 5 do
-		local header = oUF:SpawnHeader(
-		  "drkGroup"..i,
-		  nil,
-		  soloraid,
-		  "showRaid",           true,
-		  "point",              "TOP",
-		  "startingIndex",		1,
-		  "yOffset",            -5,
-		  "xoffset",            8,
-		  "columnSpacing",      7,
-		  "groupFilter",        tostring(i),
-		  "groupBy",            "GROUP",
-		  "groupingOrder",      "1,2,3,4,5",
-		  "sortMethod",         "NAME",
-		  "columnAnchorPoint",  "RIGHT",
-		  "maxColumns",         5,
-		  "unitsPerColumn",     5,
-		  "oUF-initialConfigFunction", [[
-			self:SetHeight(32)
-			self:SetWidth(77)
-		  ]]
-		)
-		
-		if i == 1 then
-			header:SetAttribute("showSolo", true)
-			header:SetAttribute("showPlayer", true) 
-			header:SetAttribute("showParty", true)
-			header:SetPoint("TOPLEFT",UIParent,"BOTTOMRIGHT",cfg.raidX,cfg.raidY)
+	-- Raid Frames
+	if cfg.ShowRaid then
+		local soloraid,point
+		if cfg.RaidShowSolo then
+			soloraid = "custom show"
 		else
-			header:SetPoint("TOPLEFT",raid[i-1],"TOPRIGHT",4,0)
+			soloraid = "raid"
 		end
-		header:SetScale(cfg.raidScale)
-		raid[i] = header
+		if cfg.raidOrientationHorizontal then
+			point = "LEFT"
+		else
+			point = "TOP"
+		end
+			
+		self:SetActiveStyle('drkGroup')
+		local raid = {}
+		for i = 1, 5 do
+			local header = oUF:SpawnHeader(
+			  "drkGroup"..i,
+			  nil,
+			  soloraid,
+			  "showRaid",           true,
+			  "point",              point,
+			  "startingIndex",		1,
+			  "yOffset",            -5,
+			  "xoffset",            4,
+			  "columnSpacing",      7,
+			  "groupFilter",        tostring(i),
+			  "groupBy",            "GROUP",
+			  "groupingOrder",      "1,2,3,4,5",
+			  "sortMethod",         "NAME",
+			  "columnAnchorPoint",  "RIGHT",
+			  "maxColumns",         5,
+			  "unitsPerColumn",     5,
+			  "oUF-initialConfigFunction", [[
+				self:SetHeight(32)
+				self:SetWidth(77)
+			  ]]
+			)
+			
+			if i == 1 then
+				header:SetAttribute("showSolo", true)
+				header:SetAttribute("showPlayer", true) 
+				header:SetAttribute("showParty", true)
+				header:SetPoint("TOPLEFT",UIParent,"BOTTOMRIGHT",cfg.raidX,cfg.raidY)
+			else
+				if cfg.raidOrientationHorizontal then
+					header:SetPoint("TOPLEFT",raid[i-1],"BOTTOMLEFT",0,-4)
+				else
+					header:SetPoint("TOPLEFT",raid[i-1],"TOPRIGHT",4,0)
+				end
+			end
+			header:SetScale(cfg.raidScale)
+			raid[i] = header
+		end
 	end
-
 end)
 
+-- Boss Frames
 oUF:RegisterStyle("oUF_BossBars", CreateUnitFrame)
-
 oUF:SetActiveStyle("oUF_BossBars")
 local boss1 = oUF:Spawn("boss1", "oUF_Boss1")
 boss1:SetPoint("TOPLEFT", UIParent, "LEFT", cfg.bossX, cfg.bossY)
@@ -426,4 +437,4 @@ local boss4 = oUF:Spawn("boss4", "oUF_Boss4")
 boss4:SetPoint("TOPLEFT", UIParent, "LEFT", cfg.bossX, cfg.bossY+225)
 
 
---oUF:DisableBlizzard('party')
+oUF:DisableBlizzard('party')

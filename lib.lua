@@ -161,7 +161,7 @@ lib.addStrings = function(f)
 		name:SetJustifyH("LEFT")
 		name.frequentUpdates = true
 		local powerval = lib.gen_fontstring(f.Health, cfg.font, 14, "THINOUTLINE")
-		powerval:SetPoint("LEFT", f.Health, "BOTTOMRIGHT", 3, -16)
+		powerval:SetPoint("RIGHT", f.Health, "BOTTOMRIGHT", 3, -16)
 		local hpval = lib.gen_fontstring(f.Health, cfg.font, retVal(f,14,12,13), retVal(f,"NONE","NONE","OUTLINE"))
 		hpval:SetPoint(retVal(f,"RIGHT","RIGHT","LEFT"), f.Health, retVal(f,"TOPRIGHT","TOPRIGHT","BOTTOMLEFT"), retVal(f,-3,-3,0), retVal(f,-10,-10,6))
 		--this will make the name go "..." when its too long
@@ -183,6 +183,7 @@ lib.addStrings = function(f)
 		f:Tag(hpval, retVal(f,"[drk:hp]","[drk:hp]","[drk:raidhp]"))
 	end
 end
+
 
 --gen powerbar func
 lib.addPowerBar = function(f)
@@ -629,7 +630,8 @@ local myPostCreateIcon = function(self, button)
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
 
-	button.icon:SetTexCoord(.07, .93, .07, .93)
+	button.icon:SetTexCoord(.04, .96, .04, .96)
+	button.icon:ClearAllPoints()
 	button.icon:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
 	button.icon:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
 	button.overlay:SetTexture(border)
@@ -646,7 +648,7 @@ local myPostCreateIcon = function(self, button)
 	button.count:ClearAllPoints()
 	button.count:SetPoint("TOPRIGHT", button, 2, 2)
 	button.count:SetVertexColor(1,1,1)	
-	
+		
 	--helper
 	local h = CreateFrame("Frame", nil, button)
 	h:SetFrameLevel(0)
@@ -677,8 +679,8 @@ local myPostUpdateIcon = function(self, unit, icon, index, offset, filter, isDeb
 				icon.icon:SetDesaturated(false)                 
 			elseif(not UnitPlayerControlled(unit)) then -- If Unit is Player Controlled don't desaturate debuffs
 				icon:SetBackdropColor(0, 0, 0)
-				icon.overlay:SetVertexColor(0.3, 0.3, 0.3)      
-				icon.icon:SetDesaturated(true)  
+				icon.overlay:SetVertexColor(0.3, 0.3, 0.3)
+				icon.icon:SetDesaturated(true)
 			end
 		end
 	end
@@ -767,12 +769,14 @@ lib.addDebuffs = function(f)
     b:SetWidth(f:GetWidth())
 	
 	b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", .5, -5)
-    b.initialAnchor = "TOPLEFT"
-    b["growth-x"] = "RIGHT"
+    --b.initialAnchor = "TOPLEFT"
+    b.initialAnchor = "TOPRIGHT"
+    b["growth-x"] = "LEFT"
     b["growth-y"] = "DOWN"
     b.PostCreateIcon = myPostCreateIcon
     b.PostUpdateIcon = myPostUpdateIcon
-
+	b:SetFrameLevel(1)
+	
     f.Debuffs = b
 end
   
@@ -866,6 +870,7 @@ end
     f.Debuffs = b
 end
 ]]
+
 
 -- portrait update
 lib.PortraitPostUpdate = function(element, unit)

@@ -2,6 +2,7 @@ local _, ns = ...
 local cfg = ns.cfg
 local lib = ns.lib
 local oUF = ns.oUF or oUF
+--local rd = CreateFrame("Frame")
 
 local playerClass = select(2,UnitClass("player"))
 local candispell = {
@@ -71,7 +72,7 @@ local createAuraIcon = function(debuffs)
 	--icon:SetAllPoints(button)
 	icon:SetPoint("TOPLEFT",button,"TOPLEFT",-1,1)
 	icon:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",1.3,-1.3)
-	icon:SetTexCoord(.15, .8, .15, .8)
+	icon:SetTexCoord(.05, .95, .05, .95)
 	
 	border = CreateFrame("Frame", nil, button)
 	border:SetFrameLevel(4)
@@ -126,7 +127,7 @@ local updateIcon = function(unit, debuffs)
 		local show = debuffs.CustomFilter(debuffs, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID)
 		
 		if not show then
-			if dtype and candispell[dtype][playerClass][cfg.spec] then
+			if dtype and candispell[dtype][playerClass] and candispell[dtype][playerClass][cfg.spec] then
 				show = true
 				icon.priority = 5
 			end
