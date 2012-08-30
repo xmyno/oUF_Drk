@@ -631,7 +631,6 @@ local myPostCreateIcon = function(self, button)
 	button.cd.noCooldownCount = true
 
 	button.icon:SetTexCoord(.04, .96, .04, .96)
-	button.icon:ClearAllPoints()
 	button.icon:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
 	button.icon:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
 	button.overlay:SetTexture(border)

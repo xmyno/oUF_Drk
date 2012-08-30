@@ -50,7 +50,7 @@ local cfg = CreateFrame("Frame")
 	cfg.RaidShowSolo = true -- show raid frames even when solo
 	cfg.ShowIncHeals = true -- Show incoming heals in player and raid frames
 	
-	cfg.raidOrientationHorizontal = true
+	cfg.raidOrientationHorizontal = false
 	cfg.raidX = -410
 	cfg.raidY = 190
 	cfg.raidScale = 1.0
