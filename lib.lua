@@ -476,19 +476,25 @@ lib.addCastBar = function(f)
 	if not cfg.Castbars then return end
     local s = CreateFrame("StatusBar", "oUF_DrkCastbar"..f.mystyle, f)
 	if f.mystyle == "player" then
-		if cfg.castBarOnUnitframe then
+		if cfg.playerCastBarOnUnitframe then
 			s:SetPoint("TOPLEFT",f.Portrait,"TOPLEFT",20,.5)
 			s:SetHeight(f.Portrait:GetHeight()+1.5)
 			s:SetWidth(f:GetWidth()-37.45)
 		else
-			s:SetPoint("BOTTOM",UIParent,"BOTTOM",cfg.castBarX,cfg.castBarY)
-			s:SetHeight(cfg.castBarHeight)
-			s:SetWidth(cfg.castBarWidth)
+			s:SetPoint("BOTTOM",UIParent,"BOTTOM",cfg.playerCastBarX,cfg.playerCastBarY)
+			s:SetHeight(cfg.playerCastBarHeight)
+			s:SetWidth(cfg.playerCastBarWidth)
 		end
     elseif f.mystyle == "target" then
-		s:SetPoint("TOPLEFT",f.Portrait,"TOPLEFT",20,.5)
-		s:SetHeight(f.Portrait:GetHeight()+1.5)
-		s:SetWidth(f:GetWidth()-37.45)
+		if cfg.targetCastBarOnUnitframe then
+			s:SetPoint("TOPLEFT",f.Portrait,"TOPLEFT",20,.5)
+			s:SetHeight(f.Portrait:GetHeight()+1.5)
+			s:SetWidth(f:GetWidth()-37.45)
+		else
+			s:SetPoint("BOTTOM",UIParent,"BOTTOM",cfg.targetCastBarX,cfg.targetCastBarY)
+			s:SetHeight(cfg.targetCastBarHeight)
+			s:SetWidth(cfg.targetCastBarWidth)
+		end
 	elseif f.mystyle=="boss" then
 		s:SetPoint("TOP",f.Power,"TOP",13,0)
 		s:SetHeight(20)
@@ -536,7 +542,7 @@ lib.addCastBar = function(f)
     local i = s:CreateTexture(nil, "ARTWORK")
    
 	if f.mystyle=='player' then
-		if cfg.castBarOnUnitframe then
+		if cfg.playerCastBarOnUnitframe then
 			i:SetPoint("RIGHT", s, "LEFT", 0, 0)
 			i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
 		else
@@ -544,8 +550,13 @@ lib.addCastBar = function(f)
 			i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
 		end
 	elseif f.mystyle=='target' then
-		i:SetPoint("RIGHT", s, "LEFT", 0, 0)
-		i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
+		if cfg.targetCastBarOnUnitframe then
+			i:SetPoint("RIGHT", s, "LEFT", 0, 0)
+			i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
+		else
+			i:SetPoint("RIGHT",s,"LEFT",-5,0)
+			i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
+		end
 	else
 		i:SetPoint("RIGHT",s,"LEFT",-4,0)
 		i:SetSize(s:GetHeight(),s:GetHeight())
@@ -768,8 +779,7 @@ lib.addDebuffs = function(f)
     b:SetWidth(f:GetWidth())
 	
 	b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", .5, -5)
-    --b.initialAnchor = "TOPLEFT"
-    b.initialAnchor = "TOPRIGHT"
+    b.initialAnchor = "TOPLEFT"
     b["growth-x"] = "LEFT"
     b["growth-y"] = "DOWN"
     b.PostCreateIcon = myPostCreateIcon

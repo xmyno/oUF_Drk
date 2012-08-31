@@ -39,11 +39,18 @@ local cfg = CreateFrame("Frame")
 	cfg.showComboPoints = true -- show Rogue Combo Points
 --castbar
 	cfg.Castbars = true -- use built-in castbars
-	cfg.castBarOnUnitframe = true
-	cfg.castBarX = 0
-	cfg.castBarY = 700
-	cfg.castBarWidth = 300
-	cfg.castBarHeight = 30
+	--player
+	cfg.playerCastBarOnUnitframe = true
+	cfg.playerCastBarX = 0
+	cfg.playerCastBarY = 200
+	cfg.playerCastBarWidth = 300
+	cfg.playerCastBarHeight = 30
+	--target
+	cfg.targetCastBarOnUnitframe = true
+	cfg.targetCastBarX = 0
+	cfg.targetCastBarY = 250
+	cfg.targetCastBarWidth = 200
+	cfg.targetCastBarHeight = 25	
 --raid&party frames
 	cfg.ShowRaid = true -- show raid frames
 	cfg.ShowParty = true -- show party frames (shown as 5man raid)
