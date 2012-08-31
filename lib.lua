@@ -877,7 +877,7 @@ lib.PortraitPostUpdate = function(element, unit)
 		element:Hide()
 	else
 		element:Show()
-		element:SetPortraitZoom(1)
+		--element:SetPortraitZoom(1)
 	end
 end
 
@@ -1153,7 +1153,9 @@ lib.addHolyPower = function(self)
 	self.HolyPower:SetHeight(5)
 	self.HolyPower:SetWidth(self.Health:GetWidth()/2+75)
 	
-	for i = 1, 5 do
+	local maxHolyPower = UnitPowerMax("player",SPELL_POWER_HOLY_POWER)
+	
+	for i = 1, maxHolyPower do
 		self.HolyPower[i] = CreateFrame("StatusBar", self:GetName().."_Holypower"..i, self)
 		self.HolyPower[i]:SetHeight(5)
 		self.HolyPower[i]:SetWidth((self.HolyPower:GetWidth()/5)-2)
