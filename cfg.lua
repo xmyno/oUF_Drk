@@ -204,11 +204,7 @@ cfg.miscscale = 0.8 -- scale factor for all other frames
 
 cfg.spec = nil
 cfg.updateSpec = function()
-	local activespec = GetSpecialization()
-	if activespec then
-		id, name, desc, icon, bg, role = GetSpecializationInfo(activespec)
-		cfg.spec = name
-	end
+	cfg.spec = GetSpecialization()
 end
 
 -----------------------------

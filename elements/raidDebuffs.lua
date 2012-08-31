@@ -7,36 +7,36 @@ local oUF = ns.oUF or oUF
 local playerClass = select(2,UnitClass("player"))
 local candispell = {
 	Magic = {
-		PRIEST = { ["Holy"] = true, ["Discpline"] = true, },
-		SHAMAN = { ["Restoration"] = true, },
-		PALADIN = { ["Holy"] = true, },
+		PRIEST = { [1] = true, [2] = true, },
+		SHAMAN = { [3] = true, },
+		PALADIN = { [1] = true, },
 		MAGE = { },
-		DRUID = { ["Restoration"] = true, },
-		MONK = { ["Mistweaver"] = true, },
+		DRUID = { [4] = true, },
+		MONK = { [2] = true, },
 	},
 	Curse = {
 		PRIEST = { },
-		SHAMAN = { ["Restoration"] = true, ["Enhancement"] = true, ["Elemental"] = true, },
+		SHAMAN = { [1] = true, [2] = true, [3] = true, },
 		PALADIN = { },
-		MAGE = { ["Frost"] = true, ["Fire"] = true, ["Arcane"] = true, },
-		DRUID = { ["Restoration"] = true, ["Guardian"] = true, ["Feral"] = true, ["Balance"] = true, },
+		MAGE = { [1] = true, [2] = true, [3] = true, },
+		DRUID = { [1] = true, [2] = true, [3] = true, [4] = true, },
 		MONK = { },
 	},
 	Disease = {
-		PRIEST = { ["Holy"] = true, ["Discipline"] = true, ["Shadow"] = true, },
+		PRIEST = { [1] = true, [2] = true, [3] = true, },
 		SHAMAN = { },
-		PALADIN = { ["Holy"] = true, ["Protection"] = true, ["Retribution"] = true, },
+		PALADIN = { [1] = true, [2] = true, [3] = true, },
 		MAGE = { },
 		DRUID = { },
-		MONK = { ["Mistweaver"] = true, ["Brewmaster"] = true, ["Windwalker"] = true, },
+		MONK = { [1] = true, [2] = true, [3] = true, },
 	},
 	Poison = {
 		PRIEST = { },
 		SHAMAN = { },
-		PALADIN = { ["Holy"] = true, ["Protection"] = true, ["Retribution"] = true, },
+		PALADIN = { [1] = true, [2] = true, [3] = true, },
 		MAGE = { },
-		DRUID = { ["Restoration"] = true, ["Guardian"] = true, ["Feral"] = true, ["Balance"] = true, },
-		MONK = { ["Mistweaver"] = true, ["Brewmaster"] = true, ["Windwalker"] = true, },
+		DRUID = { [1] = true, [2] = true, [3] = true, [4] = true, },
+		MONK = { [1] = true, [2] = true, [3] = true, },
 	}
 }
 
