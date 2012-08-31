@@ -80,7 +80,7 @@ local UnitSpecific = {
 		lib.addPowerBar(self)
 		lib.addPortrait(self)
 
-		self.Portrait.PostUpdate = lib.PortraitPostUpdate
+		--self.Portrait.PostUpdate = lib.PortraitPostUpdate
 		lib.addRaidMark(self)
 		lib.addInfoIcons(self)
 		lib.addPhaseIcon(self)
@@ -264,6 +264,7 @@ local UnitSpecific = {
 		self.colors.health = { r=.12, g=.12, b=.12, a=1 }
 		self.Health.colorHealth = true
 		self.Health.bg.multiplier = 0.2
+		self.Health.frequentUpdates = true
 		self.Power.colorClass = true
 		self.Power.bg.multiplier = 0.35
 		self.Power:SetAlpha(.9)
@@ -279,6 +280,7 @@ local UnitSpecific = {
 		self.Power.PostUpdate = lib.PostUpdateRaidFramePower
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', lib.ChangedTarget)
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', lib.ChangedTarget)
+		if not cfg.ShowTooltips then self:SetScript("OnEnter",function() GameTooltip:Hide() end) end
 		--self:RegisterEvent("UNIT_THREAT_LIST_UPDATE", lib.UpdateThreat)
 		--self:RegisterEvent("UNIT_THREAT_SITUATION_UPDATE", lib.UpdateThreat)
 		

@@ -347,16 +347,11 @@ lib.addInfoIcons = function(f)
 		f.Resting:SetTexCoord(0.09, 0.43, 0.08, 0.42)
 	end
     --LFDRole icon
-	if f.mystyle == 'player' then
+	if f.mystyle == 'player' or f.mystyle == 'target' then
 		f.LFDRole = h:CreateTexture(nil, 'OVERLAY')
 		f.LFDRole:SetSize(15,15)
 		f.LFDRole:SetAlpha(0.9)
 		f.LFDRole:SetPoint('BOTTOMLEFT', -6, -8)
-	elseif f.mystyle == 'target' then
-		f.LFDRole = h:CreateTexture(nil, 'OVERLAY')
-		f.LFDRole:SetSize(15,15)
-		f.LFDRole:SetAlpha(0.9)
-		f.LFDRole:SetPoint('BOTTOMRIGHT', 5, -8)
     elseif f.mystyle == 'raid' then 
 		f.LFDRole = f.Power:CreateTexture(nil, 'OVERLAY')
 		f.LFDRole:SetSize(12,12)
@@ -780,7 +775,7 @@ lib.addDebuffs = function(f)
 	
 	b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", .5, -5)
     b.initialAnchor = "TOPLEFT"
-    b["growth-x"] = "LEFT"
+    b["growth-x"] = "RIGHT"
     b["growth-y"] = "DOWN"
     b.PostCreateIcon = myPostCreateIcon
     b.PostUpdateIcon = myPostUpdateIcon
@@ -1286,30 +1281,28 @@ lib.addHealPred = function(self)
 	mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
 	mhpb:SetWidth(self:GetWidth())
 	mhpb:SetStatusBarTexture(cfg.statusbar_texture)
-	mhpb:SetStatusBarColor(0, 200/255, 0, 0.8)
-	mhpb:SetFrameLevel(2)
+	if self.mystyle == "raid" then
+		mhpb:SetStatusBarColor(0, 200/255, 0, 0.3)
+	else
+		mhpb:SetStatusBarColor(0, 200/255, 0, 0.8)
+	end
+	--mhpb:SetFrameLevel(2)
 
 	local ohpb = CreateFrame('StatusBar', nil, self.Health)
-	--if mhpb:GetStatusBarTexture()==nil then
-	--ohpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
-	--ohpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
-	--else
 	ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
 	ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
-	--end
 	ohpb:SetWidth(self:GetWidth())
 	ohpb:SetStatusBarTexture(cfg.statusbar_texture)
-	ohpb:SetStatusBarColor(0, 200/255, 0, 0.8)
-	ohpb:SetFrameLevel(2)
+	if self.mystyle == "raid" then
+		ohpb:SetStatusBarColor(0, 200/255, 0, 0.3)
+	else
+		ohpb:SetStatusBarColor(0, 200/255, 0, 0.8)
+	end
+	--ohpb:SetFrameLevel(2)
 
 	self.HealPrediction = {
-		-- status bar to show my incoming heals
 		myBar = mhpb,
-
-		-- status bar to show other peoples incoming heals
 		otherBar = ohpb,
-
-		-- amount of overflow past the end of the health bar
 		maxOverflow = 1.01,
 	}
 end
