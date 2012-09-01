@@ -266,16 +266,16 @@ local UnitSpecific = {
 		self.Health.bg.multiplier = 0.2
 		self.Health.frequentUpdates = true
 		self.Power.colorClass = true
-		self.Power.bg.multiplier = 0.35
+		self.Power.bg.multiplier = .35
 		self.Power:SetAlpha(.9)
 		
 		--lib.addInfoIcons(self)
 		lib.CreateTargetBorder(self)
 		--lib.CreateThreatBorder(self)
 		lib.addHealPred(self)
-		--lib.addAuraWatch(self)
 		lib.addRaidDebuffs(self)
-		self.DrkIndicators = true
+		self.DrkIndicators = cfg.Indicators and true or false
+		self.ShowThreatIndicator = cfg.ThreatIndicator and true or false
 		self.Health.PostUpdate = lib.PostUpdateRaidFrame
 		self.Power.PostUpdate = lib.PostUpdateRaidFramePower
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', lib.ChangedTarget)
@@ -283,9 +283,6 @@ local UnitSpecific = {
 		if not cfg.ShowTooltips then self:SetScript("OnEnter",function() GameTooltip:Hide() end) end
 		--self:RegisterEvent("UNIT_THREAT_LIST_UPDATE", lib.UpdateThreat)
 		--self:RegisterEvent("UNIT_THREAT_SITUATION_UPDATE", lib.UpdateThreat)
-		
-		--lib.updateRaidFramePosition(raid)
-		--raid:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', lib.updateRaidFramePosition)
 	end,
 }
 

@@ -21,6 +21,14 @@ local Enable = function(self)
 		self.SquareIndicator.frequentUpdates = .25
 		self:Tag(self.SquareIndicator,cfg.IndicatorList["SQUARE"][playerClass])
 	end
+	if self.ShowThreatIndicator then
+		self.ThreatIndicator = self.Health:CreateFontString(nil,"OVERLAY")
+		self.ThreatIndicator:ClearAllPoints()
+		self.ThreatIndicator:SetPoint("LEFT",self.Health,"LEFT",1,-2)
+		self.ThreatIndicator:SetFont(cfg.squarefont,8,"THINOUTLINE")
+		self.ThreatIndicator.frequentUpdates = .25
+		self:Tag(self.ThreatIndicator,"[drk:threat]")
+	end
 end
 
 oUF:AddElement('DrkIndicators',nil,Enable,nil)

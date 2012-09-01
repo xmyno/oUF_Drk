@@ -389,3 +389,11 @@ tags.Methods["Warrior:Safeguard"] = function(unit)
 	local name,_,_,_,_,_,timeLeft,_ = UnitAura(unit,GetSpellInfo(114029))
 	if name then return "|cff33cc00"..getTime(timeLeft).."|r " end
 end
+
+tags.Events["drk:threat"] = 'UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE'
+tags.Methods["drk:threat"] = function(unit)
+	local status = UnitThreatSituation(unit)
+	if status and status > 1 then
+		return "|cffff1100M|r"
+	end
+end

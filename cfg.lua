@@ -57,6 +57,8 @@ local cfg = CreateFrame("Frame")
 	cfg.RaidShowSolo = true -- show raid frames even when solo
 	cfg.ShowIncHeals = true -- Show incoming heals in player and raid frames
 	cfg.ShowTooltips = true -- Show Tooltips on raid frames
+	cfg.Indicators = true
+	cfg.ThreatIndicator = true
 	
 	cfg.raidOrientationHorizontal = false
 	cfg.raidX = -410
@@ -98,14 +100,16 @@ local cfg = CreateFrame("Frame")
 			--## PRIORITY -> 10: high, 9: medium, 8: low, dispellable debuffs have standard priority of 5. ##--
 			--## CATACLYSM ##--
 			--Dragon Soul
+			["61295"] = 9,
 				--Warlord Zon'ozz
-					["Disrupting Shadows"] = 9,
+					["103434"] = 9, -- Disrupting Shadows
 				--Yor'sahj the Unsleeping
-					["Deep Corruption"] = 9,
+					["103628"] = 9, -- Deep Corruption
 				--Hagara the Stormbinder
-					["Frostflake"] = 9,
+					["109325"] = 9, -- Frostflake
+					["104451"] = 9, -- Ice Tomb
 				--Ultraxion
-					["Fading Light"] = 9,
+					["105926"] = 9, -- Fading Light
 				--Spine of Deathwing
 					["Searing Plasma"] = 9,
 					["Blood Corruption: Death"] = 10,

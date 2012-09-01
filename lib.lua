@@ -1282,11 +1282,12 @@ lib.addHealPred = function(self)
 	mhpb:SetWidth(self:GetWidth())
 	mhpb:SetStatusBarTexture(cfg.statusbar_texture)
 	if self.mystyle == "raid" then
-		mhpb:SetStatusBarColor(0, 200/255, 0, 0.3)
+		mhpb:SetStatusBarColor(0, 200/255, 0, 0.4)
 	else
+		mhpb:SetFrameLevel(2)
 		mhpb:SetStatusBarColor(0, 200/255, 0, 0.8)
 	end
-	--mhpb:SetFrameLevel(2)
+
 
 	local ohpb = CreateFrame('StatusBar', nil, self.Health)
 	ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
@@ -1294,11 +1295,12 @@ lib.addHealPred = function(self)
 	ohpb:SetWidth(self:GetWidth())
 	ohpb:SetStatusBarTexture(cfg.statusbar_texture)
 	if self.mystyle == "raid" then
-		ohpb:SetStatusBarColor(0, 200/255, 0, 0.3)
+		ohpb:SetStatusBarColor(0, 200/255, 0, 0.4)
 	else
 		ohpb:SetStatusBarColor(0, 200/255, 0, 0.8)
+		ohpb:SetFrameLevel(2)
 	end
-	--ohpb:SetFrameLevel(2)
+
 
 	self.HealPrediction = {
 		myBar = mhpb,
@@ -1308,62 +1310,15 @@ lib.addHealPred = function(self)
 end
 
 
--- Addons -------------------------------------------
---[[AuraWatch
-local AWPostCreateIcon = function(AWatch,icon,spellID,name,self)
-	icon.cd:SetReverse()
-	local count = lib.gen_fontstring(icon,cfg.smallfont,10,"OUTLINE",0)
-	count:SetPoint("CENTER",icon,"BOTTOM",3,3)
-	icon.count=count
-	--backdrop
-	local h = CreateFrame("Frame", nil, icon)
-	h:SetFrameLevel(5)
-	h:SetPoint("TOPLEFT",-3,3)
-	h:SetPoint("BOTTOMRIGHT",3,-3)
-	lib.gen_power_backdrop(h)
-end
+-- Plugins -------------------------------------------
 
-lib.addAuraWatch = function(self)
-		local auras = {}
-		local spellIDs = cfg.AuraWatchList
-		auras.onlyShowPresent=true
-		auras.anyUnit=true
-		auras.PostCreateIcon = AWPostCreateIcon
-		auras.icons = {}
-		for i, sid in pairs(spellIDs[playerClass]) do
-			local icon = CreateFrame("Frame", nil, self)
-			icon.spellID = sid
-			icon:SetWidth(12)
-			icon:SetHeight(12)
-			icon:SetFrameLevel(6)
-			icon:SetPoint("BOTTOMRIGHT", self, "BOTTOMLEFT", 14*i, 4)
-			auras.icons[sid] = icon
-		end
-		self.AuraWatch = auras
-end
-]]
 lib.addRaidDebuffs = function(self)
 	local raid_debuffs = cfg.DebuffWatchList
 	
-	--[[
-	local instDebuffs = {}
-	local instances = raid_debuffs.instances
-	local getzone = function()
-		local zone = GetInstanceInfo()
-		if instances[zone] then
-			instDebuffs = instances[zone]
-		else
-			instDebuffs = {}
-		end
-	end
-	]]
 	local debuffs = raid_debuffs.debuffs
 	local CustomFilter = function(icons, ...)
-		local _, icon, name, _, _, _, dtype = ...
-		--if instDebuffs[spellID] then
-		--	icon.priority = instDebuffs[spellID]
-		--	return true
-		--spellID = ""..spellID
+		local _, icon, _, _, _, _, dtype, _, _, _, _, _, spellID = ...
+		name = tostring(spellID)
 		if debuffs[name] then
 			icon.priority = debuffs[name]
 			return true
