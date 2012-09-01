@@ -105,9 +105,12 @@ local createAuraIcon = function(debuffs)
 end
 
 local updateDebuff = function(icon, texture, count, dtype, duration, timeLeft)
-	local color = DebuffTypeColor[dtype] or DebuffTypeColor.none
-
-	icon.overlay:SetVertexColor(color.r,color.g,color.b)
+	local color = DebuffTypeColor[dtype] or nil
+	if color == nil then
+		icon.overlay:SetVertexColor(0,0,0)
+	else
+		icon.overlay:SetVertexColor(color.r,color.g,color.b)
+	end
 	icon.overlay:Show()
 
 	icon.icon:SetTexture(texture)

@@ -100,7 +100,6 @@ local cfg = CreateFrame("Frame")
 			--## PRIORITY -> 10: high, 9: medium, 8: low, dispellable debuffs have standard priority of 5. ##--
 			--## CATACLYSM ##--
 			--Dragon Soul
-			["61295"] = 9,
 				--Warlord Zon'ozz
 					["103434"] = 9, -- Disrupting Shadows
 				--Yor'sahj the Unsleeping
@@ -111,78 +110,84 @@ local cfg = CreateFrame("Frame")
 				--Ultraxion
 					["105926"] = 9, -- Fading Light
 				--Spine of Deathwing
-					["Searing Plasma"] = 9,
-					["Blood Corruption: Death"] = 10,
-					["Blood Corruption: Earth"] = 10,
+					["109379"] = 8, -- Searing Plasma
+					["105490"] = 9, -- Fiery Grip
+					["106199"] = 10, -- Blood Corruption: Death
+					["106200"] = 10, -- Blood Corruption: Earth
 				--Madness of Deathwing
-					["Corrupting Parasite"] = 9,
-					["Shrapnel"] = 9,
+					["108649"] = 9, -- Corrupting Parasite
+					["106400"] = 10, -- Impale
+					["106444"] = 9, -- Impale (Stacks)
+					["106794"] = 9, -- Shrapnel (should be the right one)
+					--["106791"] = 9, -- Shrapnel
 			--## MISTS OF PANDARIA ##--
 			--World Bosses
 				--Sha of Anger
-					["Growing Anger"] = 8,
-					["Aggressive Behavior"] = 9,
+					["119622"] = 8, -- Growing Anger
+					["119626"] = 9, -- Aggressive Behavior
 			--Heart of Fear
 				--Imperial Vizier Zor'lok
-					["Noise Cancelling"] = 9,
-					["Convert"] = 10,
+					["122706"] = 9, -- Noise Cancelling
+					["122740"] = 10, -- Convert
 				--Blade Lord Ta'yak
-					["Overwhelming Assault"] = 8,
-					["Wind Step"] = 9,
+					["123474"] = 8, -- Overwhelming Assault
+					["123175"] = 9, -- Wind Step
 				--Garalon
-					["Pheromones"] = 8,
-					["Pungency"] = 10,
+					["122835"] = 8, ["129815"] = 8, -- Pheromones
+					["123081"] = 10, -- Pungency
 				--Wind Lord Mel'jarak
-					["Amber Prison"] = 10,
-					["Residue"] = 9,
-					["Corrosive Resin"] = 8,
+					["121885"] = 10, ["129078"] = 10, ["121881"] = 10, -- Amber Prison
+					["122055"] = 8, -- Residue
+					["122064"] = 9, -- Corrosive Resin
 				--Amber-Shaper Un'sok
-					["Reshape Life"] = 9,
-					["Parasitic Growth"] = 10,
-					["Amber Globule"] = 9,
+					["122784"] = 9, ["122370"] = 9, -- Reshape Life
+					["121949"] = 10, -- Parasitic Growth
+					--["Amber Globule"] = 9,
 				--Grand Empress Shek'zeer
-					["Eyes of the Empress"] = 8,
-					["Sticky Resin"] = 8,
-					["Visions of Demise"] = 8,
+					["123707"] = 8, -- Eyes of the Empress
+					["124097"] = 8, -- Sticky Resin
+					["124862"] = 10, ["124863"] = 10, -- Visions of Demise
 			--Mogu'shan Vaults
 				--The Stone Guard
-					["Cobalt Mine"] = 8,
-					["Jasper Chains"] = 10,
-					["Living Jade"] = 9,
-					["Living Jasper"] = 9,
-					["Living Cobalt"] = 9,
-					["Living Amethyst"] = 9,
+					["116281"] = 8, -- Cobalt Mine
+					["130395"] = 10, -- Jasper Chains
+					["116301"] = 9, -- Living Jade
+					["116304"] = 9, -- Living Jasper
+					["116199"] = 9, -- Living Cobalt
+					["116322"] = 9, -- Living Amethyst
 				--Feng the Accursed
-					["Flaming Spear"] = 8,
-					["Wildfire Spark"] = 9,
-					["Arcane Resonance"] = 10,
+					["116942"] = 8, -- Flaming Spear
+					["116784"] = 9, -- Wildfire Spark
+					["116577"] = 10, ["116576"] = 10, ["116574"] = 10, ["116417"] = 10, -- Arcane Resonance
 				--Gara'jal the Spiritbinder
-					["Frail Soul"] = 8,
-					["Voodoo Doll"] = 9,
-					["Conduit to the Spirit Realm"] = 10,
+					["117723"] = 8, -- Frail Soul
+					["122151"] = 9, -- Voodoo Doll
+					["122181"] = 10, -- Conduit to the Spirit Realm
 				--The Spirit Kings
-					["Maddening Shout"] = 8,
-					["Pillage"] = 9,
-					["Pinning Arrow"] = 9,
-					["Robbed Blind"] = 8,
-					["Undying Shadows"] = 9,
+					["117708"] = 8, -- Maddening Shout
+					["118047"] = 8, ["118048"] = 8, -- Pillage
+					["118141"] = 9, -- Pinning Arrow
+					["118163"] = 8, -- Robbed Blind
+					["117514"] = 9, ["117529"] = 9, ["117506"] = 9,-- Undying Shadows
 				--Elegon
-					["Overcharged"] = 8,
-					["Closed Circuit"] = 9,
+					--["117878"] = 8, -- Overcharged
+					["117949"] = 9, -- Closed Circuit
+					["132222"] = 10, -- Destabilizing Energies
+					["132226"] = 10, -- Destabilized
 				--Will of the Emperor
-					["Focused Energy"] = 10,
+					["116829"] = 10, -- Focused Energy
 			--Terrace of Endless Spring
 				--Protectors of the Endless
-					["Lightning Prison"] = 10,
-					["Corrupted Essence"] = 8,
+					["117436"] = 10, ["131931"] = 10, ["111850"] = 10, -- Lightning Prison
+					--[""] = 8, -- Corrupted Essence -- ID MISSING
 				--Tsulong
-					["Nightmares"] = 8,
-					["Terrorize"] = 8,
+					["122777"] = 8, -- Nightmares
+					["123011"] = 10, ["123018"] = 10, -- Terrorize
 				--Lei Shi
-					["Scary Fog"] = 10,
-					["Spray"] = 8,
+					["123705"] = 10, -- Scary Fog
+					["123121"] = 8, -- Spray
 				--Sha of Fear
-					["Dread Spray"] = 8,
+					--[""] = 8, -- Dread Spray -- ID MISSING
 		},
 	}
 	
