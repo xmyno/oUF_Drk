@@ -348,30 +348,33 @@ lib.addInfoIcons = function(f)
 	end
     --LFDRole icon
 	if f.mystyle == 'player' or f.mystyle == 'target' then
-		f.LFDRole = h:CreateTexture(nil, 'OVERLAY')
+		f.LFDRole = f.Power:CreateTexture(nil, 'OVERLAY')
 		f.LFDRole:SetSize(15,15)
 		f.LFDRole:SetAlpha(0.9)
 		f.LFDRole:SetPoint('BOTTOMLEFT', -6, -8)
     elseif f.mystyle == 'raid' then 
-		f.LFDRole = f.Power:CreateTexture(nil, 'OVERLAY')
+		f.LFDRole = f.Health:CreateTexture(nil, 'OVERLAY')
 		f.LFDRole:SetSize(12,12)
-		f.LFDRole:SetPoint('CENTER', f, 'BOTTOM', 0, 0)
+		f.LFDRole:SetPoint('CENTER', f, 'RIGHT', 1, 0)
+		f.LFDRole:SetAlpha(0)
     end
-    --Leader icon
-    li = h:CreateTexture(nil, "OVERLAY")
-    li:SetPoint("TOPLEFT", f, 0, 8)
-    li:SetSize(12,12)
-    f.Leader = li
-    --Assist icon
-    ai = h:CreateTexture(nil, "OVERLAY")
-    ai:SetPoint("TOPLEFT", f, 0, 8)
-    ai:SetSize(12,12)
-    f.Assistant = ai
-    --ML icon
-    local ml = h:CreateTexture(nil, 'OVERLAY')
-    ml:SetSize(10,10)
-    ml:SetPoint('LEFT', f.Leader, 'RIGHT')
-    f.MasterLooter = ml
+	if f.mystyle ~= 'raid' then
+		--Leader icon
+		li = h:CreateTexture(nil, "OVERLAY")
+		li:SetPoint("TOPLEFT", f, 0, 8)
+		li:SetSize(12,12)
+		f.Leader = li
+		--Assist icon
+		ai = h:CreateTexture(nil, "OVERLAY")
+		ai:SetPoint("TOPLEFT", f, 0, 8)
+		ai:SetSize(12,12)
+		f.Assistant = ai
+		--ML icon
+		local ml = h:CreateTexture(nil, 'OVERLAY')
+		ml:SetSize(10,10)
+		ml:SetPoint('LEFT', f.Leader, 'RIGHT')
+		f.MasterLooter = ml
+	end
 end
 
 -- phase icon 

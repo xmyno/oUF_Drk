@@ -269,7 +269,7 @@ local UnitSpecific = {
 		self.Power.bg.multiplier = .35
 		self.Power:SetAlpha(.9)
 		
-		--lib.addInfoIcons(self)
+		lib.addInfoIcons(self)
 		lib.CreateTargetBorder(self)
 		--lib.CreateThreatBorder(self)
 		lib.addHealPred(self)
@@ -280,7 +280,18 @@ local UnitSpecific = {
 		self.Power.PostUpdate = lib.PostUpdateRaidFramePower
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', lib.ChangedTarget)
 		self:RegisterEvent('GROUP_ROSTER_UPDATE', lib.ChangedTarget)
-		if not cfg.ShowTooltips then self:SetScript("OnEnter",function() GameTooltip:Hide() end) end
+		if cfg.ShowRoleIcons or not cfg.ShowTooltips then
+			self:SetScript("OnEnter",function()
+				if not cfg.ShowTooltips then GameTooltip:Hide() end
+				if cfg.ShowRoleIcons then self.LFDRole:SetAlpha(1) end
+			end)
+		end
+		if cfg.ShowRoleIcons then
+			self:SetScript("OnLeave",function()
+				self.LFDRole:SetAlpha(0)
+			end)
+		end
+		if not cfg.ShowTooltips then  end
 		--self:RegisterEvent("UNIT_THREAT_LIST_UPDATE", lib.UpdateThreat)
 		--self:RegisterEvent("UNIT_THREAT_SITUATION_UPDATE", lib.UpdateThreat)
 	end,

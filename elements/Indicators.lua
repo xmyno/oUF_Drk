@@ -24,8 +24,8 @@ local Enable = function(self)
 	if self.ShowThreatIndicator then
 		self.ThreatIndicator = self.Health:CreateFontString(nil,"OVERLAY")
 		self.ThreatIndicator:ClearAllPoints()
-		self.ThreatIndicator:SetPoint("LEFT",self.Health,"LEFT",1,-2)
-		self.ThreatIndicator:SetFont(cfg.squarefont,8,"THINOUTLINE")
+		self.ThreatIndicator:SetPoint("LEFT",self.Health,"LEFT",1,0)
+		self.ThreatIndicator:SetFont(cfg.squarefont,6,"THINOUTLINE")
 		self.ThreatIndicator.frequentUpdates = .25
 		self:Tag(self.ThreatIndicator,"[drk:threat]")
 	end

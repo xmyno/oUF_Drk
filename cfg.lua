@@ -57,8 +57,9 @@ local cfg = CreateFrame("Frame")
 	cfg.RaidShowSolo = true -- show raid frames even when solo
 	cfg.ShowIncHeals = true -- Show incoming heals in player and raid frames
 	cfg.ShowTooltips = true -- Show Tooltips on raid frames
-	cfg.Indicators = true
-	cfg.ThreatIndicator = true
+	cfg.ShowRoleIcons = false -- Show Role Icons on raid frames
+	cfg.Indicators = true -- Show Class Indicators on raid frames (HoT's, buffs etc.)
+	cfg.ThreatIndicator = true -- Show Threat Indicator on raid frames
 	
 	cfg.raidOrientationHorizontal = false
 	cfg.raidX = -410
