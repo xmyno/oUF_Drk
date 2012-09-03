@@ -1077,39 +1077,41 @@ end
 lib.addShadoworbs = function(self)
 	if playerClass ~= "PRIEST" then return end
 	
-	self.ShadowOrbs = CreateFrame("Frame", nil, self)
-	self.ShadowOrbs:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
-	self.ShadowOrbs:SetHeight(5)
-	self.ShadowOrbs:SetWidth(self.Health:GetWidth()/2)
+	local pso = CreateFrame("Frame", nil, self)
+	pso:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
+	pso:SetHeight(5)
+	pso:SetWidth(self.Health:GetWidth()/2+50)
 	
 	local maxShadowOrbs = UnitPowerMax('player', SPELL_POWER_SHADOW_ORBS)
 	
 	for i = 1,maxShadowOrbs do
-		self.ShadowOrbs[i] = CreateFrame("StatusBar", self:GetName().."_ShadowOrbs"..i, self)
-		self.ShadowOrbs[i]:SetHeight(5)
-		self.ShadowOrbs[i]:SetWidth(self.ShadowOrbs:GetWidth()/3-2)
-		self.ShadowOrbs[i]:SetStatusBarTexture(cfg.statusbar_texture)
-		self.ShadowOrbs[i]:SetStatusBarColor(.86,.22,1)
-		self.ShadowOrbs[i]:SetFrameLevel(11)
-		self.ShadowOrbs[i].bg = self.ShadowOrbs[i]:CreateTexture(nil, "BORDER")
-		self.ShadowOrbs[i].bg:SetTexture(cfg.statusbar_texture)
-		self.ShadowOrbs[i].bg:SetPoint("TOPLEFT", self.ShadowOrbs[i], "TOPLEFT", 0, 0)
-		self.ShadowOrbs[i].bg:SetPoint("BOTTOMRIGHT", self.ShadowOrbs[i], "BOTTOMRIGHT", 0, 0)
-		self.ShadowOrbs[i].bg.multiplier = 0.3
+		pso[i] = CreateFrame("StatusBar", self:GetName().."_PriestShadowOrbs"..i, self)
+		pso[i]:SetHeight(5)
+		pso[i]:SetWidth(pso:GetWidth()/3-2)
+		pso[i]:SetStatusBarTexture(cfg.statusbar_texture)
+		pso[i]:SetStatusBarColor(.86,.22,1)
+		pso[i]:SetFrameLevel(11)
+		pso[i].bg = pso[i]:CreateTexture(nil, "BORDER")
+		pso[i].bg:SetTexture(cfg.statusbar_texture)
+		pso[i].bg:SetPoint("TOPLEFT", pso[i], "TOPLEFT", 0, 0)
+		pso[i].bg:SetPoint("BOTTOMRIGHT", pso[i], "BOTTOMRIGHT", 0, 0)
+		pso[i].bg.multiplier = 0.3
 		
 		--helper backdrop
-		local h = CreateFrame("Frame", nil, self.ShadowOrbs[i])
+		local h = CreateFrame("Frame", nil, pso[i])
 		h:SetFrameLevel(10)
 		h:SetPoint("TOPLEFT",-3,3)
 		h:SetPoint("BOTTOMRIGHT",3,-3)
 		lib.gen_power_backdrop(h)
 		
 		if (i == 1) then
-			self.ShadowOrbs[i]:SetPoint('LEFT', self.ShadowOrbs, 'LEFT', 1, 0)
+			pso[i]:SetPoint('LEFT', pso, 'LEFT', 1, 0)
 		else
-			self.ShadowOrbs[i]:SetPoint('TOPLEFT', self.ShadowOrbs[i-1], 'TOPRIGHT', 2, 0)
+			pso[i]:SetPoint('TOPLEFT', pso[i-1], 'TOPRIGHT', 2, 0)
 		end
 	end
+	
+	self.PriestShadowOrbs = pso
 end
 
 -- SoulShard bar
@@ -1156,39 +1158,40 @@ end
 lib.addHolyPower = function(self)
 	if playerClass ~= "PALADIN" then return end
 	
-	self.HolyPower = CreateFrame("Frame", nil, self)
-	self.HolyPower:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
-	self.HolyPower:SetHeight(5)
-	self.HolyPower:SetWidth(self.Health:GetWidth()/2+75)
+	local php = CreateFrame("Frame", nil, self)
+	php:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
+	php:SetHeight(5)
+	php:SetWidth(self.Health:GetWidth()/2+75)
 	
-	local maxHolyPower = UnitPowerMax("player",SPELL_POWER_HOLY_POWER)
+	--local maxHolyPower = UnitPowerMax("player",SPELL_POWER_HOLY_POWER)
 	
-	for i = 1, maxHolyPower do
-		self.HolyPower[i] = CreateFrame("StatusBar", self:GetName().."_Holypower"..i, self)
-		self.HolyPower[i]:SetHeight(5)
-		self.HolyPower[i]:SetWidth((self.HolyPower:GetWidth()/5)-2)
-		self.HolyPower[i]:SetStatusBarTexture(cfg.statusbar_texture)
-		self.HolyPower[i]:SetStatusBarColor(.9,.95,.33)
-		self.HolyPower[i]:SetFrameLevel(11)
-		self.HolyPower[i].bg = self.HolyPower[i]:CreateTexture(nil, "BORDER")
-		self.HolyPower[i].bg:SetTexture(cfg.statusbar_texture)
-		self.HolyPower[i].bg:SetPoint("TOPLEFT", self.HolyPower[i], "TOPLEFT", 0, 0)
-		self.HolyPower[i].bg:SetPoint("BOTTOMRIGHT", self.HolyPower[i], "BOTTOMRIGHT", 0, 0)
-		self.HolyPower[i].bg.multiplier = 0.3
+	for i = 1, 5 do
+		php[i] = CreateFrame("StatusBar", self:GetName().."_Holypower"..i, self)
+		php[i]:SetHeight(5)
+		php[i]:SetWidth((php:GetWidth()/5)-2)
+		php[i]:SetStatusBarTexture(cfg.statusbar_texture)
+		php[i]:SetStatusBarColor(.9,.95,.33)
+		php[i]:SetFrameLevel(11)
+		php[i].bg = php[i]:CreateTexture(nil, "BORDER")
+		php[i].bg:SetTexture(cfg.statusbar_texture)
+		php[i].bg:SetPoint("TOPLEFT", php[i], "TOPLEFT", 0, 0)
+		php[i].bg:SetPoint("BOTTOMRIGHT", php[i], "BOTTOMRIGHT", 0, 0)
+		php[i].bg.multiplier = 0.3
 
-		local h = CreateFrame("Frame", nil, self.HolyPower[i])
+		local h = CreateFrame("Frame", nil, php[i])
 		h:SetFrameLevel(10)
 		h:SetPoint("TOPLEFT",-3,3)
 		h:SetPoint("BOTTOMRIGHT",3,-3)
 		lib.gen_power_backdrop(h)
 		
 		if (i == 1) then
-			self.HolyPower[i]:SetPoint('LEFT', self.HolyPower, 'LEFT', 1, 0)
+			php[i]:SetPoint('LEFT', php, 'LEFT', 1, 0)
 		else
-			self.HolyPower[i]:SetPoint('TOPLEFT', self.HolyPower[i-1], "TOPRIGHT", 2, 0)
+			php[i]:SetPoint('TOPLEFT', php[i-1], "TOPRIGHT", 2, 0)
 		end
-
 	end
+	
+	self.PaladinHolyPower = php
 end
 
 -- runebar
@@ -1229,42 +1232,44 @@ end
 
 -- combo points
 lib.addCPoints = function(self)
-	if (playerClass == "ROGUE" or playerClass == "DRUID") then
-		self.CPoints = CreateFrame("Frame", nil, self)
-		self.CPoints:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
-		self.CPoints:SetHeight(5)
-		self.CPoints:SetWidth(self.Health:GetWidth()/2+75)
+	--if (playerClass == "ROGUE" or playerClass == "DRUID") then
+	local dcp = CreateFrame("Frame", nil, self)
+	dcp:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
+	dcp:SetHeight(5)
+	dcp:SetWidth(self.Health:GetWidth()/2+75)
 
-		for i= 1, 5 do
-			self.CPoints[i] = CreateFrame("StatusBar", self:GetName().."_CPoints"..i, self)
-			self.CPoints[i]:SetHeight(5)
-			self.CPoints[i]:SetWidth((self.CPoints:GetWidth()/5)-2)
-			self.CPoints[i]:SetStatusBarTexture(cfg.statusbar_texture)
-			self.CPoints[i]:SetFrameLevel(11)
-			self.CPoints[i].bg = self.CPoints[i]:CreateTexture(nil, "BORDER")
-			self.CPoints[i].bg:SetTexture(cfg.statusbar_texture)
-			self.CPoints[i].bg:SetPoint("TOPLEFT", self.CPoints[i], "TOPLEFT", 0, 0)
-			self.CPoints[i].bg:SetPoint("BOTTOMRIGHT", self.CPoints[i], "BOTTOMRIGHT", 0, 0)
-			self.CPoints[i].bg.multiplier = 0.3
-			
-			local h = CreateFrame("Frame", nil, self.CPoints[i])
-			h:SetFrameLevel(10)
-			h:SetPoint("TOPLEFT",-3,3)
-			h:SetPoint("BOTTOMRIGHT",3,-3)
-			lib.gen_power_backdrop(h)
-			
-			if (i == 1) then
-				self.CPoints[i]:SetPoint('LEFT', self.CPoints, 'LEFT', 1, 0)
-			else
-				self.CPoints[i]:SetPoint('TOPLEFT', self.CPoints[i-1], 'TOPRIGHT', 2, 0)
-			end
+	for i= 1, 5 do
+		dcp[i] = CreateFrame("StatusBar", self:GetName().."_CPoints"..i, self)
+		dcp[i]:SetHeight(5)
+		dcp[i]:SetWidth((dcp:GetWidth()/5)-2)
+		dcp[i]:SetStatusBarTexture(cfg.statusbar_texture)
+		dcp[i]:SetFrameLevel(11)
+		dcp[i].bg = dcp[i]:CreateTexture(nil, "BORDER")
+		dcp[i].bg:SetTexture(cfg.statusbar_texture)
+		dcp[i].bg:SetPoint("TOPLEFT", dcp[i], "TOPLEFT", 0, 0)
+		dcp[i].bg:SetPoint("BOTTOMRIGHT", dcp[i], "BOTTOMRIGHT", 0, 0)
+		dcp[i].bg.multiplier = 0.3
+		
+		local h = CreateFrame("Frame", nil, dcp[i])
+		h:SetFrameLevel(10)
+		h:SetPoint("TOPLEFT",-3,3)
+		h:SetPoint("BOTTOMRIGHT",3,-3)
+		lib.gen_power_backdrop(h)
+		
+		if (i == 1) then
+			dcp[i]:SetPoint('LEFT', dcp, 'LEFT', 1, 0)
+		else
+			dcp[i]:SetPoint('TOPLEFT', dcp[i-1], 'TOPRIGHT', 2, 0)
 		end
-		self.CPoints[1]:SetStatusBarColor(.3,.9,.3)
-		self.CPoints[2]:SetStatusBarColor(.3,.9,.3)
-		self.CPoints[3]:SetStatusBarColor(.3,.9,.3)
-		self.CPoints[4]:SetStatusBarColor(.9,.9,0)
-		self.CPoints[5]:SetStatusBarColor(.9,.3,.3)	
 	end
+	dcp[1]:SetStatusBarColor(.3,.9,.3)
+	dcp[2]:SetStatusBarColor(.3,.9,.3)
+	dcp[3]:SetStatusBarColor(.3,.9,.3)
+	dcp[4]:SetStatusBarColor(.9,.9,0)
+	dcp[5]:SetStatusBarColor(.9,.3,.3)	
+	--end
+	
+	self.DrkCPoints = dcp
 end
 
 -- ReadyCheck

@@ -1,8 +1,8 @@
+if select(2, UnitClass("player")) ~= "MONK" then return end
+
 local _, ns = ...
 local oUF = ns.oUF or oUF
 assert(oUF, "oUF_MonkHarmonyBar was unable to locate oUF install")
-
-if select(2, UnitClass("player")) ~= "MONK" then return end
 
 local SPELL_POWER_LIGHT_FORCE = SPELL_POWER_LIGHT_FORCE
 local MONK_TALENT_ASCENSION = 115396
