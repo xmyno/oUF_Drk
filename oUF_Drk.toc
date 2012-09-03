@@ -1,7 +1,7 @@
 ## Interface: 50001
 ## Author: Drakull, Myno
 ## Title: oUF_Drk Fanupdate
-## Version: r7
+## Version: r8
 ## Notes: My Layout for oUF
 ## RequiredDeps: oUF
 ## OptionalDeps: oUF_Experience
