@@ -681,14 +681,14 @@ local myPostUpdateIcon = function(self, unit, icon, index, offset, filter, isDeb
 	end
 		
 	-- Desaturate non-Player Debuffs
-	if(icon.debuff) then
-		if(unit == "target") then	
+	if(unit == "target") then
+		if(icon.filter == "HARMFUL") then
 			if (unitCaster == 'player' or unitCaster == 'vehicle') then
-				icon.icon:SetDesaturated(false)                 
+				icon.icon:SetDesaturated(nil)                 
 			elseif(not UnitPlayerControlled(unit)) then -- If Unit is Player Controlled don't desaturate debuffs
 				icon:SetBackdropColor(0, 0, 0)
 				icon.overlay:SetVertexColor(0.3, 0.3, 0.3)
-				icon.icon:SetDesaturated(true)
+				icon.icon:SetDesaturated(1)
 			end
 		end
 	end
@@ -939,9 +939,9 @@ lib.PostUpdateRaidFramePower = function(Power, unit, min, max)
 
 end
 
-lib.updateRaidFramePosition = function(self)
-	print("RaidFramePosition")
-end
+--lib.updateRaidFramePosition = function(self)
+--	print("RaidFramePosition")
+--end
 
 lib.addEclipseBar = function(self)
 	if playerClass ~= "DRUID" then return end
