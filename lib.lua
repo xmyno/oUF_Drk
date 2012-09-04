@@ -104,11 +104,11 @@ lib.addHealthBar = function(f)
 	local s = CreateFrame("StatusBar", nil, f)
 	if f.mystyle=="boss" then
 		s:SetHeight(37)
-		s:SetWidth(250)
+		s:SetWidth(f:GetWidth())
 		s:SetPoint("TOPLEFT", f, "TOPLEFT", 0, 0)
 		s:SetStatusBarTexture(cfg.statusbar_texture)
 	else
-		s:SetHeight(retVal(f,34,19,29))
+		s:SetHeight(retVal(f,f:GetHeight()*.68,f:GetHeight()*.76,29))
 		s:SetWidth(f:GetWidth())
 		s:SetPoint("TOP",0,0)
 		if f.mystyle=="raid" then
@@ -129,7 +129,7 @@ lib.addHealthBar = function(f)
 		h:SetPoint("TOPLEFT",f,"TOPLEFT",-4,4)
 		h:SetPoint("BOTTOMRIGHT",f,"BOTTOMRIGHT", 3.8, -4)
 	else
-		h:SetPoint("BOTTOMRIGHT", 4, -10)
+		h:SetPoint("BOTTOMRIGHT", 4, -10*cfg.unitframeScale)
 	end
 	lib.gen_backdrop(h)
 	--bg
@@ -198,7 +198,7 @@ lib.addPowerBar = function(f)
 		s:SetPoint("BOTTOMLEFT",f,"BOTTOMLEFT",0,0)
 		s:SetStatusBarColor(165/255, 73/255, 23/255, 1)	
 	else
-		s:SetHeight(retVal(f,13,5,2))
+		s:SetHeight(retVal(f,f:GetHeight()*.26,f:GetHeight()*.2,2))
 		s:SetWidth(f:GetWidth())
 		if f.mystyle=="raid" then
 			s:SetPoint("BOTTOM",f,"BOTTOM",0,0)

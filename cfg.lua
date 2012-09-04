@@ -10,7 +10,7 @@ local cfg = CreateFrame("Frame")
 
 --unitframes
 	cfg.unitframeWidth = 250
-	cfg.unitframeHeight = 50
+	cfg.unitframeScale = 1.0 -- Keep between 1 and 1.25 to have a good result, 1 = standard
 --player
 	cfg.playerX = -180 -- x-coordinate of the player frame
 	cfg.playerY = 360 -- y-coordinate of the player frame
@@ -64,7 +64,7 @@ local cfg = CreateFrame("Frame")
 	cfg.raidOrientationHorizontal = false
 	cfg.raidX = -410
 	cfg.raidY = 190
-	cfg.raidScale = 1.0
+	cfg.raidScale = 1
 	
 	cfg.IndicatorList = {
 		["NUMBERS"] = {

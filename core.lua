@@ -14,9 +14,8 @@ local UnitSpecific = {
 	
 		self.mystyle = "player"
 		
-		-- Size and Scale
-		self.scale = cfg.ptscale
-		self:SetSize(250, 50)
+		-- Size
+		self:SetSize(cfg.unitframeWidth*cfg.unitframeScale, 50*cfg.unitframeScale)
 
 		-- Generate Bars
 		lib.addHealthBar(self)
@@ -70,8 +69,7 @@ local UnitSpecific = {
 		self.mystyle = "target"
 		
 		-- Size and Scale
-		self.scale = cfg.ptscale
-		self:SetSize(250, 50)
+		self:SetSize(cfg.unitframeWidth*cfg.unitframeScale, 50*cfg.unitframeScale)
 
 		-- Generate Bars
 		lib.addHealthBar(self)
@@ -113,8 +111,7 @@ local UnitSpecific = {
 		self.mystyle = "focus"
 		
 		-- Size and Scale
-		self.scale = cfg.miscscale
-		self:SetSize(120, 25)
+		self:SetSize((cfg.unitframeWidth/2-5)*cfg.unitframeScale, 25*cfg.unitframeScale)
 		
 		-- Generate Bars
 		lib.addHealthBar(self)
@@ -148,8 +145,7 @@ local UnitSpecific = {
 		self.mystyle = "tot"
 		
 		-- Size and Scale
-		self.scale = cfg.miscscale
-		self:SetSize(120, 25)
+		self:SetSize((cfg.unitframeWidth/2-5)*cfg.unitframeScale, 25*cfg.unitframeScale)
 
 		-- Generate Bars
 		lib.addHealthBar(self)
@@ -183,8 +179,8 @@ local UnitSpecific = {
 		self.mystyle = "focustarget"
 		
 		-- Size and Scale
-		self.scale = cfg.miscscale
-		self:SetSize(120, 25)
+		self:SetSize((cfg.unitframeWidth/5-2)*cfg.unitframeScale, 25*cfg.unitframeScale)
+
 
 		-- Generate Bars
 		lib.addHealthBar(self)
@@ -214,8 +210,7 @@ local UnitSpecific = {
 		self.mystyle = "pet"
 		
 		-- Size and Scale
-		self.scale = cfg.miscscale
-		self:SetSize(120, 25)
+		self:SetSize((cfg.unitframeWidth/5-2)*cfg.unitframeScale, 25*cfg.unitframeScale)
 
 		-- Generate Bars
 		lib.addHealthBar(self)
@@ -243,8 +238,6 @@ local UnitSpecific = {
 				
 		self.mystyle = "raid"
 		
-		-- Size and Scale
-		self.scale = cfg.raidscale
 		self.Range = {
 			insideAlpha = 1,
 			outsideAlpha = .6,
