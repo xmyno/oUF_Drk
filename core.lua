@@ -373,9 +373,9 @@ oUF:Factory(function(self)
 	if cfg.ShowRaid then
 		local soloraid,point
 		if cfg.RaidShowSolo then
-			soloraid = "custom show"
+			soloraid = "custom show;"
 		else
-			soloraid = "raid"
+			soloraid = "party,raid"
 		end
 		if cfg.raidOrientationHorizontal then
 			point = "LEFT"
