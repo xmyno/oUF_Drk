@@ -68,18 +68,22 @@ local createAuraIcon = function(debuffs)
 	button:SetSize(debuffs.size, debuffs.size)
 
 	local icon = button:CreateTexture(nil, "BACKGROUND")
-
-	--icon:SetAllPoints(button)
 	icon:SetPoint("TOPLEFT",button,"TOPLEFT",-1,1)
 	icon:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",1.3,-1.3)
 	icon:SetTexCoord(.05, .95, .05, .95)
 	
-	border = CreateFrame("Frame", nil, button)
+	local cd = CreateFrame("Cooldown", nil, button)
+	cd:SetReverse(true)
+	cd:SetFrameLevel(7)
+	cd:SetPoint("TOPLEFT",button,"TOPLEFT",-1,1)
+	cd:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",1.3,-1.3)
+
+	local border = CreateFrame("Frame", nil, button)
 	border:SetFrameLevel(4)
 	border:SetPoint("TOPLEFT",-7,6)
 	border:SetPoint("BOTTOMRIGHT",6,-7)
 	gen_backdrop(border,0,0,0)
-	
+
 	
 	local count = button:CreateFontString(nil, "OVERLAY")
 	count:SetFont(cfg.smallfont,9,"OUTLINE")
@@ -99,6 +103,8 @@ local createAuraIcon = function(debuffs)
 	button.parent = debuffs
 	button.icon = icon
 	button.count = count
+	button.cd = cd
+	button.cddone = false
 	button:Hide()
 	
 	debuffs.button = button
@@ -112,7 +118,7 @@ local updateDebuff = function(icon, texture, count, dtype, duration, timeLeft)
 		icon.overlay:SetVertexColor(color.r,color.g,color.b)
 	end
 	icon.overlay:Show()
-
+	
 	icon.icon:SetTexture(texture)
 	icon.count:SetText((count > 1 and count))
 end
@@ -122,7 +128,7 @@ local updateIcon = function(unit, debuffs)
 	local hide = true
 	local index = 1
 	while true do
-		local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, 'HARMFUL')
+		local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, 'HELPFUL')
 		if not name then break end
 		
 		local icon = debuffs.button
@@ -139,9 +145,19 @@ local updateIcon = function(unit, debuffs)
 			if not cur then
 				cur = icon.priority
 				updateDebuff(icon, texture, count, dtype, duration, timeLeft)
+				if not icon.cddone then 
+					icon.cd:SetCooldown(GetTime(),duration)
+					icon.cddone = true
+				end
+				--icon.cd:SetCooldown(GetTime(),duration)	
 			else
 				if icon.priority > cur then
 					updateDebuff(icon, texture, count, dtype, duration, timeLeft)
+					if not icon.cddone then 
+						icon.cd:SetCooldown(GetTime(),duration)
+						icon.cddone = true
+					end
+					--icon.cd:SetCooldown(GetTime(),duration)	
 				end
 			end
 			
@@ -153,6 +169,7 @@ local updateIcon = function(unit, debuffs)
 	end
 	if hide then
 		debuffs.button:Hide()
+		debuffs.button.cddone = false
 	end
 end
 
