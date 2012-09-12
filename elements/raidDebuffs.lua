@@ -128,7 +128,7 @@ local updateIcon = function(unit, debuffs)
 	local hide = true
 	local index = 1
 	while true do
-		local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, 'HELPFUL')
+		local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, 'HARMFUL')
 		if not name then break end
 		
 		local icon = debuffs.button
