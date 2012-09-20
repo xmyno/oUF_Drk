@@ -1,12 +1,17 @@
- local addon, ns = ...
+local addon, ns = ...
   
-  local cfg = ns.cfg
-  local lib = ns.lib
+local cfg = ns.cfg
+local lib = ns.lib
 
+oUF.colors.smooth = { 
+	1,		0,		0, --low health
+	1,		.196,	.196, --half health
+	.165, 	.188, 	.196 --max health
+}
 
-  -----------------------------
-  -- STYLE FUNCTIONS
-  -----------------------------
+-----------------------------
+-- STYLE FUNCTIONS
+-----------------------------
 
 local UnitSpecific = {
 
@@ -36,7 +41,6 @@ local UnitSpecific = {
 			lib.addDebuffs(self)
 		end
 		
-		self.colors.smooth = {255/255,0/255,0/255, 255/255,50/255,50/255, 42/255,48/255,50/255}
 		self.Health.frequentUpdates = true
 		self.Health.colorSmooth = true
 		self.Health.bg.multiplier = 0.3
@@ -84,7 +88,6 @@ local UnitSpecific = {
 		lib.addPhaseIcon(self)
 
 		--style specific stuff
-		self.colors.smooth = {255/255,0/255,0/255, 255/255,50/255,50/255, 42/255,48/255,50/255}
 		self.Health.frequentUpdates = true
 		self.Health.colorSmooth = true
 		self.Health.bg.multiplier = 0.3
@@ -121,7 +124,6 @@ local UnitSpecific = {
 		lib.addRaidMark(self)
 
 		--style specific stuff
-		self.colors.smooth = {255/255,0/255,0/255, 255/255,50/255,50/255, 42/255,48/255,50/255}
 		self.Health.frequentUpdates = false
 		self.Health.colorSmooth = true
 		self.Health.bg.multiplier = 0.3
@@ -155,7 +157,6 @@ local UnitSpecific = {
 		lib.addRaidMark(self)
 
 		--style specific stuff
-		self.colors.smooth = {255/255,0/255,0/255, 255/255,50/255,50/255, 42/255,48/255,50/255}
 		self.Health.frequentUpdates = false
 		self.Health.colorSmooth = true
 		self.Health.bg.multiplier = 0.3
@@ -190,7 +191,6 @@ local UnitSpecific = {
 		lib.addRaidMark(self)
 
 		--style specific stuff
-		self.colors.smooth = {255/255,0/255,0/255, 255/255,50/255,50/255, 42/255,48/255,50/255}
 		self.Health.frequentUpdates = false
 		self.Health.colorSmooth = true
 		self.Health.bg.multiplier = 0.3
@@ -220,7 +220,6 @@ local UnitSpecific = {
 		lib.addRaidMark(self)
 		
 		--style specific stuff
-		self.colors.smooth = {255/255,0/255,0/255, 255/255,50/255,50/255, 42/255,48/255,50/255}
 		self.Health.frequentUpdates = false
 		self.Health.colorSmooth = true
 		self.Health.bg.multiplier = 0.3
