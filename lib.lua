@@ -146,49 +146,51 @@ end
 --gen hp strings func
 lib.addStrings = function(f)
     --health/name text strings
-	if f.mystyle=="boss" then
-		local name = lib.gen_fontstring(f.Health, cfg.font, 14, "NONE")
+	local name, hpval, powerval, altppval
+	if f.mystyle == "boss" then
+		name = lib.gen_fontstring(f.Health, cfg.font, 14, "NONE")
 		name:SetPoint("LEFT", f.Health, "TOPLEFT", 3, -10)
 		name:SetJustifyH("LEFT")
-		local hpval = lib.gen_fontstring(f.Health, cfg.font, 14, "NONE")
+		hpval = lib.gen_fontstring(f.Health, cfg.font, 14, "NONE")
 		hpval:SetPoint("RIGHT", f.Health, "TOPRIGHT", -3, -10)
+		altppval = lib.gen_fontstring(f.Health, cfg.font, 12, "THINOUTLINE")
+		altppval:SetPoint("RIGHT", f.Health, "BOTTOMRIGHT", 3, -22)
 
 		f:Tag(name,"[name]")
 		f:Tag(hpval,"[drk:hp]")
+		f:Tag(altppval,"[Drk:AltPowerBar]")
+
 	else
-		local name = lib.gen_fontstring(f.Health, retVal(f,cfg.font,cfg.font,cfg.raidfont), retVal(f,14,12,12), retVal(f,"NONE","NONE","NONE"))
+		name = lib.gen_fontstring(f.Health, retVal(f,cfg.font,cfg.font,cfg.raidfont), retVal(f,14,12,12), retVal(f,"NONE","NONE","NONE"))
 		name:SetPoint("LEFT", f.Health, "TOPLEFT", retVal(f,5,3,1), retVal(f,-10,-10,-6))
 		name:SetJustifyH("LEFT")
 		name.frequentUpdates = true
-		local powerval = lib.gen_fontstring(f.Health, cfg.font, 14, "THINOUTLINE")
-		powerval:SetPoint("RIGHT", f.Health, "BOTTOMRIGHT", 3, -16)
-		local hpval = lib.gen_fontstring(f.Health, cfg.font, retVal(f,14,12,13), retVal(f,"NONE","NONE","OUTLINE"))
+		hpval = lib.gen_fontstring(f.Health, cfg.font, retVal(f,14,12,13), retVal(f,"NONE","NONE","OUTLINE"))
 		hpval:SetPoint(retVal(f,"RIGHT","RIGHT","LEFT"), f.Health, retVal(f,"TOPRIGHT","TOPRIGHT","BOTTOMLEFT"), retVal(f,-3,-3,0), retVal(f,-10,-10,6))
-		--this will make the name go "..." when its too long
+		powerval = lib.gen_fontstring(f.Health, cfg.font, 14, "THINOUTLINE")
+		powerval:SetPoint("RIGHT", f.Health, "BOTTOMRIGHT", 3, -16)
 		if f.mystyle == "raid" then
 			name:SetPoint("RIGHT", f, "RIGHT", -1, 0)
-		else
-			name:SetPoint("RIGHT", hpval, "LEFT", -2, 0)
-		end
-		if f.mystyle == "player" then
-			f:Tag(name, "[drk:color][my:power][drk:afkdnd]")
-		elseif f.mystyle == "target" then
-			f:Tag(name, "[drk:level] [drk:color][name][drk:afkdnd]")
-			f:Tag(powerval, "[my:power]")
-		elseif f.mystyle == "raid" then
 			f:Tag(name, "[drk:color][name][drk:raidafkdnd]")
 		else
-			f:Tag(name, "[drk:color][name]")
+			name:SetPoint("RIGHT", hpval, "LEFT", -2, 0)
+			if f.mystyle == "player" then
+				f:Tag(name, "[drk:color][my:power][drk:afkdnd]")
+			elseif f.mystyle == "target" then
+				f:Tag(name, "[drk:level] [drk:color][name][drk:afkdnd]")
+				f:Tag(powerval, "[my:power]")
+			else
+				f:Tag(name, "[drk:color][name]")
+			end
 		end
 		f:Tag(hpval, retVal(f,"[drk:hp]","[drk:hp]","[drk:raidhp]"))
 	end
 end
 
-
 --gen powerbar func
 lib.addPowerBar = function(f)
-    --statusbar
-    local s = CreateFrame("StatusBar", nil, f)
+	--statusbar
+	local s = CreateFrame("StatusBar", nil, f)
     s:SetStatusBarTexture(cfg.powerbar_texture)
 	s:GetStatusBarTexture():SetHorizTile(true)
 	s:SetFrameLevel(2)
@@ -226,10 +228,21 @@ end
 
 --gen altpowerbar func
 lib.addAltPowerBar = function(f)
-  	local s = CreateFrame("StatusBar", nil, f)
-	s:SetFrameLevel(0)
-	s:SetSize(f:GetWidth()-.5, 3)
-	s:SetPoint("BOTTOM", f, "BOTTOM", 0, -7)
+	local s = CreateFrame("StatusBar", nil, f.Power)
+	s:SetFrameLevel(1)
+	if f.mystyle == 'boss' then
+		s:SetPoint("BOTTOM", f.Power, "BOTTOM", 0, -7)
+		s:SetSize(f:GetWidth()-.5, 3)
+	else
+		s:SetSize(3,f:GetHeight()+.5)
+		s:SetOrientation("VERTICAL")
+		if f.mystyle == 'player' then
+			s:SetPoint("TOPLEFT", f.Health, "TOPRIGHT", 3, 0)
+		else
+			s:SetPoint("TOPRIGHT", f.Health, "TOPLEFT", -3, 0)
+		end
+	end
+	
 	s:SetStatusBarTexture(cfg.powerbar_texture)
 	s:GetStatusBarTexture():SetHorizTile(false)
 	s:SetStatusBarColor(235/255, 235/255, 235/255)
@@ -237,8 +250,8 @@ lib.addAltPowerBar = function(f)
 	
 	local h = CreateFrame("Frame", nil, s)
 	h:SetFrameLevel(0)
-	h:SetPoint("TOPLEFT",-3.5,3.5)
-	h:SetPoint("BOTTOMRIGHT",3.5,-3.5)
+	h:SetPoint("TOPLEFT",-3,3)
+	h:SetPoint("BOTTOMRIGHT",3,-3)
 	lib.gen_power_backdrop(h)
 	
     local b = s:CreateTexture(nil, "BACKGROUND")
@@ -253,22 +266,24 @@ lib.addAltPowerBarString = function(f)
 	local altpphelpframe = CreateFrame("Frame",nil,s)
 	if f.mystyle == "player" then
 		if cfg.AltPowerBarPlayer then
-			altpphelpframe:SetPoint("RIGHT", f.AltPowerBar, "RIGHT", 8, 0)
+			altpphelpframe:SetPoint("LEFT", f.AltPowerBar, "BOTTOMLEFT", 1, 4)
 		else
 			altpphelpframe:SetPoint("CENTER", PlayerPowerBarAlt, "TOP", 0, -5) -- adds percentage to standard blizzard altPowerBar
 		end
 	else
-		altpphelpframe:SetPoint("RIGHT", f.AltPowerBar, "RIGHT", 0, 0)
+		altpphelpframe:SetPoint("RIGHT", f.AltPowerBar, "BOTTOMRIGHT", 1, 4)
 	end
 	altpphelpframe:SetFrameLevel(7)
 	altpphelpframe:SetSize(30,10)
 	local altppbartext
 	if f.mystyle == "player" then
 		altppbartext = lib.gen_fontstring(altpphelpframe, cfg.font, 8, "OUTLINE")
-		altppbartext:SetPoint("CENTER", altpphelpframe, "CENTER", 0, 0)
+		altppbartext:SetPoint("LEFT", altpphelpframe, "LEFT", 0, 0)
+		altppbartext:SetJustifyH("LEFT")
 	else
 		altppbartext = lib.gen_fontstring(altpphelpframe, cfg.font, 8, "OUTLINE")
 		altppbartext:SetPoint("RIGHT", altpphelpframe, "RIGHT", 0, 0)	
+		altppbartext:SetJustifyH("RIGHT")
 	end
 	f:Tag(altppbartext,"[Drk:AltPowerBar]")
 end
@@ -321,9 +336,9 @@ lib.addInfoIcons = function(f)
 		else
 			f.PvP:SetTexCoord(0.05, 0.605, 0.015, 0.57)
 		end
-		f.PvP:SetHeight(20)
-		f.PvP:SetWidth(20)
-		f.PvP:SetPoint("TOPRIGHT", 10, 10)
+		f.PvP:SetHeight(14)
+		f.PvP:SetWidth(14)
+		f.PvP:SetPoint("TOPRIGHT", 7, 7)
 	elseif f.mystyle == 'target' then
 		f.PvP = h:CreateTexture(nil, "OVERLAY")
 		local faction = PvPCheck
@@ -336,7 +351,7 @@ lib.addInfoIcons = function(f)
 		end
 		f.PvP:SetHeight(12)
 		f.PvP:SetWidth(12)
-		f.PvP:SetPoint("BOTTOMRIGHT", -11, 9)
+		f.PvP:SetPoint("TOPRIGHT", 6, 6)
 	end
 	-- rest icon
     if f.mystyle == 'player' then
@@ -756,12 +771,18 @@ lib.addBuffs = function(f)
     b.onlyShowPlayer = false
     b:SetHeight(b.size*2)
     b:SetWidth(f:GetWidth())
-
-	b:SetPoint("TOPLEFT", f, "TOPRIGHT", 5, -1)
-	b.initialAnchor = "TOPLEFT"
-	b["growth-x"] = "RIGHT"
-	b["growth-y"] = "DOWN"
-    b.PostCreateIcon = myPostCreateIcon
+	if f.mystyle == "player" then
+		b:SetPoint("TOPRIGHT", f, "TOPLEFT", -5, -1)
+		b.initialAnchor = "TOPRIGHT"
+		b["growth-x"] = "LEFT"
+		b["growth-y"] = "DOWN"
+	else
+		b:SetPoint("TOPLEFT", f, "TOPRIGHT", 5, -1)
+		b.initialAnchor = "TOPLEFT"
+		b["growth-x"] = "RIGHT"
+		b["growth-y"] = "DOWN"
+	end
+	b.PostCreateIcon = myPostCreateIcon
     b.PostUpdateIcon = myPostUpdateIcon
 
     f.Buffs = b

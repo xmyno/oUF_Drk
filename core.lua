@@ -179,7 +179,7 @@ local UnitSpecific = {
 		self.mystyle = "focustarget"
 		
 		-- Size and Scale
-		self:SetSize((cfg.unitframeWidth/5-2)*cfg.unitframeScale, 25*cfg.unitframeScale)
+		self:SetSize((cfg.unitframeWidth/2-5)*cfg.unitframeScale, 25*cfg.unitframeScale)
 
 
 		-- Generate Bars
@@ -210,7 +210,7 @@ local UnitSpecific = {
 		self.mystyle = "pet"
 		
 		-- Size and Scale
-		self:SetSize((cfg.unitframeWidth/5-2)*cfg.unitframeScale, 25*cfg.unitframeScale)
+		self:SetSize((cfg.unitframeWidth/2-5)*cfg.unitframeScale, 25*cfg.unitframeScale)
 
 		-- Generate Bars
 		lib.addHealthBar(self)
@@ -333,7 +333,7 @@ local function CreateUnitFrame(self, unit)
 	lib.addStrings(self)
 	lib.addPowerBar(self)
 	lib.addAltPowerBar(self)
-	lib.addAltPowerBarString(self)
+	--lib.addAltPowerBarString(self)
 	lib.addCastBar(self)
 	lib.addRaidMark(self)
 
@@ -382,7 +382,7 @@ oUF:Factory(function(self)
 		else
 			point = "TOP"
 		end
-			
+
 		self:SetActiveStyle('drkGroup')
 		local raid = {}
 		for i = 1, 5 do

@@ -10,7 +10,7 @@ local cfg = CreateFrame("Frame")
 
 --unitframes
 	cfg.unitframeWidth = 250
-	cfg.unitframeScale = 1.0 -- Keep between 1 and 1.25 to have a good result, 1 = standard
+	cfg.unitframeScale = 1 -- Keep between 1 and 1.25 to have a good result, 1 = standard
 --player
 	cfg.playerX = -180 -- x-coordinate of the player frame
 	cfg.playerY = 360 -- y-coordinate of the player frame
@@ -90,7 +90,7 @@ local cfg = CreateFrame("Frame")
 			--["PRIEST"]		= ,
 			--["ROGUE"]			= ,
 			--["SHAMAN"]		= ,
-			--["WARLOCK"]		= darkintent,
+			--["WARLOCK"]		= ,
 			--["WARRIOR"]		= ,
 		},
 	}
@@ -100,6 +100,7 @@ local cfg = CreateFrame("Frame")
 			--## USAGE: ["DEBUFF_NAME"] = PRIORITY, ##--
 			--## PRIORITY -> 10: high, 9: medium, 8: low, dispellable debuffs have standard priority of 5. ##--
 			--## CATACLYSM ##--
+			--["61295"] = 10, -- Riptde for testing purposes
 			--Dragon Soul
 				--Warlord Zon'ozz
 					["103434"] = 9, -- Disrupting Shadows
@@ -111,7 +112,7 @@ local cfg = CreateFrame("Frame")
 				--Ultraxion
 					["105926"] = 9, -- Fading Light
 				--Spine of Deathwing
-					["109379"] = 8, -- Searing Plasma
+					["105479"] = 8, -- Searing Plasma
 					["105490"] = 9, -- Fiery Grip
 					["106199"] = 10, -- Blood Corruption: Death
 					["106200"] = 10, -- Blood Corruption: Earth
@@ -209,10 +210,7 @@ cfg.smallfont = "Interface\\AddOns\\oUF_Drk\\media\\semplice.ttf"
 cfg.raidfont = "Interface\\AddOns\\oUF_Drk\\media\\vibroceb.ttf"
 cfg.squarefont = "Interface\\AddOns\\oUF_Drk\\media\\squares.ttf"
 
-cfg.ptscale = 0.8 -- scale factor for player and target frames
-cfg.miscscale = 0.8 -- scale factor for all other frames
-
-
+--do not change this
 cfg.spec = nil
 cfg.updateSpec = function()
 	cfg.spec = GetSpecialization()
