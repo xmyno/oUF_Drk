@@ -390,6 +390,12 @@ tags.Methods["Warrior:Safeguard"] = function(unit)
 	if name then return "|cff33cc00"..getTime(timeLeft).."|r " end
 end
 
+tags.Events["DK:DeathBarrier"] = 'UNIT_AURA'
+tags.Methods["DK:DeathBarrier"] = function(unit)
+	local name,_,_,_,_,_,timeLeft,_ = UnitAura(unit,GetSpellInfo(115635))
+	if name then return "|cffff3cc00"..getTime(timeLeft).."|r " end
+end
+
 tags.Events["drk:threat"] = 'UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE'
 tags.Methods["drk:threat"] = function(unit)
 	local status = UnitThreatSituation(unit)

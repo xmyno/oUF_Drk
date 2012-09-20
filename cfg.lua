@@ -68,7 +68,7 @@ local cfg = CreateFrame("Frame")
 	
 	cfg.IndicatorList = {
 		["NUMBERS"] = {
-			--["DEATHKNIGHT"] 	= ,
+			["DEATHKNIGHT"] 	= "[DK:DeathBarrier]",
 			["DRUID"]			= "[Druid:Lifebloom][Druid:Rejuv][Druid:Regrowth]",
 			--["HUNTER"]		= missdirect,
 			--["MAGE"]			= ,
@@ -85,7 +85,7 @@ local cfg = CreateFrame("Frame")
 			--["DRUID"]			= ,
 			--["HUNTER"]		= ,
 			--["MAGE"]			= ,
-			--["MONK"]			= "",
+			--["MONK"]			= ,
 			["PALADIN"]			= "[Paladin:Forbearance][Paladin:Beacon]",
 			--["PRIEST"]		= ,
 			--["ROGUE"]			= ,
