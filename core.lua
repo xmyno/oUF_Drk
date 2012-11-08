@@ -306,7 +306,7 @@ end
 -- The Shared Style Function for Party and Raid
 local GroupGlobalStyle = function(self, unit)
 
-	self.menu = lib.spawnMenu
+	if(cfg.EnableRightClickMenu) then self.menu = lib.spawnMenu end
 	self:RegisterForClicks('AnyUp')
 	
 	-- Call Unit Specific Styles

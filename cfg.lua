@@ -57,6 +57,7 @@ local cfg = CreateFrame("Frame")
 	cfg.RaidShowSolo = true -- show raid frames even when solo
 	cfg.ShowIncHeals = true -- Show incoming heals in player and raid frames
 	cfg.ShowTooltips = true -- Show Tooltips on raid frames
+	cfg.EnableRightClickMenu = false -- Enables the right click menu for raid frames
 	cfg.ShowRoleIcons = false -- Show Role Icons on raid frames
 	cfg.Indicators = true -- Show Class Indicators on raid frames (HoT's, buffs etc.)
 	cfg.ThreatIndicator = true -- Show Threat Indicator on raid frames
@@ -148,6 +149,7 @@ local cfg = CreateFrame("Frame")
 				--Grand Empress Shek'zeer
 					["123707"] = 8, -- Eyes of the Empress
 					["124097"] = 8, -- Sticky Resin
+					["123788"] = 9, -- Cry of Terror
 					["124862"] = 10, ["124863"] = 10, -- Visions of Demise
 			--Mogu'shan Vaults
 				--The Stone Guard

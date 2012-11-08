@@ -160,6 +160,7 @@ lib.addStrings = function(f)
 		name.frequentUpdates = true
 		hpval = lib.gen_fontstring(f.Health, cfg.font, retVal(f,14,12,13), retVal(f,"NONE","NONE","OUTLINE"))
 		hpval:SetPoint(retVal(f,"RIGHT","RIGHT","LEFT"), f.Health, retVal(f,"TOPRIGHT","TOPRIGHT","BOTTOMLEFT"), retVal(f,-3,-3,0), retVal(f,-10,-10,6))
+		hpval.frequentUpdates = true
 		powerval = lib.gen_fontstring(f.Health, cfg.font, 14, "THINOUTLINE")
 		powerval:SetPoint("RIGHT", f.Health, "BOTTOMRIGHT", 3, -16)
 		if f.mystyle == "raid" then
@@ -546,23 +547,13 @@ lib.addCastBar = function(f)
     txt:SetPoint("RIGHT", t, "LEFT", -5, 0)
     --icon
     local i = s:CreateTexture(nil, "ARTWORK")
-   
-	if f.mystyle=='player' then
-		if cfg.playerCastBarOnUnitframe then
-			i:SetPoint("RIGHT", s, "LEFT", 0, 0)
-			i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
-		else
-			i:SetPoint("RIGHT",s,"LEFT",-5,0)
-			i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
-		end
-	elseif f.mystyle=='target' then
-		if cfg.targetCastBarOnUnitframe then
-			i:SetPoint("RIGHT", s, "LEFT", 0, 0)
-			i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
-		else
-			i:SetPoint("RIGHT",s,"LEFT",-5,0)
-			i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
-		end
+
+	if ((f.mystyle=='player' and cfg.playerCastBarOnUnitframe) or (f.mystyle=='target' and cfg.targetCastBarOnUnitframe)) then
+		i:SetPoint("RIGHT", s, "LEFT", 0, 0)
+		i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
+	elseif (f.mystyle=='player' or f.mystyle=='target') then
+		i:SetPoint("RIGHT",s,"LEFT",-5,0)
+		i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
 	else
 		i:SetPoint("RIGHT",s,"LEFT",-4,0)
 		i:SetSize(s:GetHeight(),s:GetHeight())
@@ -641,7 +632,6 @@ end
   
 -- Post Create Icon Function
 local myPostCreateIcon = function(self, button)
-
 	self.showDebuffType = true
 	self.disableCooldown = true
 	button.cd.noOCC = true
@@ -692,7 +682,7 @@ local myPostUpdateIcon = function(self, unit, icon, index, offset, filter, isDeb
 	if(unit == "target") then
 		if(icon.filter == "HARMFUL") then
 			if (unitCaster == 'player' or unitCaster == 'vehicle') then
-				icon.icon:SetDesaturated(nil)                 
+				icon.icon:SetDesaturated(nil)
 			elseif(not UnitPlayerControlled(unit)) then -- If Unit is Player Controlled don't desaturate debuffs
 				icon:SetBackdropColor(0, 0, 0)
 				icon.overlay:SetVertexColor(0.3, 0.3, 0.3)
