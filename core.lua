@@ -437,6 +437,8 @@ local boss3 = oUF:Spawn("boss3", "oUF_Boss3")
 boss3:SetPoint("TOPLEFT", UIParent, "LEFT", cfg.bossX, cfg.bossY+150)
 local boss4 = oUF:Spawn("boss4", "oUF_Boss4")
 boss4:SetPoint("TOPLEFT", UIParent, "LEFT", cfg.bossX, cfg.bossY+225)
+local boss5 = oUF:Spawn("boss5", "oUF_Boss5")
+boss5:SetPoint("TOPLEFT", UIParent, "LEFT", cfg.bossX, cfg.bossY+300)
 
 
 oUF:DisableBlizzard('party')

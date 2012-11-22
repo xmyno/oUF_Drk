@@ -134,7 +134,7 @@ local cfg = CreateFrame("Frame")
 					["122740"] = 10, -- Convert
 				--Blade Lord Ta'yak
 					["123474"] = 8, -- Overwhelming Assault
-					["123175"] = 9, -- Wind Step
+					["123180"] = 9, -- Wind Step
 				--Garalon
 					["122835"] = 8, ["129815"] = 8, -- Pheromones
 					["123081"] = 10, -- Pungency
