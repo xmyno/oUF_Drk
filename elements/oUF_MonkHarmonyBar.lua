@@ -4,7 +4,7 @@ local _, ns = ...
 local oUF = ns.oUF or oUF
 assert(oUF, "oUF_MonkHarmonyBar was unable to locate oUF install")
 
-local SPELL_POWER_LIGHT_FORCE = SPELL_POWER_LIGHT_FORCE
+local SPELL_POWER_CHI = SPELL_POWER_CHI
 local MONK_TALENT_ASCENSION = 115396
 local curMaxPower = 0
 local Colors = { 
@@ -17,13 +17,13 @@ local Colors = {
 
 
 local Update = function(self, event, unit, powerType)
-	if(self.unit ~= unit or (powerType and powerType ~= "LIGHT_FORCE")) then return end
+	if(self.unit ~= unit or (powerType and powerType ~= "CHI")) then return end
 
 	local mhb = self.MonkHarmonyBar
 	if(mhb.PreUpdate) then mhb:PreUpdate(unit) end
 	
-	local power = UnitPower("player",SPELL_POWER_LIGHT_FORCE)
-	local maxPower = UnitPowerMax("player",SPELL_POWER_LIGHT_FORCE)
+	local power = UnitPower("player",SPELL_POWER_CHI)
+	local maxPower = UnitPowerMax("player",SPELL_POWER_CHI)
 	if curMaxPower ~= maxPower then
 		if maxPower == 4 then
 			mhb[5]:Hide()
@@ -58,7 +58,7 @@ local Path = function(self, ...)
 end
 
 local ForceUpdate = function(element)
-	return Path(element.__owner, "ForceUpdate", element.__owner.unit, "LIGHT_FORCE")
+	return Path(element.__owner, "ForceUpdate", element.__owner.unit, "CHI")
 end
 
 local function Enable(self)

@@ -318,7 +318,28 @@ lib.addInfoIcons = function(f)
 		f.Combat:SetTexture('Interface\\CharacterFrame\\UI-StateIcon')
 		f.Combat:SetTexCoord(0.58, 0.90, 0.08, 0.41)
 		f.Combat:SetPoint('BOTTOMRIGHT', 7, -7)
-	end
+	elseif f.mystyle == "target" then
+        local combat = CreateFrame("Frame", nil, h)
+        combat:SetSize(15, 15)
+        combat:SetPoint("BOTTOMRIGHT", 7, -7)
+        f.CombatIcon = combat
+
+        local combaticon = combat:CreateTexture(nil, "ARTWORK")
+        combaticon:SetAllPoints(true)
+        combaticon:SetTexture("Interface\\CharacterFrame\\UI-StateIcon")
+        combaticon:SetTexCoord(0.58, 0.9, 0.08, 0.41)
+        combat.icon = combaticon
+
+        combat.__owner = f
+        combat:SetScript("OnUpdate", function(self)
+            local unit = self.__owner.unit
+            if unit and UnitAffectingCombat(unit) then
+                self.icon:Show()
+            else
+                self.icon:Hide()
+            end
+        end)
+    end
 	--	PVP Icon
 	if f.mystyle == 'player' then
 		f.PvP = f.Health:CreateTexture(nil, "OVERLAY")

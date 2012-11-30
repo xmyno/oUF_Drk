@@ -1,7 +1,7 @@
-## Interface: 50001
+## Interface: 50100
 ## Author: Drakull, Myno
 ## Title: oUF_Drk Fanupdate
-## Version: r12
+## Version: r13
 ## Notes: My Layout for oUF
 ## RequiredDeps: oUF
 ## OptionalDeps: oUF_Experience
