@@ -53,7 +53,6 @@ local cfg = CreateFrame("Frame")
 	cfg.targetCastBarHeight = 25	
 --raid&party frames
 	cfg.ShowRaid = true -- show raid frames
-	cfg.ShowParty = true -- show party frames (shown as 5man raid)
 	cfg.RaidShowSolo = true -- show raid frames even when solo
 	cfg.ShowIncHeals = true -- Show incoming heals in player and raid frames
 	cfg.ShowTooltips = true -- Show Tooltips on raid frames

@@ -95,6 +95,7 @@ end
 lib.addHealthBar = function(f)
 	--statusbar
 	local s = CreateFrame("StatusBar", nil, f)
+	s:SetFrameLevel(1)
 	if f.mystyle=="boss" then
 		s:SetHeight(37)
 		s:SetWidth(f:GetWidth())
@@ -1432,12 +1433,19 @@ lib.addHighlight = function(f)
 		if f.Experience ~= nil then
 			f.Experience.Text:SetAlpha(0.9)
 		end
+		if f.mystyle == "raid" then
+			if not cfg.ShowTooltips then GameTooltip:Hide() end
+			if cfg.ShowRoleIcons then f.LFDRole:SetAlpha(1) end
+		end
     end
     local OnLeave = function(f)
 		UnitFrame_OnLeave(f)
 		f.Highlight:Hide()
 		if f.Experience ~= nil then
 			f.Experience.Text:SetAlpha(0)
+		end
+		if f.mystyle == "raid" then
+			if cfg.ShowRoleIcons then f.LFDRole:SetAlpha(0) end
 		end
     end
     f:SetScript("OnEnter", OnEnter)
