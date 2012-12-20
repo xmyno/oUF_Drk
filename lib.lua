@@ -188,7 +188,7 @@ lib.addPowerBar = function(f)
 	local s = CreateFrame("StatusBar", nil, f)
     s:SetStatusBarTexture(cfg.powerbar_texture)
 	s:GetStatusBarTexture():SetHorizTile(true)
-	s:SetFrameLevel(2)
+	s:SetFrameLevel(1)
 	if f.mystyle=="boss" then
 		s:SetWidth(250)
 		s:SetHeight(8)
@@ -207,7 +207,7 @@ lib.addPowerBar = function(f)
     --helper
 	if f.mystyle == "target" or f.mystyle == "player" or f.mystyle=="boss" then
 		local h = CreateFrame("Frame", nil, s)
-		h:SetFrameLevel(1)
+		h:SetFrameLevel(0)
 		h:SetPoint("TOPLEFT",-4,4)
 		h:SetPoint("BOTTOMRIGHT",4,-4)
 		lib.gen_backdrop(h)
