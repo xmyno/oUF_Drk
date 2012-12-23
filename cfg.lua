@@ -52,14 +52,14 @@ local cfg = CreateFrame("Frame")
 	cfg.targetCastBarWidth = 200
 	cfg.targetCastBarHeight = 25	
 --raid&party frames
-	cfg.ShowRaid = true -- show raid frames
-	cfg.RaidShowSolo = true -- show raid frames even when solo
-	cfg.ShowIncHeals = true -- Show incoming heals in player and raid frames
-	cfg.ShowTooltips = true -- Show Tooltips on raid frames
-	cfg.EnableRightClickMenu = false -- Enables the right click menu for raid frames
-	cfg.ShowRoleIcons = false -- Show Role Icons on raid frames
-	cfg.Indicators = true -- Show Class Indicators on raid frames (HoT's, buffs etc.)
-	cfg.ThreatIndicator = true -- Show Threat Indicator on raid frames
+	cfg.showRaid = true -- show raid frames
+	cfg.raidShowSolo = true -- show raid frames even when solo
+	cfg.showIncHeals = true -- Show incoming heals in player and raid frames
+	cfg.showTooltips = true -- Show Tooltips on raid frames
+	cfg.enableRightClickMenu = false -- Enables the right click menu for raid frames
+	cfg.showRoleIcons = false -- Show Role Icons on raid frames
+	cfg.showIndicators = true -- Show Class Indicators on raid frames (HoT's, buffs etc.)
+	cfg.showThreatIndicator = true -- Show Threat Indicator on raid frames
 	
 	cfg.raidOrientationHorizontal = false
 	cfg.raidX = -410

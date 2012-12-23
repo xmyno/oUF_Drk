@@ -1,10 +1,10 @@
------------------------------
+-----------------------
 --| oUF_Drk
 --| Drakull 2010
---| UPDATED by myno
------------------------------
--- INIT
------------------------------
+--| Updated by myno
+-----------------------
+-- Initialize
+-----------------------
 
 local addon, ns = ...
 local cfg = ns.cfg
@@ -13,10 +13,11 @@ local lib = CreateFrame("Frame")
 local _, playerClass = UnitClass("player")
 oUF.colors.runes = {{0.87, 0.12, 0.23};{0.40, 0.95, 0.20};{0.14, 0.50, 1};{.70, .21, 0.94};}
 
------------------------------
--- FUNCTIONS
------------------------------
+-----------------------
+-- Functions
+-----------------------
 
+-- Returns val1, val2 or val3 depending on frame
 local retVal = function(f, val1, val2, val3)
 	if f.mystyle == "player" or f.mystyle == "target" then
 		return val1
@@ -26,46 +27,26 @@ local retVal = function(f, val1, val2, val3)
 		return val2
 	end
 end
-  
---backdrop table
-local backdrop_tab = { 
-	bgFile = cfg.backdrop_texture, 
-	edgeFile = cfg.backdrop_edge_texture,
-	tile = false,
-	tileSize = 0, 
-	edgeSize = 5, 
-	insets = { 
-		left = 3, 
-		right = 3, 
-		top = 3, 
-		bottom = 3,
-	},
-}
-local power_backdrop_tab = { 
-	bgFile = cfg.backdrop_texture, 
-	edgeFile = cfg.backdrop_edge_texture,
-	tile = false,
-	tileSize = 0, 
-	edgeSize = 4, 
-	insets = { 
-		left = 2, 
-		right = 2, 
-		top = 2, 
-		bottom = 2,
-	},
-}
--- backdrop func
-lib.gen_backdrop = function(f)
-	f:SetBackdrop(backdrop_tab);
+
+-- Create Backdrop Function
+lib.createBackdrop = function(f, size)
+	f:SetBackdrop({
+		bgFile = cfg.backdrop_texture, 
+		edgeFile = cfg.backdrop_edge_texture,
+		tile = false,
+		tileSize = 0, 
+		edgeSize = 5-size, 
+		insets = { 
+			left = 3-size, 
+			right = 3-size, 
+			top = 3-size, 
+			bottom = 3-size,
+		}
+	});
 	f:SetBackdropColor(0,0,0,1)
 	f:SetBackdropBorderColor(0,0,0,0.8)
 end
-lib.gen_power_backdrop = function(f)
-	f:SetBackdrop(power_backdrop_tab);
-	f:SetBackdropColor(0,0,0,1)
-	f:SetBackdropBorderColor(0,0,0,0.8)
-end
-  
+
 -- Right Click Menu
 lib.spawnMenu = function(self)
 	local unit = self.unit:sub(1, -2)
@@ -82,7 +63,7 @@ lib.spawnMenu = function(self)
 	end
 end
 
---fontstring func
+-- Create Font Function
 lib.gen_fontstring = function(f, name, size, outline)
 	local fs = f:CreateFontString(nil, "OVERLAY")
 	fs:SetFont(name, size, outline)
@@ -91,7 +72,7 @@ lib.gen_fontstring = function(f, name, size, outline)
 	return fs
 end  
 
---gen healthbar func
+-- Create Health Bar Function
 lib.addHealthBar = function(f)
 	--statusbar
 	local s = CreateFrame("StatusBar", nil, f)
@@ -125,13 +106,10 @@ lib.addHealthBar = function(f)
 	else
 		h:SetPoint("BOTTOMRIGHT", 4, -10*cfg.unitframeScale)
 	end
-	lib.gen_backdrop(h)
+	lib.createBackdrop(h,0)
 	--bg
 	local b = s:CreateTexture(nil, "BACKGROUND")
 	b:SetTexture(cfg.statusbar_texture)
-	if f.mystyle == "raid" then
-		b:SetVertexColor(.4,.4,.4,1)
-	end
 	b:SetAllPoints(s)
 	f.Health = s
 	f.Health.bg = b
@@ -193,7 +171,7 @@ lib.addPowerBar = function(f)
 		s:SetWidth(250)
 		s:SetHeight(8)
 		s:SetPoint("BOTTOMLEFT",f,"BOTTOMLEFT",0,0)
-		s:SetStatusBarColor(165/255, 73/255, 23/255, 1)	
+		s:SetStatusBarColor(165/255, 73/255, 23/255, 1)
 	else
 		s:SetHeight(retVal(f,f:GetHeight()*.26,f:GetHeight()*.2,2))
 		s:SetWidth(f:GetWidth())
@@ -210,7 +188,7 @@ lib.addPowerBar = function(f)
 		h:SetFrameLevel(0)
 		h:SetPoint("TOPLEFT",-4,4)
 		h:SetPoint("BOTTOMRIGHT",4,-4)
-		lib.gen_backdrop(h)
+		lib.createBackdrop(h,0)
 	
 	end
     --bg
@@ -237,7 +215,6 @@ lib.addAltPowerBar = function(f)
 			s:SetPoint("TOPRIGHT", f.Health, "TOPLEFT", -3, 0)
 		end
 	end
-	
 	s:SetStatusBarTexture(cfg.powerbar_texture)
 	s:GetStatusBarTexture():SetHorizTile(false)
 	s:SetStatusBarColor(235/255, 235/255, 235/255)
@@ -247,7 +224,7 @@ lib.addAltPowerBar = function(f)
 	h:SetFrameLevel(0)
 	h:SetPoint("TOPLEFT",-3,3)
 	h:SetPoint("BOTTOMRIGHT",3,-3)
-	lib.gen_power_backdrop(h)
+	lib.createBackdrop(h,1)
 	
     local b = s:CreateTexture(nil, "BACKGROUND")
     b:SetTexture(cfg.powerbar_texture)
@@ -295,7 +272,7 @@ lib.addPortrait = function(f)
     h:SetFrameLevel(3)
     h:SetPoint("TOPLEFT",-4,4)
     h:SetPoint("BOTTOMRIGHT",4,-4)
-    lib.gen_backdrop(h)
+    lib.createBackdrop(h,0)
 	
     f.Portrait = p
 
@@ -307,12 +284,12 @@ lib.addPortrait = function(f)
     hl:Hide()
 end
 
---gen combat and LFD icons
+-- Create Icons Function (Combat, PvP, Resting, LFDRole, Leader, Assist, Master Looter, Phase, Quest, Raid Mark, Ressurect)
 lib.addInfoIcons = function(f)
     local h = CreateFrame("Frame",nil,f)
     h:SetAllPoints(f)
     h:SetFrameLevel(10)
-    --combat icon
+    --Combat Icon
 	if f.mystyle=="player" then
 		f.Combat = h:CreateTexture(nil, 'OVERLAY')
 		f.Combat:SetSize(15,15)
@@ -341,35 +318,26 @@ lib.addInfoIcons = function(f)
             end
         end)
     end
-	--	PVP Icon
+	-- PvP Icon
+	f.PvP = h:CreateTexture(nil, "OVERLAY")
+	local faction = PvPCheck
+	if faction == "Horde" then
+		f.PvP:SetTexCoord(0.08, 0.58, 0.045, 0.545)
+	elseif faction == "Alliance" then
+		f.PvP:SetTexCoord(0.07, 0.58, 0.06, 0.57)
+	else
+		f.PvP:SetTexCoord(0.05, 0.605, 0.015, 0.57)
+	end
 	if f.mystyle == 'player' then
-		f.PvP = f.Health:CreateTexture(nil, "OVERLAY")
-		local faction = PvPCheck
-		if faction == "Horde" then
-			f.PvP:SetTexCoord(0.08, 0.58, 0.045, 0.545)
-		elseif faction == "Alliance" then
-			f.PvP:SetTexCoord(0.07, 0.58, 0.06, 0.57)
-		else
-			f.PvP:SetTexCoord(0.05, 0.605, 0.015, 0.57)
-		end
 		f.PvP:SetHeight(14)
 		f.PvP:SetWidth(14)
 		f.PvP:SetPoint("TOPRIGHT", 7, 7)
 	elseif f.mystyle == 'target' then
-		f.PvP = h:CreateTexture(nil, "OVERLAY")
-		local faction = PvPCheck
-		if faction == "Horde" then
-			f.PvP:SetTexCoord(0.08, 0.58, 0.045, 0.545)
-		elseif faction == "Alliance" then
-			f.PvP:SetTexCoord(0.07, 0.58, 0.06, 0.57)
-		else
-			f.PvP:SetTexCoord(0.05, 0.605, 0.015, 0.57)
-		end
 		f.PvP:SetHeight(12)
 		f.PvP:SetWidth(12)
 		f.PvP:SetPoint("TOPRIGHT", 6, 6)
 	end
-	-- rest icon
+	-- Rest Icon
     if f.mystyle == 'player' then
 		f.Resting = h:CreateTexture(nil, 'OVERLAY')
 		f.Resting:SetSize(15,15)
@@ -379,76 +347,70 @@ lib.addInfoIcons = function(f)
 	end
     --LFDRole icon
 	if f.mystyle == 'player' or f.mystyle == 'target' then
-		f.LFDRole = f.Power:CreateTexture(nil, 'OVERLAY')
+		f.LFDRole = h:CreateTexture(nil, 'OVERLAY')
 		f.LFDRole:SetSize(15,15)
 		f.LFDRole:SetAlpha(0.9)
 		f.LFDRole:SetPoint('BOTTOMLEFT', -6, -8)
-    elseif f.mystyle == 'raid' then 
-		f.LFDRole = f.Health:CreateTexture(nil, 'OVERLAY')
+    elseif cfg.showRoleIcons and f.mystyle == 'raid' then 
+		f.LFDRole = h:CreateTexture(nil, 'OVERLAY')
 		f.LFDRole:SetSize(12,12)
 		f.LFDRole:SetPoint('CENTER', f, 'RIGHT', 1, 0)
 		f.LFDRole:SetAlpha(0)
     end
+	-- Leader, Assist, Master Looter Icon
 	if f.mystyle ~= 'raid' then
-		--Leader icon
 		li = h:CreateTexture(nil, "OVERLAY")
 		li:SetPoint("TOPLEFT", f, 0, 8)
 		li:SetSize(12,12)
 		f.Leader = li
-		--Assist icon
 		ai = h:CreateTexture(nil, "OVERLAY")
 		ai:SetPoint("TOPLEFT", f, 0, 8)
 		ai:SetSize(12,12)
 		f.Assistant = ai
-		--ML icon
 		local ml = h:CreateTexture(nil, 'OVERLAY')
 		ml:SetSize(10,10)
 		ml:SetPoint('LEFT', f.Leader, 'RIGHT')
 		f.MasterLooter = ml
 	end
-end
-
--- phase icon 
-lib.addPhaseIcon = function(self)
-	local picon = self.Health:CreateTexture(nil, 'OVERLAY')
-	picon:SetPoint('TOPRIGHT', self, 'TOPRIGHT', 8, 8)
-	picon:SetSize(16, 16)
-	self.PhaseIcon = picon
-end
-
--- quest icon
-lib.addQuestIcon = function(self)
-	local qicon = self.Health:CreateTexture(nil, 'OVERLAY')
-	qicon:SetPoint('TOPLEFT', self, 'TOPLEFT', 0, 8)
-	qicon:SetSize(16, 16)
-	self.QuestIcon = qicon
-end
-
---gen raid mark icons
-lib.addRaidMark = function(f)
-    local h = CreateFrame("Frame", nil, f)
-    h:SetAllPoints(f)
-    h:SetFrameLevel(10)
-    h:SetAlpha(0.8)
-    local ri = h:CreateTexture(nil,'OVERLAY',h)
-	if f.mystyle == 'player' or f.mystyle == 'target' then
-		ri:SetPoint("RIGHT", f, "LEFT", 5, 6)
-	elseif f.mystyle == 'raid' then	
-		ri:SetPoint("CENTER", f, "TOP",0,0)
-	else
-		ri:SetPoint("CENTER", f, "TOP", 0, 2)
+	-- Phase Icon
+	if f.mystyle == 'target' then
+		picon = h:CreateTexture(nil, 'OVERLAY')
+		picon:SetPoint('TOPRIGHT', f, 'TOPRIGHT', 8, 8)
+		picon:SetSize(16, 16)
+		f.PhaseIcon = picon
 	end
-	local size = retVal(f, 20, 18, 12)
-    ri:SetSize(size, size)
-    f.RaidIcon = ri
+	-- Quest Icon
+	--[[
+	if f.mystyle == 'target' then
+		qicon = self.Health:CreateTexture(nil, 'OVERLAY')
+		qicon:SetPoint('TOPLEFT', f, 'TOPLEFT', 0, 8)
+		qicon:SetSize(16, 16)
+		f.QuestIcon = qicon
+	end
+	]]
+	-- Raid Marks
+	if f.mystyle == 'raid' or f.mystyle == 'player' or f.mystyle == 'target' then
+		ri = h:CreateTexture(nil,'OVERLAY')
+		if f.mystyle == 'player' or f.mystyle == 'target' then
+			ri:SetPoint("RIGHT", f, "LEFT", 5, 6)
+		elseif f.mystyle == 'raid' then	
+			ri:SetPoint("CENTER", f, "TOP",0,0)
+		else
+			ri:SetPoint("CENTER", f, "TOP", 0, 2)
+		end
+		local size = retVal(f, 20, 18, 12)
+		ri:SetSize(size, size)
+		f.RaidIcon = ri
+	end
+	-- Ressurect Icon
+	if f.mystyle == 'raid' then
+		rezicon = h:CreateTexture(nil,'OVERLAY')
+		rezicon:SetPoint('CENTER',f,'CENTER',0,-3)
+		rezicon:SetSize(16,16)
+		f.ResurrectIcon = rezicon
+	end
 end
 
-lib.addResurrectIcon = function(f)
-	local rezicon = f.Health:CreateTexture(nil,'OVERLAY')
-	rezicon:SetPoint('CENTER',f,'CENTER',0,-3)
-	rezicon:SetSize(16,16)
-	f.ResurrectIcon = rezicon
-end
 
 -- Create Target Border
 function lib.CreateTargetBorder(self)
@@ -544,9 +506,9 @@ lib.addCastBar = function(f)
     --helper
     local h = CreateFrame("Frame", nil, s)
     h:SetFrameLevel(0)
-    h:SetPoint("TOPLEFT",-5,5)
-    h:SetPoint("BOTTOMRIGHT",5,-5)
-    lib.gen_backdrop(h)
+    h:SetPoint("TOPLEFT",-4,4)
+    h:SetPoint("BOTTOMRIGHT",4,-4)
+    lib.createBackdrop(h,0)
     --backdrop
     if f.mystyle~="player" or f.mystyle~="target" then
 	local b = s:CreateTexture(nil, "BACKGROUND")
@@ -584,9 +546,9 @@ lib.addCastBar = function(f)
     --helper2 for icon
     local h2 = CreateFrame("Frame", nil, s)
     h2:SetFrameLevel(0)
-    h2:SetPoint("TOPLEFT",i,"TOPLEFT",-5,5)
-    h2:SetPoint("BOTTOMRIGHT",i,"BOTTOMRIGHT",5,-5)
-    lib.gen_backdrop(h2)
+    h2:SetPoint("TOPLEFT",i,"TOPLEFT",-4,4)
+    h2:SetPoint("BOTTOMRIGHT",i,"BOTTOMRIGHT",4,-4)
+    lib.createBackdrop(h2,0)
     if f.mystyle == "player" then
 		--latency only for player unit
 		local z = s:CreateTexture(nil,"OVERLAY")
@@ -647,7 +609,7 @@ lib.addMirrorCastBar = function(f)
 		h:SetFrameLevel(0)
 		h:SetPoint("TOPLEFT",-5,5)
 		h:SetPoint("BOTTOMRIGHT",5,-5)
-		lib.gen_backdrop(h)
+		lib.createBackdrop(h,0)
 	end
 end
   
@@ -682,7 +644,7 @@ local myPostCreateIcon = function(self, button)
 	h:SetFrameLevel(0)
 	h:SetPoint("TOPLEFT",-5,5)
 	h:SetPoint("BOTTOMRIGHT",5,-5)
-	lib.gen_backdrop(h)
+	lib.createBackdrop(h,0)
 end
   
 -- Post Update Icon Function
@@ -965,10 +927,6 @@ lib.PostUpdateRaidFramePower = function(Power, unit, min, max)
 
 end
 
---lib.updateRaidFramePosition = function(self)
---	print("RaidFramePosition")
---end
-
 lib.addEclipseBar = function(self)
 	if playerClass ~= "DRUID" then return end
 	local eclipseBar = CreateFrame('Frame', nil, self)
@@ -983,7 +941,7 @@ lib.addEclipseBar = function(self)
 	local h = CreateFrame("Frame", nil, eclipseBar)
 	h:SetPoint("TOPLEFT",-3,3)
 	h:SetPoint("BOTTOMRIGHT",3,-3)
-	lib.gen_power_backdrop(h)
+	lib.createBackdrop(h,1)
 	eclipseBar.eBarBG = h
 
 	local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
@@ -1087,7 +1045,7 @@ lib.addHarmony = function(self)
 		h:SetFrameLevel(mhb:GetFrameLevel())
 		h:SetPoint("TOPLEFT",-3,3)
 		h:SetPoint("BOTTOMRIGHT",3,-3)
-		lib.gen_power_backdrop(h)
+		lib.createBackdrop(h,1)
 		
 		if i == 1 then
 			mhb[i]:SetPoint("LEFT", mhb, "LEFT", 1, 0)
@@ -1128,7 +1086,7 @@ lib.addShadoworbs = function(self)
 		h:SetFrameLevel(10)
 		h:SetPoint("TOPLEFT",-3,3)
 		h:SetPoint("BOTTOMRIGHT",3,-3)
-		lib.gen_power_backdrop(h)
+		lib.createBackdrop(h,1)
 		
 		if (i == 1) then
 			pso[i]:SetPoint('LEFT', pso, 'LEFT', 1, 0)
@@ -1168,7 +1126,7 @@ lib.addShards = function(self)
 		h:SetFrameLevel(10)
 		h:SetPoint("TOPLEFT",-3,3)
 		h:SetPoint("BOTTOMRIGHT",3,-3)
-		lib.gen_power_backdrop(h)
+		lib.createBackdrop(h,1)
 		
 		if i == 1 then
 			wsb[i]:SetPoint("LEFT", wsb, "LEFT", 1, 0)
@@ -1208,7 +1166,7 @@ lib.addHolyPower = function(self)
 		h:SetFrameLevel(10)
 		h:SetPoint("TOPLEFT",-3,3)
 		h:SetPoint("BOTTOMRIGHT",3,-3)
-		lib.gen_power_backdrop(h)
+		lib.createBackdrop(h,1)
 		
 		if (i == 1) then
 			php[i]:SetPoint('LEFT', php, 'LEFT', 1, 0)
@@ -1246,7 +1204,7 @@ lib.addRunes = function(self)
 		h:SetFrameLevel(10)
 		h:SetPoint("TOPLEFT",-3,3)
 		h:SetPoint("BOTTOMRIGHT",3,-3)
-		lib.gen_power_backdrop(h)
+		lib.createBackdrop(h,1)
 		
 		if (i == 1) then
 			self.Runes[i]:SetPoint('LEFT', self.Runes, 'LEFT', 1, 0)
@@ -1280,7 +1238,7 @@ lib.addCPoints = function(self)
 		h:SetFrameLevel(10)
 		h:SetPoint("TOPLEFT",-3,3)
 		h:SetPoint("BOTTOMRIGHT",3,-3)
-		lib.gen_power_backdrop(h)
+		lib.createBackdrop(h,1)
 		
 		if (i == 1) then
 			dcp[i]:SetPoint('LEFT', dcp, 'LEFT', 1, 0)
@@ -1308,7 +1266,7 @@ end
 
 -- Heal Prediction
 lib.addHealPred = function(self)
-	if not cfg.ShowIncHeals then return end
+	if not cfg.showIncHeals then return end
 	
 	local mhpb = CreateFrame('StatusBar', nil, self.Health)
 	mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
@@ -1434,8 +1392,8 @@ lib.addHighlight = function(f)
 			f.Experience.Text:SetAlpha(0.9)
 		end
 		if f.mystyle == "raid" then
-			if not cfg.ShowTooltips then GameTooltip:Hide() end
-			if cfg.ShowRoleIcons then f.LFDRole:SetAlpha(1) end
+			if not cfg.showTooltips then GameTooltip:Hide() end
+			if cfg.showRoleIcons then f.LFDRole:SetAlpha(1) end
 		end
     end
     local OnLeave = function(f)
@@ -1445,7 +1403,7 @@ lib.addHighlight = function(f)
 			f.Experience.Text:SetAlpha(0)
 		end
 		if f.mystyle == "raid" then
-			if cfg.ShowRoleIcons then f.LFDRole:SetAlpha(0) end
+			if cfg.showRoleIcons then f.LFDRole:SetAlpha(0) end
 		end
     end
     f:SetScript("OnEnter", OnEnter)
