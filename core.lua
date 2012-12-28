@@ -55,6 +55,7 @@ local UnitSpecific = {
 		lib.addInfoIcons(self)
 		lib.addHealPred(self)
 		lib.addMirrorCastBar(self)
+		lib.addAFKTimer(self)
 
 		-- Class Bars
 		if cfg.showRunebar then lib.addRunes(self) end
@@ -100,6 +101,7 @@ local UnitSpecific = {
 		-- Elements
 		lib.addInfoIcons(self)
 		lib.addCastBar(self)
+		lib.addAFKTimer(self)
 		if cfg.targetBuffs then lib.addBuffs(self) end
 		if cfg.targetDebuffs then lib.addDebuffs(self) end
 		if cfg.showComboPoints then lib.addCPoints(self) end
@@ -353,10 +355,10 @@ oUF:Factory(function(self)
 	self:Spawn('player'):SetPoint("TOPRIGHT",UIParent,"BOTTOM", cfg.playerX, cfg.playerY)
 	self:Spawn('target'):SetPoint("TOPLEFT",UIParent,"BOTTOM", cfg.targetX, cfg.targetY)
 
-	self:Spawn('targettarget'):SetPoint("BOTTOMRIGHT",oUF_drkTarget,"TOPRIGHT", 0, 7)
-	self:Spawn('pet'):SetPoint("BOTTOMLEFT",oUF_drkPlayer,"TOPLEFT", 0, 7)
-	self:Spawn('focus'):SetPoint("BOTTOMRIGHT",oUF_drkPlayer,"TOPRIGHT", 0, 7)
-	self:Spawn('focustarget'):SetPoint("BOTTOMLEFT",oUF_drkTarget,"TOPLEFT", 0, 7)
+	self:Spawn('targettarget'):SetPoint("BOTTOMRIGHT",oUF_drkGlobalTarget,"TOPRIGHT", 0, 7)
+	self:Spawn('pet'):SetPoint("BOTTOMLEFT",oUF_drkGlobalPlayer,"TOPLEFT", 0, 7)
+	self:Spawn('focus'):SetPoint("BOTTOMRIGHT",oUF_drkGlobalPlayer,"TOPRIGHT", 0, 7)
+	self:Spawn('focustarget'):SetPoint("BOTTOMLEFT",oUF_drkGlobalTarget,"TOPLEFT", 0, 7)
 	
 	-- Raid Frames
 	if cfg.showRaid then

@@ -69,7 +69,7 @@ tags.Methods["drk:raidhp"] = function(u)
 end
 
 tags.Events["drk:color"] = 'UNIT_REACTION UNIT_HEALTH UNIT_HAPPINESS'
-tags.Methods["drk:color"] = function(u, r)
+tags.Methods["drk:color"] = function(u)
 	local _, class = UnitClass(u)
 	local reaction = UnitReaction(u, "player")
 	

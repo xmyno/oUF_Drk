@@ -21,7 +21,7 @@ local Enable = function(self)
 		self.SquareIndicator.frequentUpdates = .25
 		self:Tag(self.SquareIndicator,cfg.IndicatorList["SQUARE"][playerClass])
 	end
-	if self.ShowThreatIndicator then
+	if self.showThreatIndicator then
 		self.ThreatIndicator = self.Health:CreateFontString(nil,"OVERLAY")
 		self.ThreatIndicator:ClearAllPoints()
 		self.ThreatIndicator:SetPoint("LEFT",self.Health,"LEFT",1,0)
