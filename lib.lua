@@ -148,7 +148,7 @@ lib.addStrings = function(f)
 		else
 			name:SetPoint("RIGHT", hpval, "LEFT", -2, 0)
 			if f.mystyle == "player" then
-				f:Tag(name, "[drk:color][my:power][drk:afkdnd]")
+				f:Tag(name, "[drk:color][my:power]|r[drk:afkdnd]")
 			elseif f.mystyle == "target" then
 				f:Tag(name, "[drk:level] [drk:color][name][drk:afkdnd]")
 				f:Tag(powerval, "[my:power]")
@@ -408,6 +408,13 @@ lib.addInfoIcons = function(f)
 		rezicon:SetPoint('CENTER',f,'CENTER',0,-3)
 		rezicon:SetSize(16,16)
 		f.ResurrectIcon = rezicon
+	end
+	-- Ready Check Icon
+	if f.mystyle == 'raid' then
+		rc = f.Health:CreateTexture(nil, "OVERLAY")
+		rc:SetSize(14, 14)
+		rc:SetPoint("BOTTOMLEFT", f.Health, "TOPRIGHT", -13, -12)
+		f.ReadyCheck = rc
 	end
 end
 
@@ -1256,13 +1263,6 @@ lib.addCPoints = function(self)
 	self.DrkCPoints = dcp
 end
 
--- ReadyCheck
-lib.addReadyCheck = function(self)
-	rCheck = self.Health:CreateTexture(nil, "OVERLAY")
-	rCheck:SetSize(14, 14)
-	rCheck:SetPoint("BOTTOMLEFT", self.Health, "TOPRIGHT", -13, -12)
-	self.ReadyCheck = rCheck
-end
 
 -- Heal Prediction
 lib.addHealPred = function(self)
@@ -1383,6 +1383,11 @@ lib.addExperienceBar = function(self)
 		
 end
 
+lib.addAFKTimer = function(f)
+	--f.AFKTimer = lib.gen_fontstring(f, cfg.font, 14, "NONE")
+	--f.AFKTimer:SetPoint("CENTER", f.Health, "TOP", 0, 5)
+end
+ 
 --gen hilight texture
 lib.addHighlight = function(f)
     local OnEnter = function(f)
