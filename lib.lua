@@ -389,19 +389,17 @@ lib.addInfoIcons = function(f)
 	end
 	]]
 	-- Raid Marks
-	if f.mystyle == 'raid' or f.mystyle == 'player' or f.mystyle == 'target' then
-		ri = h:CreateTexture(nil,'OVERLAY')
-		if f.mystyle == 'player' or f.mystyle == 'target' then
-			ri:SetPoint("RIGHT", f, "LEFT", 5, 6)
-		elseif f.mystyle == 'raid' then	
-			ri:SetPoint("CENTER", f, "TOP",0,0)
-		else
-			ri:SetPoint("CENTER", f, "TOP", 0, 2)
-		end
-		local size = retVal(f, 20, 18, 12)
-		ri:SetSize(size, size)
-		f.RaidIcon = ri
+	ri = h:CreateTexture(nil,'OVERLAY')
+	if f.mystyle == 'player' or f.mystyle == 'target' then
+		ri:SetPoint("RIGHT", f, "LEFT", 5, 6)
+	elseif f.mystyle == 'raid' then	
+		ri:SetPoint("CENTER", f, "TOP",0,0)
+	else
+		ri:SetPoint("CENTER", f, "TOP", 0, 2)
 	end
+	local size = retVal(f, 20, 18, 12)
+	ri:SetSize(size, size)
+	f.RaidIcon = ri
 	-- Ressurect Icon
 	if f.mystyle == 'raid' then
 		rezicon = h:CreateTexture(nil,'OVERLAY')
