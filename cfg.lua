@@ -182,7 +182,6 @@ local cfg = CreateFrame("Frame")
 			--Terrace of Endless Spring
 				--Protectors of the Endless
 					["117436"] = 10, ["131931"] = 10, ["111850"] = 10, -- Lightning Prison
-					--[""] = 8, -- Corrupted Essence -- ID MISSING
 				--Tsulong
 					["122777"] = 8, -- Nightmares
 					["123011"] = 10, ["123018"] = 10, -- Terrorize
@@ -190,7 +189,7 @@ local cfg = CreateFrame("Frame")
 					["123705"] = 10, -- Scary Fog
 					["123121"] = 8, -- Spray
 				--Sha of Fear
-					--[""] = 8, -- Dread Spray -- ID MISSING
+					["120629"] = 8, -- Huddle in Terror
 		},
 	}
 	
