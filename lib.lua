@@ -892,10 +892,9 @@ lib.PostUpdateRaidFrame = function(Health, unit, min, max)
 	
 	Health:SetStatusBarColor(.12,.12,.12,1)
 	Health:SetAlpha(1)
+	Health:SetValue(min)
 	
 	if dc or dead or ghost then
-		Health:SetValue(max)
-		
 		if dc then
 			Health:SetAlpha(.225)
 		elseif ghost then

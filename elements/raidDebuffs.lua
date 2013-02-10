@@ -145,19 +145,23 @@ local updateIcon = function(unit, debuffs)
 			if not cur then
 				cur = icon.priority
 				updateDebuff(icon, texture, count, dtype, duration, timeLeft)
-				if not icon.cddone then 
+				if icon.timeLeft == nil then 
+					icon.timeLeft = timeLeft
 					icon.cd:SetCooldown(GetTime(),duration)
-					icon.cddone = true
+				elseif timeLeft>icon.timeLeft then 
+					icon.timeLeft = timeLeft
+					icon.cd:SetCooldown(GetTime(),duration)
 				end
-				--icon.cd:SetCooldown(GetTime(),duration)	
 			else
 				if icon.priority > cur then
 					updateDebuff(icon, texture, count, dtype, duration, timeLeft)
-					if not icon.cddone then 
+					if icon.timeLeft == nil then 
+						icon.timeLeft = timeLeft
 						icon.cd:SetCooldown(GetTime(),duration)
-						icon.cddone = true
+					elseif timeLeft>icon.timeLeft then 
+						icon.timeLeft = timeLeft
+						icon.cd:SetCooldown(GetTime(),duration)
 					end
-					--icon.cd:SetCooldown(GetTime(),duration)	
 				end
 			end
 			

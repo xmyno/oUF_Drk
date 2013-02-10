@@ -99,8 +99,9 @@ local cfg = CreateFrame("Frame")
 		debuffs = {
 			--## USAGE: ["DEBUFF_NAME"] = PRIORITY, ##--
 			--## PRIORITY -> 10: high, 9: medium, 8: low, dispellable debuffs have standard priority of 5. ##--
-			--## CATACLYSM ##--
-			--["61295"] = 10, -- Riptde for testing purposes
+			--["61295"] = 10, -- Riptide for testing purposes only
+			--[[## CATACLYSM ##]]--
+			--[[ T13 ]]--
 			--Dragon Soul
 				--Warlord Zon'ozz
 					["103434"] = 9, -- Disrupting Shadows
@@ -122,11 +123,12 @@ local cfg = CreateFrame("Frame")
 					["106444"] = 9, -- Impale (Stacks)
 					["106794"] = 9, -- Shrapnel (should be the right one)
 					--["106791"] = 9, -- Shrapnel
-			--## MISTS OF PANDARIA ##--
+			--[[## MISTS OF PANDARIA ##]]--
 			--World Bosses
 				--Sha of Anger
 					["119622"] = 8, -- Growing Anger
 					["119626"] = 9, -- Aggressive Behavior
+			--[[ T14 ]]--
 			--Heart of Fear
 				--Imperial Vizier Zor'lok
 					["122706"] = 9, -- Noise Cancelling
@@ -190,6 +192,34 @@ local cfg = CreateFrame("Frame")
 					["123121"] = 8, -- Spray
 				--Sha of Fear
 					["120629"] = 8, -- Huddle in Terror
+			--[[ T15 ]]--
+			--Throne of Thunder
+				--Jin'rokh the Breaker
+					
+				--Horridon
+				
+				--Council of Elders
+				
+				--Tortos
+				
+				--Megaera
+					["139857"] = 9, -- Torrent of Ice
+					["139822"] = 9, -- Cinders
+				--Ji-Kun
+				
+				--Durumu the Forgotten
+				
+				--Primordius
+				
+				--Dark Animus
+					
+				--Iron Qon
+				
+				--Twin Consorts
+				
+				--Lei Shen
+				
+				--Ra-den
 		},
 	}
 	
