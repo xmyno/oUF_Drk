@@ -195,30 +195,53 @@ local cfg = CreateFrame("Frame")
 			--[[ T15 ]]--
 			--Throne of Thunder
 				--Jin'rokh the Breaker
-					
+					--["138732"] = 9, ["138733"] = 9, ["139997"] = 9, -- Ionization (dispellable)
+					["137422"] = 4, -- Focused Lightning
 				--Horridon
-				
+					["136708"] = 6, -- Stone Gaze (so it's > Sunbeam Debuff)
 				--Council of Elders
-				
+					["137641"] = 9, -- Soul Fragment (Ball)
+					["137650"] = 7, -- Shadowed Soul
+					["136990"] = 8, -- Frostbite
+					["136992"] = 8, -- Biting Cold
 				--Tortos
-				
+					["137552"] = 8, ["137633"] = 8, --Crystal Shell
+					["140701"] = 9, -- Crystal Shell: Max Capacity
 				--Megaera
 					["139857"] = 9, -- Torrent of Ice
 					["139822"] = 9, -- Cinders
 				--Ji-Kun
-				
+					["134256"] = 9, -- Slimed
 				--Durumu the Forgotten
-				
+					["139204"] = 9, -- Infrared Tracking
+					["139202"] = 9, -- Blue Ray Tracking
+					["133768"] = 10, -- Arterial Cut
+					["133597"] = 10, -- Dark Parasite
+					["133798"] = 10, -- Life Drain
 				--Primordius
-				
+					["136228"] = 10, -- Volatile Pathogen
+					["136050"] = 9, -- Malformed Blood
+					["137000"] = 9, -- Black Blood
 				--Dark Animus
-					
+					["138486"] = 9, -- Crimson Wake Target Debuff
+					["138609"] = 9, -- Matter Swap
+					["136962"] = 8, -- Anima Ring
 				--Iron Qon
-				
+					["134647"] = 8, -- Scorched
+					["137668"] = 9, -- Burning Cinders
+					["137669"] = 9, -- Arcing Lightning
+					["135145"] = 9, -- Freeze
+					["137664"] = 8, -- Frozen Blood
 				--Twin Consorts
-				
+					["137341"] = 4, -- Beast of Nightmares
+					["137360"] = 4, -- Corrupted Healing
+					["137408"] = 7, -- Fan of Flames
+					["137440"] = 8, -- Icy Shadows
 				--Lei Shen
-				
+					["135695"] = 8, -- Static Shock
+					["136295"] = 8, -- Overcharge
+					["139011"] = 9, -- Helm of Command
+					["136478"] = 7, -- Fusion Slash
 				--Ra-den
 		},
 	}
