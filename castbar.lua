@@ -99,11 +99,11 @@ cast.PostCastStart = function(self, unit, name, rank, text)
 	self:SetStatusBarColor(unpack(self.casting and self.CastingColor or self.ChannelingColor))
 	if unit == "player" then
 		local sf = self.SafeZone
-		if not sf.sendTime == nil then
+		if sf and sf.sendTime ~= nil then
 			sf.timeDiff = GetTime() - sf.sendTime
-		sf.timeDiff = sf.timeDiff > self.max and self.max or sf.timeDiff
-		sf:SetWidth(self:GetWidth() * sf.timeDiff / self.max)
-		sf:Show()
+			sf.timeDiff = sf.timeDiff > self.max and self.max or sf.timeDiff
+			sf:SetWidth(self:GetWidth() * sf.timeDiff / self.max)
+			sf:Show()
 		end
 		
 		if self.casting then
