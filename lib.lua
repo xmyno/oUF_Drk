@@ -129,7 +129,7 @@ lib.addStrings = function(f)
 		altppval:SetPoint("RIGHT", f.Health, "BOTTOMRIGHT", 3, -22)
 
 		f:Tag(name,"[name]")
-		f:Tag(hpval,"[drk:hp]")
+		f:Tag(hpval,"[drk:hpboss]")
 		f:Tag(altppval,"[Drk:AltPowerBar]")
 
 	else

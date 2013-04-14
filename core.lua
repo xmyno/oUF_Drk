@@ -326,6 +326,7 @@ local BossStyle = function(self, unit)
 
 	-- Bar Style
 	self.Health.colorSmooth = true
+	self.Health.frequentUpdates = true
 	self.Health.bg.multiplier = 0.2
 	self.Power.colorClass = true
 	self.Power.colorReaction = true
