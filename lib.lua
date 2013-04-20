@@ -128,7 +128,7 @@ lib.addStrings = function(f)
 		altppval = lib.gen_fontstring(f.Health, cfg.font, 12, "THINOUTLINE")
 		altppval:SetPoint("RIGHT", f.Health, "BOTTOMRIGHT", 3, -22)
 
-		f:Tag(name,"[name]")
+		f:Tag(name,"[drk:nameboss]")
 		f:Tag(hpval,"[drk:hpboss]")
 		f:Tag(altppval,"[Drk:AltPowerBar]")
 

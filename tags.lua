@@ -17,10 +17,10 @@ end
 
 local function hex(r, g, b)
 	if r then
-		if (type(r) == 'table') then
+		if (type(r) == "table") then
 			if(r.r) then r, g, b = r.r, r.g, r.b else r, g, b = unpack(r) end
 		end
-		return ('|cff%02x%02x%02x'):format(r * 255, g * 255, b * 255)
+		return ("|cff%02x%02x%02x"):format(r * 255, g * 255, b * 255)
 	end
 end
 
@@ -30,22 +30,24 @@ tags.Methods["drk:perhp"] = function(u)
 	if(m == 0) then
 		return 0
 	else
-		return math.floor((UnitHealth(u)/m*100+.05)*10)/10
+		return ("%s%%"):format(math.floor((UnitHealth(u)/m*100+.05)*10)/10)
 	end
 end
 
 tags.Events["drk:hp"] = 'UNIT_HEALTH UNIT_MAXHEALTH'
 tags.Methods["drk:hp"] = function(u)
-	if UnitIsDead(u) or UnitIsGhost(u) or not UnitIsConnected(u) then
-		return _TAGS["drk:DDG"](u)
+	local ddg = _TAGS["drk:DDG"](u)
+	
+	if ddg then
+		return ddg
 	else
-		local per = _TAGS["drk:perhp"](u).."%" or 0
+		local per = _TAGS["drk:perhp"](u) or 0
 		local min, max = UnitHealth(u), UnitHealthMax(u)
 		if u == "player" or u == "target" then
 			if min~=max then 
-				return "|cFFFFAAAA"..SVal(min).."|r/"..SVal(max).." | "..per
+				return ("|cffffaaaa%s|r/%s | %s"):format(SVal(min), SVal(max), per)
 			else
-				return SVal(max).." | "..per
+				return ("%s | %s"):format(SVal(max), per)
 			end
 		else
 			return per
@@ -59,42 +61,50 @@ tags.Methods["drk:perhpboss"] = function(u)
 	if(m == 0) then
 		return 0
 	else
-		return math.floor((UnitHealth(u)/m*100+.05)*10)/10
+		return ("%s%%"):format(math.floor((UnitHealth(u)/m*100+.05)*10)/10)
 	end
 end
 
 tags.Events["drk:hpboss"] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_TARGETABLE_CHANGED'
 tags.Methods["drk:hpboss"] = function(u)
-	if UnitIsDead(u) or UnitIsGhost(u) or not UnitIsConnected(u) then
-		return _TAGS["drk:DDG"](u)
+	local ddg = _TAGS["drk:DDG"](u)
+	
+	if ddg then
+		return ddg
 	else
-		local per = _TAGS["drk:perhpboss"](u).."%" or 0
+		local per = _TAGS["drk:perhpboss"](u) or 0
 		local min, max = UnitHealth(u), UnitHealthMax(u)
 		if u == "player" or u == "target" then
 			if min~=max then 
-				return "|cFFFFAAAA"..SVal(min).."|r/"..SVal(max).." | "..per
+				return ("|cffffaaaa%s|r/%s | %s"):format(SVal(min), SVal(max), per)
 			else
-				return SVal(max).." | "..per
+				return ("%s | %s"):format(SVal(max), per)
 			end
 		else
 			return per
 		end
 	end
 end
+
+tags.Events["drk:nameboss"] = 'UNIT_NAME_UPDATE UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_TARGETABLE_CHANGED'
+tags.Methods["drk:nameboss"] = function(u, r)
+	return UnitName(r or u)
+end
 --end fix for boss bar update
 tags.Events["drk:raidhp"] = 'UNIT_HEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 tags.Methods["drk:raidhp"] = function(u) 
-  if UnitIsDead(u) or UnitIsGhost(u) or not UnitIsConnected(u) then
-    return _TAGS["drk:DDG"](u)
-  else
+	local ddg = _TAGS["drk:DDG"](u)
 	
-	local missinghp = SVal(_TAGS["missinghp"](u)) or ""
-	if missinghp ~= "" then
-		return "-"..missinghp
+	if ddg then
+		return ddg
 	else
-		return ""
+		local missinghp = SVal(_TAGS["missinghp"](u)) or ""
+		if missinghp ~= "" then
+			return ("-%s"):format(missinghp)
+		else
+			return ""
+		end
 	end
-  end
 end
 
 tags.Events["drk:color"] = 'UNIT_REACTION UNIT_HEALTH UNIT_HAPPINESS'
@@ -142,7 +152,7 @@ tags.Events["drk:power"] = 'UNIT_MAXPOWER UNIT_POWER'
 tags.Methods["drk:power"]  = function(u) 
 	local min, max = UnitPower(u), UnitPowerMax(u)
 	if min~=max then 
-		return SVal(min).."/"..SVal(max)
+		return ("%s/%s"):format(SVal(min), SVal(max))
 	else
 		return SVal(max)
 	end
@@ -159,9 +169,9 @@ tags.Methods["my:power"] = function(unit)
 		if (englishClass == "WARRIOR") then
 			return curpp
 		elseif (englishClass == "DEATHKNIGHT" or englishClass == "ROGUE" or englishClass == "HUNTER") then
-			return curpp .. ' /' .. maxpp
+			return ("%s/%s"):format(curpp, maxpp)
 		else
-			return SVal(curpp) .. " /" .. SVal(maxpp) .. " | " .. math.floor(curpp/maxpp*100+0.5) .. "%"
+			return ("%s/%s | %s%%"):format(SVal(curpp), SVal(maxpp), math.floor(curpp/maxpp*100+0.5))
 		end
 	end
 end;
@@ -235,9 +245,9 @@ tags.Methods["drk:xp"] = function(unit)
 	local rested = GetXPExhaustion()
 	if(rested and rested > 0) then
 		rested = math.floor((rested / UnitXPMax(unit) * 100 + 0.05)*10)/10
-		return curxp.."/"..maxxp.." | "..perxp.."% ("..rested.."% RXP)"
+		return ("%s/%s | %s%% (%s%% RXP)"):format(curxp, maxxp, perxp, rested)
 	else
-		return curxp.."/"..maxxp.." | "..perxp.."%"
+		return ("%s/%s | %s%%"):format(curxp, maxxp, perxp)
 	end
 end
 
@@ -297,6 +307,9 @@ end
 ---------------------------
 -- Class Buff Indicators --
 ---------------------------
+
+local GetTime = GetTime
+
 local EARTH_SHIELD = GetSpellInfo(974)
 tags.Events["Shaman:EarthShield"] = 'UNIT_AURA'
 tags.Methods["Shaman:EarthShield"] = function(unit)
