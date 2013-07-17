@@ -288,7 +288,6 @@ local UnitSpecific = {
 
 -- Global Style
 local GlobalStyle = function(self, unit, isSingle)
-	self.menu = lib.spawnMenu
 	self:RegisterForClicks('AnyUp')
 	
 	-- Call Unit Specific Styles
@@ -300,7 +299,6 @@ end
 -- Raid Style
 local RaidStyle = function(self, unit)
 	if (cfg.enableRightClickMenu) then
-		self.menu = lib.spawnMenu
 		self:RegisterForClicks('AnyUp')
 	end
 	

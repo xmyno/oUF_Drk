@@ -47,22 +47,6 @@ lib.createBackdrop = function(f, size)
 	f:SetBackdropBorderColor(0,0,0,0.8)
 end
 
--- Right Click Menu
-lib.spawnMenu = function(self)
-	local unit = self.unit:sub(1, -2)
-	local cunit = self.unit:gsub("^%l", string.upper)
-
-	if(cunit == 'Vehicle') then
-		cunit = 'Pet'
-	end
-
-	if(unit == "party" or unit == "partypet") then
-		ToggleDropDownMenu(1, nil, _G["PartyMemberFrame"..self.id.."DropDown"], "cursor", 0, 0)
-	elseif(_G[cunit.."FrameDropDown"]) then
-		ToggleDropDownMenu(1, nil, _G[cunit.."FrameDropDown"], "cursor", 0, 0)
-	end
-end
-
 -- Create Font Function
 lib.gen_fontstring = function(f, name, size, outline)
 	local fs = f:CreateFontString(nil, "OVERLAY")
@@ -130,7 +114,7 @@ lib.addStrings = function(f)
 
 		f:Tag(name,"[drk:nameboss]")
 		f:Tag(hpval,"[drk:hpboss]")
-		f:Tag(altppval,"[Drk:AltPowerBar]")
+		f:Tag(altppval,"[drk:altpowerbar]")
 
 	else
 		name = lib.gen_fontstring(f.Health, retVal(f,cfg.font,cfg.font,cfg.raidfont), retVal(f,14,12,12), retVal(f,"NONE","NONE","NONE"))
@@ -257,7 +241,7 @@ lib.addAltPowerBarString = function(f)
 		altppbartext:SetPoint("RIGHT", altpphelpframe, "RIGHT", 0, 0)	
 		altppbartext:SetJustifyH("RIGHT")
 	end
-	f:Tag(altppbartext,"[Drk:AltPowerBar]")
+	f:Tag(altppbartext,"[drk:altpowerbar]")
 end
   
 --gen portrait func

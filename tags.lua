@@ -55,16 +55,6 @@ tags.Methods["drk:hp"] = function(u)
 	end
 end
 -- fix for boss bar update
-tags.Events["drk:perhpboss"] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_TARGETABLE_CHANGED'
-tags.Methods["drk:perhpboss"] = function(u)
-	local m = UnitHealthMax(u)
-	if(m == 0) then
-		return 0
-	else
-		return ("%s%%"):format(math.floor((UnitHealth(u)/m*100+.05)*10)/10)
-	end
-end
-
 tags.Events["drk:hpboss"] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_TARGETABLE_CHANGED'
 tags.Methods["drk:hpboss"] = function(u)
 	local ddg = _TAGS["drk:DDG"](u)
@@ -72,7 +62,7 @@ tags.Methods["drk:hpboss"] = function(u)
 	if ddg then
 		return ddg
 	else
-		local per = _TAGS["drk:perhpboss"](u) or 0
+		local per = _TAGS["drk:perhp"](u) or 0
 		local min, max = UnitHealth(u), UnitHealthMax(u)
 		if u == "player" or u == "target" then
 			if min~=max then 
@@ -287,8 +277,8 @@ tags.Methods["drk:level"] = function(unit)
 	return str
 end
 
-tags.Events["Drk:AltPowerBar"] = 'UNIT_POWER UNIT_MAXPOWER UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE PLAYER_TARGET_CHANGED'
-tags.Methods["Drk:AltPowerBar"] = function(unit)
+tags.Events["drk:altpowerbar"] = 'UNIT_POWER UNIT_MAXPOWER UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE PLAYER_TARGET_CHANGED'
+tags.Methods["drk:altpowerbar"] = function(unit)
 	local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX
 	local cur = UnitPower(unit, ALTERNATE_POWER_INDEX)
 	local max = UnitPowerMax(unit, ALTERNATE_POWER_INDEX)
