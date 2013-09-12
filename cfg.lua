@@ -243,6 +243,36 @@ local cfg = CreateFrame("Frame")
 					["139011"] = 9, -- Helm of Command
 					["136478"] = 7, -- Fusion Slash
 				--Ra-den
+			--[[ T16 ]]--
+			--Siege of Orgrimmar
+				--Fallen Protectors
+					["143962"] = 9, -- Inferno Strike
+					["143840"] = 9, -- Mark of Anguish
+				--Sha of Pride
+					["146594"] = 3, ["144359"] = 3, -- Gift of the Titans
+					["146822"] = 4, -- Projection
+					["146817"] = 4, -- Aura of Pride
+				--Galakras
+					["147068"] = 8, -- Flames of Galakrond
+				--Iron Juggernaut
+					["146325"] = 8, -- Cutter Laser
+				--Kor'kron Dark Shaman
+					["144330"] = 8, -- Iron Prison
+				--Nazgrim
+					["143882"] = 8, -- Hunter's Mark
+					["145561"] = 8, -- Assassin's Mark
+					["143638"] = 4, -- Bonecracker
+				--Malkorok
+					["142863"] = 3, -- Weak Ancient Barrier
+					["142864"] = 3,	-- Ancient Barrier
+					["142864"] = 3, -- Strong Ancient Barrier
+					["142913"] = 8, -- Displaced Energy
+				--Spoils of Pandaria
+					["145996"] = 4, -- Set to Blow
+				--Thok the Bloodthirsty
+					["133042"] = 8, -- Fixate
+				--Siegecrafter Blackfuse
+					["143828"] = 8, -- Laser Turret Target
 		},
 	}
 	
