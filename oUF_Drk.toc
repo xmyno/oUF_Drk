@@ -1,7 +1,7 @@
-## Interface: 50400
+## Interface: 60000
 ## Author: Drakull, Myno
 ## Title: oUF_Drk Fanupdate
-## Version: r16
+## Version: r17
 ## Notes: PvE-oriented Layout for oUF
 ## RequiredDeps: oUF
 ## OptionalDeps: oUF_Experience

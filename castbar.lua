@@ -1,6 +1,6 @@
   local addon, ns = ...
   local cfg = ns.cfg
-  local cast = CreateFrame("Frame")  
+  local cast = CreateFrame("Frame")
 
   -----------------------------
   -- FUNCTIONS
@@ -8,10 +8,8 @@
   -- special thanks to Allez for coming up with this solution
 local channelingTicks = {
 	-- warlock
-	[GetSpellInfo(1120)] = 5, -- drain soul
 	[GetSpellInfo(689)] = 5, -- drain life
-	--[GetSpellInfo(5138)] = 5, -- drain mana
-	[GetSpellInfo(5740)] = 4, -- rain of fire
+    [GetSpellInfo(103103)] = 3, --drain soul
 	-- druid
 	[GetSpellInfo(740)] = 4, -- Tranquility
 	[GetSpellInfo(16914)] = 9, -- Hurricane
@@ -23,6 +21,9 @@ local channelingTicks = {
 	[GetSpellInfo(5143)] = 5, -- arcane missiles
 	[GetSpellInfo(10)] = 5, -- blizzard
 	[GetSpellInfo(12051)] = 4, -- evocation
+    -- monk
+    [GetSpellInfo(115175)] = 7, -- soothing mist
+    [GetSpellInfo(113656)] = 3, -- fists of fury
 }
 
 local ticks = {}
@@ -105,7 +106,7 @@ cast.PostCastStart = function(self, unit, name, rank, text)
 			sf:SetWidth(self:GetWidth() * sf.timeDiff / self.max)
 			sf:Show()
 		end
-		
+
 		if self.casting then
 			cast.setBarTicks(self, 0)
 		else
@@ -121,7 +122,7 @@ cast.PostCastStart = function(self, unit, name, rank, text)
 end
 
 cast.PostCastStop = function(self, unit, name, rank, castid)
-	if not self.fadeOut then 
+	if not self.fadeOut then
 		self:SetStatusBarColor(unpack(self.CompleteColor))
 		self.fadeOut = true
 	end
