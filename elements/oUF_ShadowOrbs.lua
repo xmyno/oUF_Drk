@@ -3,7 +3,6 @@ local oUF = ns.oUF or oUF
 assert(oUF, "oUF_ShadowOrbs was unable to locate oUF install")
 
 local SPELL_POWER_SHADOW_ORBS = SPELL_POWER_SHADOW_ORBS
-local PRIEST_BAR_NUM_ORBS = PRIEST_BAR_NUM_ORBS
 local SPEC_PRIEST_SHADOW = SPEC_PRIEST_SHADOW
 
 local Update = function(self, event, unit, powerType)
@@ -15,8 +14,9 @@ local Update = function(self, event, unit, powerType)
 	end
 
 	local numOrbs = UnitPower(unit, SPELL_POWER_SHADOW_ORBS)
+    local maxOrbs = UnitPowerMax(unit, SPELL_POWER_SHADOW_ORBS)
 
-	for index = 1, PRIEST_BAR_NUM_ORBS do
+	for index = 1, maxOrbs do
 		if(index <= numOrbs) then
 			element[index]:Show()
 		else
@@ -56,7 +56,9 @@ local Enable = function(self, unit)
 		self:RegisterEvent('UNIT_DISPLAYPOWER', Path)
 		self:RegisterEvent('PLAYER_TALENT_UPDATE', Visibility, true)
 
-		for index = 1, PRIEST_BAR_NUM_ORBS do
+        local maxOrbs = UnitPowerMax(unit, SPELL_POWER_SHADOW_ORBS)
+
+		for index = 1, maxOrbs do
 			local orb = element[index]
 			if(orb:IsObjectType'Texture' and not orb:GetTexture()) then
 				orb:SetTexture[[Interface\PlayerFrame\Priest-ShadowUI]]
