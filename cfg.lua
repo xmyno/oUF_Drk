@@ -50,7 +50,7 @@ local cfg = CreateFrame("Frame")
 	cfg.targetCastBarX = 0
 	cfg.targetCastBarY = 250
 	cfg.targetCastBarWidth = 200
-	cfg.targetCastBarHeight = 25	
+	cfg.targetCastBarHeight = 25
 --raid&party frames
 	cfg.showRaid = true -- show raid frames
 	cfg.raidShowSolo = true -- show raid frames even when solo
@@ -60,12 +60,12 @@ local cfg = CreateFrame("Frame")
 	cfg.showRoleIcons = false -- Show Role Icons on raid frames
 	cfg.showIndicators = true -- Show Class Indicators on raid frames (HoT's, buffs etc.)
 	cfg.showThreatIndicator = true -- Show Threat Indicator on raid frames
-	
+
 	cfg.raidOrientationHorizontal = false
 	cfg.raidX = -410
 	cfg.raidY = 190
 	cfg.raidScale = 1
-	
+
 	cfg.IndicatorList = {
 		["NUMBERS"] = {
 			["DEATHKNIGHT"] 	= "[DK:DeathBarrier]",
@@ -82,7 +82,7 @@ local cfg = CreateFrame("Frame")
 		},
 		["SQUARE"] = {
 			--["DEATHKNIGHT"] 	= ,
-			--["DRUID"]			= ,
+			["DRUID"]			= "[Druid:WildGrowth]",
 			--["HUNTER"]		= ,
 			--["MAGE"]			= ,
 			--["MONK"]			= ,
@@ -275,8 +275,8 @@ local cfg = CreateFrame("Frame")
 					["143828"] = 8, -- Laser Turret Target
 		},
 	}
-	
-	
+
+
 --media files
 cfg.statusbar_texture = "Interface\\AddOns\\oUF_Drk\\media\\Statusbar"
 cfg.powerbar_texture = "Interface\\AddOns\\oUF_Drk\\media\\Aluminium"

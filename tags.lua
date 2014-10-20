@@ -37,14 +37,14 @@ end
 tags.Events["drk:hp"] = 'UNIT_HEALTH UNIT_MAXHEALTH'
 tags.Methods["drk:hp"] = function(u)
 	local ddg = _TAGS["drk:DDG"](u)
-	
+
 	if ddg then
 		return ddg
 	else
 		local per = _TAGS["drk:perhp"](u) or 0
 		local min, max = UnitHealth(u), UnitHealthMax(u)
 		if u == "player" or u == "target" then
-			if min~=max then 
+			if min~=max then
 				return ("|cffffaaaa%s|r/%s | %s"):format(SVal(min), SVal(max), per)
 			else
 				return ("%s | %s"):format(SVal(max), per)
@@ -58,14 +58,14 @@ end
 tags.Events["drk:hpboss"] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_TARGETABLE_CHANGED'
 tags.Methods["drk:hpboss"] = function(u)
 	local ddg = _TAGS["drk:DDG"](u)
-	
+
 	if ddg then
 		return ddg
 	else
 		local per = _TAGS["drk:perhp"](u) or 0
 		local min, max = UnitHealth(u), UnitHealthMax(u)
 		if u == "player" or u == "target" then
-			if min~=max then 
+			if min~=max then
 				return ("|cffffaaaa%s|r/%s | %s"):format(SVal(min), SVal(max), per)
 			else
 				return ("%s | %s"):format(SVal(max), per)
@@ -82,9 +82,9 @@ tags.Methods["drk:nameboss"] = function(u, r)
 end
 --end fix for boss bar update
 tags.Events["drk:raidhp"] = 'UNIT_HEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
-tags.Methods["drk:raidhp"] = function(u) 
+tags.Methods["drk:raidhp"] = function(u)
 	local ddg = _TAGS["drk:DDG"](u)
-	
+
 	if ddg then
 		return ddg
 	else
@@ -101,7 +101,7 @@ tags.Events["drk:color"] = 'UNIT_REACTION UNIT_HEALTH UNIT_HAPPINESS'
 tags.Methods["drk:color"] = function(u)
 	local _, class = UnitClass(u)
 	local reaction = UnitReaction(u, "player")
-	
+
 	if UnitIsDead(u) or UnitIsGhost(u) or not UnitIsConnected(u) then
 		return "|cffA0A0A0"
 	elseif (UnitIsTapped(u) and not UnitIsTappedByPlayer(u)) then
@@ -118,12 +118,12 @@ tags.Methods["drk:color"] = function(u)
 end
 
 tags.Events["drk:afkdnd"] = 'PLAYER_FLAGS_CHANGED'
-tags.Methods["drk:afkdnd"] = function(unit) 
+tags.Methods["drk:afkdnd"] = function(unit)
 	return UnitIsAFK(unit) and "|cffCFCFCF <afk>|r" or UnitIsDND(unit) and "|cffCFCFCF <dnd>|r" or ""
 end
 
 tags.Events["drk:raidafkdnd"] = 'PLAYER_FLAGS_CHANGED'
-tags.Methods["drk:raidafkdnd"] = function(unit) 
+tags.Methods["drk:raidafkdnd"] = function(unit)
 	return UnitIsAFK(unit) and "|cffCFCFCF AFK|r" or UnitIsDND(unit) and "|cffCFCFCF DND|r" or ""
 end
 
@@ -139,9 +139,9 @@ tags.Methods["drk:DDG"] = function(u)
 end
 
 tags.Events["drk:power"] = 'UNIT_MAXPOWER UNIT_POWER'
-tags.Methods["drk:power"]  = function(u) 
+tags.Methods["drk:power"]  = function(u)
 	local min, max = UnitPower(u), UnitPowerMax(u)
-	if min~=max then 
+	if min~=max then
 		return ("%s/%s"):format(SVal(min), SVal(max))
 	else
 		return SVal(max)
@@ -170,7 +170,7 @@ end;
 -- ComboPoints
 tags.Events["myComboPoints"] = 'UNIT_COMBO_POINTS PLAYER_TARGET_CHANGED'
 tags.Methods["myComboPoints"] = function(unit)
-	local cp, str		
+	local cp, str
 	if(UnitExists'vehicle') then
 		cp = GetComboPoints('vehicle', 'target')
 	else
@@ -182,13 +182,13 @@ tags.Methods["myComboPoints"] = function(unit)
 	elseif cp == 2 then
 		str = string.format("|cffb2e80c%d|r",cp)
 	elseif cp == 3 then
-		str = string.format("|cffffd800%d|r",cp) 
+		str = string.format("|cffffd800%d|r",cp)
 	elseif cp == 4 then
-		str = string.format("|cffffba00%d|r",cp) 
+		str = string.format("|cffffba00%d|r",cp)
 	elseif cp == 5 then
 		str = string.format("|cfff10b0b%d|r",cp)
 	end
-	
+
 	return str
 end
 
@@ -199,7 +199,7 @@ tags.Methods["myDeadlyPoison"] = function(unit)
 	local Spell = "Deadly Poison" or GetSpellInfo(43233)
 	local ct = hasUnitDebuff(unit, Spell)
 	local cp = GetComboPoints('player', 'target')
-	
+
 	if cp > 0 then
 		if (not ct) then
 			str = ""
@@ -208,16 +208,16 @@ tags.Methods["myDeadlyPoison"] = function(unit)
 		elseif ct == 2 then
 			str = string.format("|cfface678%d|r",ct)
 		elseif ct == 3 then
-			str = string.format("|cff9de65c%d|r",ct) 
+			str = string.format("|cff9de65c%d|r",ct)
 		elseif ct == 4 then
-			str = string.format("|cff8be739%d|r",ct) 
+			str = string.format("|cff8be739%d|r",ct)
 		elseif ct == 5 then
 			str = string.format("|cff90ff00%d|r",ct)
 		end
 	else
 		str = ""
 	end
-	
+
 	return str
 end
 
@@ -243,15 +243,15 @@ end
 
 tags.Events["drk:level"] = 'UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED'
 tags.Methods["drk:level"] = function(unit)
-	
+
 	local c = UnitClassification(unit)
 	local l = UnitLevel(unit)
 	local d = GetQuestDifficultyColor(l)
-	
+
 	local str = l
-		
+
 	if l <= 0 then l = "??" end
-	
+
 	if c == "worldboss" then
 		str = string.format("|cff%02x%02x%02xBoss|r",250,20,0)
 	elseif c == "eliterare" then
@@ -271,9 +271,9 @@ tags.Methods["drk:level"] = function(unit)
 			else
 				str = string.format("|cff%02x%02x%02x%s",d.r*255,d.g*255,d.b*255,l)
 			end
-		end		
+		end
 	end
-	
+
 	return str
 end
 
@@ -283,7 +283,7 @@ tags.Methods["drk:altpowerbar"] = function(unit)
 	local cur = UnitPower(unit, ALTERNATE_POWER_INDEX)
 	local max = UnitPowerMax(unit, ALTERNATE_POWER_INDEX)
 	if(max > 0 and not UnitIsDeadOrGhost(unit)) then
-		if (cur == 0 or cur < 0) then 
+		if (cur == 0 or cur < 0) then
 			return "0%"
 		else
 			return ("%s%%"):format(math.floor(cur/max*100+.5))
@@ -307,11 +307,11 @@ tags.Methods["Shaman:EarthShield"] = function(unit)
 	local _, _, _, esCount, _, _, _, source = UnitAura(unit, EARTH_SHIELD)
 	if esCount then
 		if source == "player" then
-			if esCount > 3 then 
+			if esCount > 3 then
 				return format("|cff33cc00%.0f|r ", esCount)
 			else
 				return format("|cffffcc00%.0f|r ", esCount)
-			end		
+			end
 		else
 			return format("|cffaa2200%.0f|r ", esCount)
 		end
@@ -357,13 +357,7 @@ tags.Events["Druid:Lifebloom"] = 'UNIT_AURA'
 tags.Methods["Druid:Lifebloom"] = function(unit)
 	local _, _, _, stacks, _, _, expirationTime, source = UnitAura(unit, LIFEBLOOM)
 	if source and source == "player" then
-		if stacks == 1 then
-			return format("|cffcc0000%.0f|r ", expirationTime - GetTime())
-		elseif stacks == 2 then
-			return format("|cffff6314%.0f|r ", expirationTime - GetTime())
-		elseif stacks == 3 then
-			return format("|cffffcc00%.0f|r ", expirationTime - GetTime())
-		end
+		return format("|cffffcc00%.0f|r ", expirationTime - GetTime())
 	end
 end
 
@@ -383,6 +377,14 @@ tags.Methods["Druid:Regrowth"] = function(unit)
 	if source == "player" then
 		return format("|cff33cc00%.0f|r ", expirationTime - GetTime())
 	end
+end
+
+local WILD_GROWTH = GetSpellInfo(48438)
+tags.Events["Druid:WildGrowth"] = 'UNIT_AURA'
+tags.Methods["Druid:WildGrowth"] = function(unit)
+    if UnitBuff(unit, WILD_GROWTH) then
+        return "|cff33cc00M|r "
+    end
 end
 
 local BEACON = GetSpellInfo(53563)
