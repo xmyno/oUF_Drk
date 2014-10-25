@@ -1056,7 +1056,6 @@ lib.addShadoworbs = function(self)
 	pso:SetWidth(self.Health:GetWidth()/2+50)
 
 	local maxShadowOrbs = UnitPowerMax('player', SPELL_POWER_SHADOW_ORBS)
-
 	for i = 1,maxShadowOrbs do
 		pso[i] = CreateFrame("StatusBar", self:GetName().."_PriestShadowOrbs"..i, self)
 		pso[i]:SetHeight(5)
@@ -1102,6 +1101,7 @@ lib.addShards = function(self)
 	for i = 1, 4 do
 		wsb[i] = CreateFrame("StatusBar", "WarlockSpecBars"..i, wsb)
 		wsb[i]:SetHeight(5)
+        wsb[i]:SetWidth(wsb:GetWidth() / 4)
 		wsb[i]:SetStatusBarTexture(cfg.statusbar_texture)
 		wsb[i]:SetStatusBarColor(.86,.22,1)
 		wsb[i].bg = wsb[i]:CreateTexture(nil,"BORDER")

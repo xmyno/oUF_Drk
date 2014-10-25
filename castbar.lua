@@ -8,22 +8,24 @@
   -- special thanks to Allez for coming up with this solution
 local channelingTicks = {
 	-- warlock
-	[GetSpellInfo(689)] = 5, -- drain life
-    [GetSpellInfo(103103)] = 3, --drain soul
+	[GetSpellInfo(689)] = 6, -- Drain Life
+    [GetSpellInfo(103103)] = 4, -- Drain Soul
 	-- druid
 	[GetSpellInfo(740)] = 4, -- Tranquility
-	[GetSpellInfo(16914)] = 9, -- Hurricane
+    [GetSpellInfo(16914)] = 10, -- Hurricane
+	[GetSpellInfo(106996)] = 10, -- Astral Storm
 	-- priest
-	[GetSpellInfo(15407)] = 3, -- mind flay
-	[GetSpellInfo(48045)] = 5, -- mind sear
-	[GetSpellInfo(47540)] = 2, -- penance
+    [GetSpellInfo(15407)] = 4, -- Mind Flay
+	[GetSpellInfo(129197)] = 4, -- Insanity (Mind Flay)
+	[GetSpellInfo(48045)] = 6, -- Mind Sear
+	[GetSpellInfo(47540)] = 3, -- Penance
 	-- mage
 	[GetSpellInfo(5143)] = 5, -- arcane missiles
-	[GetSpellInfo(10)] = 5, -- blizzard
-	[GetSpellInfo(12051)] = 4, -- evocation
+	[GetSpellInfo(10)] = 8, -- blizzard
+	[GetSpellInfo(12051)] = 3, -- evocation
     -- monk
-    [GetSpellInfo(115175)] = 7, -- soothing mist
-    [GetSpellInfo(113656)] = 3, -- fists of fury
+    [GetSpellInfo(115175)] = 8, -- soothing mist
+    [GetSpellInfo(113656)] = 5, -- fists of fury
 }
 
 local ticks = {}
