@@ -360,7 +360,7 @@ oUF:Factory(function(self)
 	-- Raid Frames
 	if cfg.showRaid then
 		local point = cfg.raidOrientationHorizontal and "LEFT" or "TOP"
-		local soloraid = cfg.raidShowSolo and "custom show;" or "party,raid;"
+		local soloraid = cfg.raidShowSolo and "custom show;" or "party,raid10,raid25,raid40;"
 
 		self:SetActiveStyle('drkRaid')
 		local raid = {}
