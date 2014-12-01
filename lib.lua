@@ -1018,7 +1018,7 @@ lib.addHarmony = function(self)
 	mhb:SetHeight(5)
 	mhb:SetFrameLevel(10)
 
-	for i = 1, 5 do
+	for i = 1, 6 do
 		mhb[i] = CreateFrame("StatusBar", "MonkHarmonyBar"..i, mhb)
 		mhb[i]:SetHeight(5)
 		mhb[i]:SetStatusBarTexture(cfg.statusbar_texture)

@@ -69,7 +69,7 @@ local cfg = CreateFrame("Frame")
 	cfg.IndicatorList = {
 		["NUMBERS"] = {
 			["DEATHKNIGHT"] 	= "[DK:DeathBarrier]",
-			["DRUID"]			= "[Druid:Lifebloom][Druid:Rejuv][Druid:Regrowth]",
+			["DRUID"]			= "[Druid:Lifebloom][Druid:Rejuv][Druid:Genesis][Druid:Regrowth]",
 			--["HUNTER"]		= missdirect,
 			--["MAGE"]			= ,
 			["MONK"]			= "[Monk:EnvelopingMist][Monk:RenewingMist]",
@@ -273,6 +273,18 @@ local cfg = CreateFrame("Frame")
 					["133042"] = 8, -- Fixate
 				--Siegecrafter Blackfuse
 					["143828"] = 8, -- Laser Turret Target
+
+            --[[ T17 ]]--
+            --Highmaul
+                --Kar'gath
+                    ["158986"] = 9, -- Berserker Rush Fixate
+                --Butcher
+                    ["156152"] = 3, -- Gushing Wounds
+                --Tectus
+                    ["162346"] = 8, -- Crystalline Barrage
+                --Ko'ragh
+                    ["172895"] = 8, -- Expel Magic: Fel
+                    ["162185"] = 8, -- Expel Magic: Fire
 		},
 	}
 
