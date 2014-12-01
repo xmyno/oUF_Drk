@@ -370,10 +370,10 @@ tags.Methods["Druid:Rejuv"] = function(unit)
 	end
 end
 
-local GENESIS = GetSpellInfo(145518)
-tags.Events["Druid:Genesis"] = 'UNIT_AURA'
-tags.Methods["Druid:Genesis"] = function(unit)
-    local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, GENESIS)
+local GERMINATION = GetSpellInfo(155777)
+tags.Events["Druid:Germination"] = 'UNIT_AURA'
+tags.Methods["Druid:Germination"] = function(unit)
+    local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, GERMINATION)
     if source and source == "player" then
         return format("|cffd814ff%.0f|r ", expirationTime - GetTime())
     end
