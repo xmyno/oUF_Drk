@@ -18,15 +18,24 @@ local Update = function(self, event, unit, powerType)
 	if curMaxPower ~= maxPower then
 		if maxPower == 4 then
 			mhb[5]:Hide()
+            mhb[6]:Hide()
 			for i = 1,4 do
 				mhb[i]:SetWidth(mhb:GetWidth()/4-2)
 			end
 		elseif maxPower == 5 then
 			mhb[5]:Show()
+            mhb[6]:Hide()
 			for i = 1,5 do
 				mhb[i]:SetWidth(mhb:GetWidth()/5-2)
 			end
-		end
+		elseif maxPower == 6 then
+            mhb[5]:Show()
+            mhb[6]:Show()
+            for i = 1,6 do
+                mhb[i]:SetWidth(mhb:GetWidth()/6-2)
+            end
+        end
+
 		curMaxPower = maxPower
 	end
 
