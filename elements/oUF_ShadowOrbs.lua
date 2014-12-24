@@ -6,8 +6,10 @@ local SPELL_POWER_SHADOW_ORBS = SPELL_POWER_SHADOW_ORBS
 local SPEC_PRIEST_SHADOW = SPEC_PRIEST_SHADOW
 
 local maxOrbs = UnitPowerMax('player', SPELL_POWER_SHADOW_ORBS)
+local curSpec = GetSpecialization()
 local UpdateOnSpellLearned, Update, Visibility, Path, ForceUpdate, Enable, Disable
 
+-- untested, changes shadow orb count to 5 when learning the enhanced shadow orbs perk
 function UpdateOnSpellLearned(self, event, spellid, tab)
 	if spellid == 157217 then
 		self:UnregisterEvent('LEARNED_SPELL_IN_TAB', UpdateOnSpellLearned)
@@ -30,7 +32,9 @@ function Update(self, event, unit, powerType)
 		orbs:PreUpdate()
 	end
 
-	local numOrbs = UnitPower(unit, SPELL_POWER_SHADOW_ORBS)
+	-- crappy fix for shadow orbs not getting hidden upon changing spec
+	-- for some reason UnitPower does not return 0 for the UNIT_POWER event after respeccing
+	local numOrbs = curSpec == SPEC_PRIEST_SHADOW and UnitPower('player', SPELL_POWER_SHADOW_ORBS) or 0
 
 	for index = 1, maxOrbs do
 		if index <= numOrbs then
@@ -47,12 +51,11 @@ end
 
 function Visibility(self, event)
 	local orbs = self.PriestShadowOrbs
-	if GetSpecialization() == SPEC_PRIEST_SHADOW then
+	curSpec = GetSpecialization() -- at least this returns the right spec after switching specs ~~
+	if curSpec == SPEC_PRIEST_SHADOW then
 		orbs:Show()
-		print('show')
 	else
 		orbs:Hide()
-		print('hide')
 	end
 end
 
@@ -72,8 +75,10 @@ function Enable(self, unit)
 
 		self:RegisterEvent('UNIT_POWER', Path)
 		self:RegisterEvent('UNIT_DISPLAYPOWER', Path)
-		self:RegisterEvent('PLAYER_TALENT_UPDATE', Visibility)
+		self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', Visibility, true)
+		self:RegisterEvent('PLAYER_TALENT_UPDATE', Visibility, true)
 
+		-- register spell learn event and change bars to 3 when enhanced shadow perks is not learned
 		if IsSpellKnown(157217) == false then
 			self:RegisterEvent('LEARNED_SPELL_IN_TAB', UpdateOnSpellLearned)
 
@@ -93,11 +98,14 @@ function Disable(self)
 	if orbs then
 		self:UnregisterEvent('UNIT_POWER', Path)
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', Path)
+		self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', Visibility)
 		self:UnregisterEvent('PLAYER_TALENT_UPDATE', Visibility)
 		self:UnregisterEvent('LEARNED_SPELL_IN_TAB', UpdateOnSpellLearned)
 	end
 
-	orbs:Hide()
+	for index = 1, #orbs do
+		orbs[index]:Hide()
+	end
 end
 
 oUF:AddElement('PriestShadowOrbs', Path, Enable, Disable)
