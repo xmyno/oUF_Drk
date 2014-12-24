@@ -1055,11 +1055,10 @@ lib.addShadoworbs = function(self)
 	pso:SetHeight(5)
 	pso:SetWidth(self.Health:GetWidth()/2+50)
 
-	local maxShadowOrbs = UnitPowerMax('player', SPELL_POWER_SHADOW_ORBS)
-	for i = 1,maxShadowOrbs do
+	for i = 1,5 do
 		pso[i] = CreateFrame("StatusBar", self:GetName().."_PriestShadowOrbs"..i, self)
 		pso[i]:SetHeight(5)
-		pso[i]:SetWidth(pso:GetWidth()/3-2)
+		pso[i]:SetWidth(pso:GetWidth()/5-2)
 		pso[i]:SetStatusBarTexture(cfg.statusbar_texture)
 		pso[i]:SetStatusBarColor(.86,.22,1)
 		pso[i]:SetFrameLevel(11)

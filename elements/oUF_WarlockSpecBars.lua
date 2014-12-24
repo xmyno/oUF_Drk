@@ -84,7 +84,7 @@ function Visibility(self, event)
 			wsb[i]:Hide()
 		end
 		if wsb.Hide then
-			wsb.Hide()
+			wsb:Hide()
 		end
 
 		return
