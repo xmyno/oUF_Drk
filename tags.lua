@@ -343,6 +343,38 @@ tags.Methods["Priest:PowerWordShield"] = function(unit)
 	end
 end
 
+local CLARITY_OF_WILL = GetSpellInfo(152118)
+tags.Events["Priest:ClarityOfWill"] = 'UNIT_AURA'
+tags.Methods["Priest:ClarityOfWill"] = function(unit)
+
+	local _, _, _, _, _, _, expirationTime = UnitAura(unit, CLARITY_OF_WILL)
+	if expirationTime then
+		return format("|cff33cc00%.0f|r ", expirationTime - GetTime())
+	end
+end
+
+local SPIRIT_SHELL = GetSpellInfo(114908)
+tags.Events["Priest:SpiritShell"] = 'UNIT_AURA'
+tags.Methods["Priest:SpiritShell"] = function(unit)
+
+	local _, _, _, _, _, _, expirationTime, _, _, _, spellId = UnitAura(unit, SPIRIT_SHELL)
+
+	if expirationTime then
+		-- check if it's the spell buff itself and not the absorb buff. if yes search through buffs by index
+		if spellId == 109964 then
+			for i = 1, 40 do
+				_, _, _, _, _, _, expirationTime, _, _, _, spellId = UnitAura(unit, i)
+				-- we found the correct buff?
+				if spellId == 114908 then break end
+			end
+		end
+
+		if spellId == 114908 then
+			return format("|cffd814ff%.0f|r ", expirationTime - GetTime())
+		end
+	end
+end
+
 local RENEW = GetSpellInfo(139)
 tags.Events["Priest:Renew"] = 'UNIT_AURA'
 tags.Methods["Priest:Renew"] = function(unit)
