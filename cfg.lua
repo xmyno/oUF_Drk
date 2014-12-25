@@ -100,6 +100,7 @@ local cfg = CreateFrame("Frame")
 			--## USAGE: ["DEBUFF_NAME"] = PRIORITY, ##--
 			--## PRIORITY -> 10: high, 9: medium, 8: low, dispellable debuffs have standard priority of 5. ##--
 			--["61295"] = 10, -- Riptide for testing purposes only
+			["156432"] = 3, -- Draenic Channeled Mana Potion
 			--[[## CATACLYSM ##]]--
 			--[[ T13 ]]--
 			--Dragon Soul
@@ -278,13 +279,31 @@ local cfg = CreateFrame("Frame")
             --Highmaul
                 --Kar'gath
                     ["158986"] = 9, -- Berserker Rush Fixate
+                    ["159947"] = 3, -- Chain Hurl
+                    ["159413"] = 4, -- Mauling Brew (Green Puddle)
+                    ["159386"] = 4, -- Iron Bomb
                 --Butcher
-                    ["156152"] = 3, -- Gushing Wounds
+                    ["156152"] = 4, -- Gushing Wounds
+                    ["156151"] = 3, -- Tenderizer (Tank Debuff)
                 --Tectus
                     ["162346"] = 8, -- Crystalline Barrage
+                    ["162370"] = 3, -- Crystalline Barrage (Ground Effect)
+                --Brackenspore
+                	["163241"] = 3, -- Rot (Tank Debuff)
+                --Twin Ogron
+                	["158241"] = 8, -- Blaze
+                	["155569"] = 7, -- Injured (Shield Charge)
                 --Ko'ragh
-                    ["172895"] = 8, -- Expel Magic: Fel
+                    ["172917"] = 7, -- Expel Magic: Fel (Ground Effect)
                     ["162185"] = 8, -- Expel Magic: Fire
+                    ["162184"] = 7, -- Expel Magic: Shadow
+                    ["163472"] = 9, -- Dominating Power (Mind Control)
+                --Imperator Mar'gok
+                	["157763"] = 9, -- Fixate (Gorian Warmages, Intermission)
+                	["158553"] = 8, -- Crush Armor (Gorian Reaver, Intermission, Tank Debuff)
+                	["156225"] = 10, ["164004"] = 10, ["164005"] = 10, ["164006"] = 10, -- Branded and all it's different forms
+                	["157353"] = 7, -- Force Nova
+                	["159200"] = 3, -- Destructive Resonance (WHO TRIGGERED THAT RUNE???)
 		},
 	}
 
