@@ -53,6 +53,7 @@ lib.gen_fontstring = function(f, name, size, outline)
 	fs:SetFont(name, size, outline)
 	fs:SetShadowColor(0,0,0,0.8)
 	fs:SetShadowOffset(1,-1)
+	fs:SetWordWrap(false)
 	return fs
 end
 
