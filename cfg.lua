@@ -99,7 +99,6 @@ local cfg = CreateFrame("Frame")
         debuffs = {
             --## USAGE: ["DEBUFF_NAME"] = PRIORITY, ##--
             --## PRIORITY -> 10: high, 9: medium, 8: low, dispellable debuffs have standard priority of 5. ##--
-            --["61295"] = 10, -- Riptide for testing purposes only
             ["156432"] = 3, -- Draenic Channeled Mana Potion
             --[[## CATACLYSM ##]]--
             --[[ T13 ]]--
@@ -274,7 +273,7 @@ local cfg = CreateFrame("Frame")
                     ["133042"] = 8, -- Fixate
                 --Siegecrafter Blackfuse
                     ["143828"] = 8, -- Laser Turret Target
-
+            --[[## WARLORDS OF DRAENOR ##]]--
             --[[ T17 ]]--
             --Highmaul
                 --Kar'gath
@@ -342,6 +341,78 @@ local cfg = CreateFrame("Frame")
                     ["156932"] = 6, -- Rupture
                     ["174716"] = 7, -- Bomb
                     ["176121"] = 8, -- Volatile Fire
+            -- [[ T18 ]] --
+            -- Hellfire Citadel
+                -- Hellfire Assault
+                    ["184369"] = 7, -- Howling Axe (target)
+                    ["180079"] = 4, -- Fellfire Munition
+                -- Fel Reaver
+                    ["179897"] = 6, -- Blitz
+                    ["185978"] = 7, ["182373"] = 4, -- Firebomb Vulnerability
+                    ["182280"] = 8, -- Artillery
+                    ["182074"] = 3, ["182001"] = 3, -- Immolation, Unstable Orb
+                -- Gorefiend
+                    ["179867"] = 3, -- Gorefiend's Corruption
+                    ["181295"] = 4, -- Digest
+                    ["179977"] = 8, -- Touch of Doom
+                    ["179864"] = 6, -- Shadow of Death
+                    ["179909"] = 9, -- Shared Fate (rooted player)
+                    ["179908"] = 8, -- Shared Fate (other players)
+                -- Kilrogg Deadeye
+                    ["181488"] = 3, -- Vision of Death
+                    ["188929"] = 7, -- Heart Seeker (target)
+                    ["180389"] = 4, -- Heart Seeker (dot)
+                -- Socrethar
+                    ["182038"] = 3, -- Shattered Defense
+                    ["188666"] = 7, -- Eternal Hunger (mythic add fixate)
+                    ["189627"] = 7, -- Volatile Fel Orb (fixate)
+                    ["180415"] = 4, -- Fel Prison
+                -- Xhul'horac
+                    ["188208"] = 7, -- Ablaze
+                    ["186073"] = 7, -- Felsinged
+                    ["186407"] = 8, -- Fel Surge
+                    ["186500"] = 9, -- Chains of Fel
+                    ["186063"] = 7, -- Wasting Void
+                    ["186333"] = 8, -- Void Surge
+                -- Fel Lord Zakuun
+                    ["181508"] = 9, -- Seed of Destruction
+                    ["181653"] = 7, -- Fel Crystals (too close)
+                    ["179428"] = 8, -- Rumbling Fissure (soak)
+                    ["182008"] = 3, -- Latent Energy (can't soak anymore)
+                    ["179407"] = 6, -- Disembodied (in shadow realm)
+                -- Kormrok
+                    ["187819"] = 7, -- Hands
+                    ["181345"] = 7, -- Hand (tank)
+                -- Tyrant Velhari
+                    ["185237"] = 6, ["185238"] = 6, -- Touch of Harm
+                    ["185241"] = 7, -- Edict of Condemnation
+                    ["180526"] = 7, -- Font of Corruption
+                -- Shadow-Lord Iskar
+                    ["181957"] = 9, -- Phantasmal Wind
+                    ["182200"] = 4, ["182178"] = 4, -- Fel Chakram
+                    ["182325"] = 2, -- Phantasmal Wounds
+                    ["185239"] = 1, -- Radiance of Anzu
+                    ["185510"] = 3, -- Dark Bindings
+                    ["182600"] = 2, -- Fel Fire
+                    ["179219"] = 3, ["181753"] = 3, -- Fel Bomb
+                -- Mannoroth
+                    ["181275"] = 8, -- Curse of Legion
+                    ["181099"] = 7, -- Mark of Doom
+                    ["181597"] = 4, ["182006"] = 4, -- Mannoroths Gaze
+                    ["181841"] = 6, ["182088"] = 6, -- Shadowforce
+                -- Hellfire Council
+                    ["184360"] = 7, -- Fel Rage
+                    ["184449"] = 5, ["185065"] = 5, ["184450"] = 5, ["185066"] = 5, ["184676"] = 5, -- Mark of Necromancer
+                    ["184652"] = 3, -- Reap
+                -- Archimonde
+                    ["184964"] = 7, -- Shackled Torment
+                    ["186123"] = 6, -- Focused Chaos
+                    ["185014"] = 6, -- Wrought Chaos
+                    ["186952"] = 8, ["189891"] = 8, ["186961"] = 8, -- Nether Banish
+                    ["183634"] = 7, -- Shadowfel Burst
+                    ["189895"] = 6, -- Void Star Fixate
+                    ["190049"] = 4, -- Nether Corruption
+
         },
     }
 
