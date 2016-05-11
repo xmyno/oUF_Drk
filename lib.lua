@@ -1247,39 +1247,80 @@ end
 
 
 -- Heal Prediction
+lib.HealPrediction_Override = function(self, event, unit)
+	local element = self.HealPrediction
+	local parent = self.Health
+
+
+	local health, maxHealth = UnitHealth(unit), UnitHealthMax(unit)
+	if maxHealth == 0 or UnitIsDeadOrGhost(unit) then
+		element.healingBar:Hide()
+		element.absorbsBar:Hide()
+		return
+	end
+
+	local missing = maxHealth - health
+
+	local healing = UnitGetIncomingHeals(unit) or 0
+
+	if (healing / maxHealth) >= 0.01 and missing > 0 then
+		local bar = element.healingBar
+		bar:Show()
+		bar:SetMinMaxValues(0, maxHealth)
+		if healing > missing then
+			bar:SetValue(missing)
+			missing = 0
+		else
+			bar:SetValue(healing)
+			missing = missing - healing
+		end
+		parent = bar
+	else
+		element.healingBar:Hide()
+	end
+
+	local absorbs = UnitGetTotalAbsorbs(unit) or 0
+	if (absorbs / maxHealth) >= 0.01 and missing > 0 then
+		local bar = element.absorbsBar
+		bar:Show()
+		bar:SetPoint("TOPLEFT", parent:GetStatusBarTexture(), "TOPRIGHT")
+		bar:SetPoint("BOTTOMLEFT", parent:GetStatusBarTexture(), "BOTTOMRIGHT")
+		bar:SetMinMaxValues(0, maxHealth)
+		if absorbs > missing then
+			bar:SetValue(missing)
+		else
+			bar:SetValue(absorbs)
+		end
+	else
+		element.absorbsBar:Hide()
+	end
+end
+
 lib.addHealPred = function(self)
 	if not cfg.showIncHeals then return end
 
-	local mhpb = CreateFrame('StatusBar', nil, self.Health)
-	mhpb:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
-	mhpb:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
-	mhpb:SetWidth(self:GetWidth())
-	mhpb:SetStatusBarTexture(cfg.statusbar_texture)
-	if self.mystyle == "raid" then
-		mhpb:SetStatusBarColor(0, 200/255, 0, 0.4)
-	else
-		mhpb:SetFrameLevel(2)
-		mhpb:SetStatusBarColor(0, 200/255, 0, 0.8)
-	end
+	local health = self.Health
 
+	local healing = CreateFrame('StatusBar', nil, health)
+	healing:SetPoint('TOPLEFT', health:GetStatusBarTexture(), 'TOPRIGHT')
+	healing:SetPoint('BOTTOMLEFT', health:GetStatusBarTexture(), 'BOTTOMRIGHT')
+	healing:SetWidth(self:GetWidth())
+	healing:SetStatusBarTexture(cfg.statusbar_texture)
+	healing:SetStatusBarColor(0.25, 1, 0.25, 0.5)
+	healing:SetFrameLevel(1)
 
-	local ohpb = CreateFrame('StatusBar', nil, self.Health)
-	ohpb:SetPoint('TOPLEFT', mhpb:GetStatusBarTexture(), 'TOPRIGHT', 0, 0)
-	ohpb:SetPoint('BOTTOMLEFT', mhpb:GetStatusBarTexture(), 'BOTTOMRIGHT', 0, 0)
-	ohpb:SetWidth(self:GetWidth())
-	ohpb:SetStatusBarTexture(cfg.statusbar_texture)
-	if self.mystyle == "raid" then
-		ohpb:SetStatusBarColor(0, 200/255, 0, 0.4)
-	else
-		ohpb:SetStatusBarColor(0, 200/255, 0, 0.8)
-		ohpb:SetFrameLevel(2)
-	end
-
+	local absorbs = CreateFrame('StatusBar', nil, health)
+	absorbs:SetPoint('TOPLEFT', healing:GetStatusBarTexture(), 'TOPRIGHT')
+	absorbs:SetPoint('BOTTOMLEFT', healing:GetStatusBarTexture(), 'BOTTOMRIGHT')
+	absorbs:SetWidth(self:GetWidth())
+	absorbs:SetStatusBarTexture(cfg.statusbar_texture)
+	absorbs:SetStatusBarColor(0.25, 0.8, 1, 0.5)
+	absorbs:SetFrameLevel(1)
 
 	self.HealPrediction = {
-		myBar = mhpb,
-		otherBar = ohpb,
-		maxOverflow = 1.01,
+		healingBar = healing,
+		absorbsBar = absorbs,
+		Override = lib.HealPrediction_Override
 	}
 end
 
