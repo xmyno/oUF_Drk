@@ -104,11 +104,11 @@ tags.Methods["drk:color"] = function(u)
 
 	if UnitIsDead(u) or UnitIsGhost(u) or not UnitIsConnected(u) then
 		return "|cffA0A0A0"
-	elseif (UnitIsTapped(u) and not UnitIsTappedByPlayer(u)) then
+	elseif UnitIsTapDenied(u) then
 		return hex(oUF.colors.tapped)
-	elseif (u == "pet") then
+	elseif u == "pet" then
 		return hex(oUF.colors.class[class])
-	elseif (UnitIsPlayer(u)) then
+	elseif UnitIsPlayer(u) then
 		return hex(oUF.colors.class[class])
 	elseif reaction then
 		return hex(oUF.colors.reaction[reaction])
