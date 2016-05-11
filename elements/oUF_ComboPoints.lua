@@ -2,11 +2,13 @@ local _, ns = ...
 local oUF = ns.oUF or oUF
 assert(oUF, "oUF_ComboPoints was unable to locate oUF install")
 
-local GetComboPoints = GetComboPoints
+local UnitPower = UnitPower
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
-local Update = function(self, event, unit)
-    if(unit == 'pet') then return end
+local Update = function(self, event, unit, powerType)
+    if unit == 'pet' then return end
+    if unit and (unit ~= 'player' and unit ~= 'vehicle') then return end
+    if powerType and powerType ~= 'COMBO_POINTS' then return end
 
     local cpoints = self.DrkCPoints
     if(cpoints.PreUpdate) then
@@ -14,10 +16,10 @@ local Update = function(self, event, unit)
     end
 
     local cp
-    if(UnitHasVehicleUI'player') then
-        cp = GetComboPoints('vehicle', 'target')
+    if UnitHasVehicleUI('player') and UnitPower('vehicle', 4) >= 1 then
+        cp = UnitPower('vehicle', 4)
     else
-        cp = GetComboPoints('player', 'target')
+        cp = UnitPower('player', 4)
     end
 
     for i=1, MAX_COMBO_POINTS do
@@ -38,7 +40,7 @@ local Path = function(self, ...)
 end
 
 local ForceUpdate = function(element)
-    return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
+    return Path(element.__owner, 'ForceUpdate', element.__owner.unit, nil)
 end
 
 local Enable = function(self)
@@ -47,7 +49,8 @@ local Enable = function(self)
         cpoints.__owner = self
         cpoints.ForceUpdate = ForceUpdate
 
-        self:RegisterEvent('UNIT_COMBO_POINTS', Path, true)
+       -- self:RegisterEvent('UNIT_COMBO_POINTS', Path, true)
+        self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 
         for index = 1, MAX_COMBO_POINTS do
             local cpoint = cpoints[index]
@@ -64,7 +67,8 @@ end
 local Disable = function(self)
     local cpoints = self.DrkCPoints
     if(cpoints) then
-        self:UnregisterEvent('UNIT_COMBO_POINTS', Path)
+        --self:UnregisterEvent('UNIT_COMBO_POINTS', Path)
+        self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
     end
 end
 
