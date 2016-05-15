@@ -256,7 +256,7 @@ lib.addPortrait = function(f)
     local h = CreateFrame("Frame", nil, p)
     h:SetFrameLevel(3)
     h:SetPoint("TOPLEFT",-4,4)
-    h:SetPoint("BOTTOMRIGHT",4,-4)
+    h:SetPoint("BOTTOMRIGHT",5,-5)
     lib.createBackdrop(h,0)
 
     f.Portrait = p
@@ -458,7 +458,7 @@ lib.addCastBar = function(f)
     local s = CreateFrame("StatusBar", "oUF_DrkCastbar"..f.mystyle, f)
 	if f.mystyle == "player" then
 		if cfg.playerCastBarOnUnitframe then
-			s:SetPoint("TOPLEFT",f.Portrait,"TOPLEFT",20,.5)
+			s:SetPoint("TOPLEFT",f.Portrait,"TOPLEFT",21,.5)
 			s:SetHeight(f.Portrait:GetHeight()+1.5)
 			s:SetWidth(f:GetWidth()-37.45)
 		else
@@ -468,7 +468,7 @@ lib.addCastBar = function(f)
 		end
     elseif f.mystyle == "target" then
 		if cfg.targetCastBarOnUnitframe then
-			s:SetPoint("TOPLEFT",f.Portrait,"TOPLEFT",20,.5)
+			s:SetPoint("TOPLEFT",f.Portrait,"TOPLEFT",21,.5)
 			s:SetHeight(f.Portrait:GetHeight()+1.5)
 			s:SetWidth(f:GetWidth()-37.45)
 		else
@@ -523,8 +523,8 @@ lib.addCastBar = function(f)
     local i = s:CreateTexture(nil, "ARTWORK")
 
 	if ((f.mystyle=='player' and cfg.playerCastBarOnUnitframe) or (f.mystyle=='target' and cfg.targetCastBarOnUnitframe)) then
-		i:SetPoint("RIGHT", s, "LEFT", 0, 0)
-		i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
+		i:SetPoint("RIGHT", s, "LEFT", 1, 0)
+		i:SetSize(s:GetHeight(),s:GetHeight())
 	elseif (f.mystyle=='player' or f.mystyle=='target') then
 		i:SetPoint("RIGHT",s,"LEFT",-5,0)
 		i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
