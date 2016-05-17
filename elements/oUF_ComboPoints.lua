@@ -6,7 +6,6 @@ local UnitPower = UnitPower
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
 local Update = function(self, event, unit, powerType)
-    if unit == 'pet' then return end
     if unit and (unit ~= 'player' and unit ~= 'vehicle') then return end
     if powerType and powerType ~= 'COMBO_POINTS' then return end
 
@@ -49,7 +48,6 @@ local Enable = function(self)
         cpoints.__owner = self
         cpoints.ForceUpdate = ForceUpdate
 
-       -- self:RegisterEvent('UNIT_COMBO_POINTS', Path, true)
         self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 
         for index = 1, MAX_COMBO_POINTS do
@@ -67,7 +65,6 @@ end
 local Disable = function(self)
     local cpoints = self.DrkCPoints
     if(cpoints) then
-        --self:UnregisterEvent('UNIT_COMBO_POINTS', Path)
         self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
     end
 end
