@@ -35,7 +35,6 @@ local cfg = CreateFrame("Frame")
     cfg.showEclipsebar = true -- show druid Eclipse bar
     cfg.showShardbar = true -- show Warlock SoulShard bar
     cfg.showHarmonybar = true -- show Monk Harmony bar
-    cfg.showShadoworbsbar = true -- show Shadow Priest Shadow Orbs bar
     cfg.showComboPoints = true -- show Rogue Combo Points
 --castbar
     cfg.Castbars = true -- use built-in castbars

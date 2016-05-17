@@ -15,7 +15,6 @@ elements\oUF_WarlockSpecBars.lua
 elements\oUF_MonkHarmonyBar.lua
 elements\oUF_ComboPoints.lua
 elements\oUF_HolyPower.lua
-elements\oUF_ShadowOrbs.lua
 lib.lua
 core.lua
 elements\Indicators.lua

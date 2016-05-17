@@ -1047,45 +1047,6 @@ lib.addHarmony = function(self)
 	self.MonkHarmonyBar = mhb
 end
 
---Shadow Orbs bar
-lib.addShadoworbs = function(self)
-	if playerClass ~= "PRIEST" then return end
-
-	local pso = CreateFrame("Frame", nil, self)
-	pso:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
-	pso:SetHeight(5)
-	pso:SetWidth(self.Health:GetWidth()/2+50)
-
-	for i = 1,5 do
-		pso[i] = CreateFrame("StatusBar", self:GetName().."_PriestShadowOrbs"..i, self)
-		pso[i]:SetHeight(5)
-		pso[i]:SetWidth(pso:GetWidth()/5-2)
-		pso[i]:SetStatusBarTexture(cfg.statusbar_texture)
-		pso[i]:SetStatusBarColor(.86,.22,1)
-		pso[i]:SetFrameLevel(11)
-		pso[i].bg = pso[i]:CreateTexture(nil, "BORDER")
-		pso[i].bg:SetTexture(cfg.statusbar_texture)
-		pso[i].bg:SetPoint("TOPLEFT", pso[i], "TOPLEFT", 0, 0)
-		pso[i].bg:SetPoint("BOTTOMRIGHT", pso[i], "BOTTOMRIGHT", 0, 0)
-		pso[i].bg.multiplier = 0.3
-
-		--helper backdrop
-		local h = CreateFrame("Frame", nil, pso[i])
-		h:SetFrameLevel(10)
-		h:SetPoint("TOPLEFT",-3,3)
-		h:SetPoint("BOTTOMRIGHT",3,-3)
-		lib.createBackdrop(h,1)
-
-		if (i == 1) then
-			pso[i]:SetPoint('LEFT', pso, 'LEFT', 1, 0)
-		else
-			pso[i]:SetPoint('TOPLEFT', pso[i-1], 'TOPRIGHT', 2, 0)
-		end
-	end
-
-	self.PriestShadowOrbs = pso
-end
-
 -- SoulShard bar
 
 lib.addShards = function(self)
