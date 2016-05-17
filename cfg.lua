@@ -32,7 +32,6 @@ local cfg = CreateFrame("Frame")
 --class-specific bars
     cfg.showRunebar = true -- show DK rune bar
     cfg.showHolybar = true -- show Paladin HolyPower bar
-    cfg.showEclipsebar = true -- show druid Eclipse bar
     cfg.showShardbar = true -- show Warlock SoulShard bar
     cfg.showArcaneChargesbar = true -- show Mage Arcane Charges bar
     cfg.showHarmonybar = true -- show Monk Harmony bar
