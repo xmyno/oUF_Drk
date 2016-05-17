@@ -2,6 +2,7 @@ local addon, ns = ...
 local cfg = ns.cfg
 
 local tags = oUF.Tags
+local UnitAura, GetTime = UnitAura, GetTime
 
 local SVal = function(val)
 	if val then
@@ -353,25 +354,12 @@ tags.Methods["Priest:ClarityOfWill"] = function(unit)
 	end
 end
 
-local SPIRIT_SHELL = GetSpellInfo(114908)
-tags.Events["Priest:SpiritShell"] = 'UNIT_AURA'
-tags.Methods["Priest:SpiritShell"] = function(unit)
-
-	local _, _, _, _, _, _, expirationTime, _, _, _, spellId = UnitAura(unit, SPIRIT_SHELL)
-
+local ATONEMENT = GetSpellInfo(214206)
+tags.Events["Priest:Atonement"] = 'UNIT_AURA'
+tags.Methods["Priest:Atonement"] = function(unit)
+	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, ATONEMENT)
 	if expirationTime then
-		-- check if it's the spell buff itself and not the absorb buff. if yes search through buffs by index
-		if spellId == 109964 then
-			for i = 1, 40 do
-				_, _, _, _, _, _, expirationTime, _, _, _, spellId = UnitAura(unit, i)
-				-- we found the correct buff?
-				if spellId == 114908 then break end
-			end
-		end
-
-		if spellId == 114908 then
-			return format("|cffd814ff%.0f|r ", expirationTime - GetTime())
-		end
+		return format("|cff268ccc%.0f|r ", expirationTime - GetTime())
 	end
 end
 
@@ -381,6 +369,24 @@ tags.Methods["Priest:Renew"] = function(unit)
 	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, RENEW)
 	if source and source == "player" then
 		return format("|cff33cc00%.0f|r ", expirationTime - GetTime())
+	end
+end
+
+local INNERVATE = GetSpellInfo(29166)
+tags.Events["Druid:Innervate"] = 'UNIT_AURA'
+tags.Methods["Druid:Innervate"] = function(unit)
+	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, INNERVATE)
+	if expirationTime then
+		return format("|cff268ccc%.0f|r ", expirationTime - GetTime())
+	end
+end
+
+local IRONBARK = GetSpellInfo(102342)
+tags.Events["Druid:Ironbark"] = 'UNIT_AURA'
+tags.Methods["Druid:Ironbark"] = function(unit)
+	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, IRONBARK)
+	if expirationTime then
+		return format("|cffa52a2a%.0f|r ", expirationTime - GetTime())
 	end
 end
 
@@ -482,15 +488,6 @@ tags.Methods["Warrior:Safeguard"] = function(unit)
 	local _, _, _, _, _, _, expirationTime, _ = UnitAura(unit, SAFEGUARD)
 	if expirationTime then
 		return format("|cff33cc00%.0f|r ", expirationTime - GetTime())
-	end
-end
-
-local DEATH_BARRIER = GetSpellInfo(115635)
-tags.Events["DK:DeathBarrier"] = 'UNIT_AURA'
-tags.Methods["DK:DeathBarrier"] = function(unit)
-	local _, _, _, _, _, _, expirationTime, _ = UnitAura(unit, DEATH_BARRIER)
-	if expirationTime then
-		return format("|cffffcc00%.0f|r ", expirationTime - GetTime())
 	end
 end
 

@@ -67,13 +67,13 @@ local cfg = CreateFrame("Frame")
 
     cfg.IndicatorList = {
         ["NUMBERS"] = {
-            ["DEATHKNIGHT"]     = "[DK:DeathBarrier]",
-            ["DRUID"]           = "[Druid:Lifebloom][Druid:Rejuv][Druid:Germination][Druid:Regrowth]",
+            --["DEATHKNIGHT"]   = ,
+            ["DRUID"]           = "[Druid:Innervate][Druid:Ironbark][Druid:Lifebloom][Druid:Rejuv][Druid:Germination][Druid:Regrowth]",
             --["HUNTER"]        = missdirect,
             --["MAGE"]          = ,
             ["MONK"]            = "[Monk:EnvelopingMist][Monk:RenewingMist]",
             --["PALADIN"]       = ,
-            ["PRIEST"]          = "[Priest:Renew][Priest:SpiritShell][Priest:ClarityOfWill][Priest:PowerWordShield]",
+            ["PRIEST"]          = "[Priest:Renew][Priest:Atonement][Priest:ClarityOfWill][Priest:PowerWordShield]",
             --["ROGUE"]         = tricks,
             ["SHAMAN"]          = "[Shaman:Riptide][Shaman:EarthShield]",
             --["WARLOCK"]       = ,
