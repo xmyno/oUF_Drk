@@ -61,6 +61,7 @@ local UnitSpecific = {
 		if cfg.showHolybar then lib.addHolyPower(self) end
 		if cfg.showHarmonybar then lib.addHarmony(self) end
 		if cfg.showShardbar then lib.addShards(self) end
+		if cfg.showArcaneChargesbar then lib.addArcaneCharges(self) end
 		if cfg.showEclipsebar then lib.addEclipseBar(self) end
         if cfg.showComboPoints then lib.addCPoints(self) end
 

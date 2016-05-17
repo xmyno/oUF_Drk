@@ -34,6 +34,7 @@ local cfg = CreateFrame("Frame")
     cfg.showHolybar = true -- show Paladin HolyPower bar
     cfg.showEclipsebar = true -- show druid Eclipse bar
     cfg.showShardbar = true -- show Warlock SoulShard bar
+    cfg.showArcaneChargesbar = true -- show Mage Arcane Charges bar
     cfg.showHarmonybar = true -- show Monk Harmony bar
     cfg.showComboPoints = true -- show Rogue Combo Points
 --castbar

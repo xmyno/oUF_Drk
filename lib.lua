@@ -1088,6 +1088,46 @@ lib.addShards = function(self)
 	self.WarlockSpecBars = wsb
 end
 
+-- Arcane Charges (Arcane Mage)
+lib.addArcaneCharges = function(self)
+
+	if playerClass ~= "MAGE" then return end
+
+	local acb = CreateFrame("Frame", "ArcaneChargesBar", self)
+	acb:SetPoint("CENTER", self.Health, "TOP", -6, 1)
+	acb:SetWidth(self.Health:GetWidth() - 50)
+	acb:SetHeight(5)
+	acb:SetFrameLevel(10)
+
+	for i = 1, 4 do
+		acb[i] = CreateFrame("StatusBar", "ArcaneChargesBar"..i, acb)
+		acb[i]:SetHeight(5)
+        acb[i]:SetWidth(acb:GetWidth() / 4)
+		acb[i]:SetStatusBarTexture(cfg.statusbar_texture)
+		acb[i]:SetStatusBarColor(.15,.55,.8)
+		acb[i].bg = acb[i]:CreateTexture(nil,"BORDER")
+		acb[i].bg:SetTexture(cfg.statusbar_texture)
+		acb[i].bg:SetVertexColor(0,0,0)
+		acb[i].bg:SetPoint("TOPLEFT",acb[i],"TOPLEFT",0,0)
+		acb[i].bg:SetPoint("BOTTOMRIGHT",acb[i],"BOTTOMRIGHT",0,0)
+		acb[i].bg.multiplier = .3
+
+		local h = CreateFrame("Frame",nil,acb[i])
+		h:SetFrameLevel(10)
+		h:SetPoint("TOPLEFT",-3,3)
+		h:SetPoint("BOTTOMRIGHT",3,-3)
+		lib.createBackdrop(h,1)
+
+		if i == 1 then
+			acb[i]:SetPoint("LEFT", acb, "LEFT", 1, 0)
+		else
+			acb[i]:SetPoint("LEFT", acb[i-1], "RIGHT", 2, 0)
+		end
+	end
+
+	self.MageArcaneCharges = acb
+end
+
 -- HolyPowerbar
 lib.addHolyPower = function(self)
 	if playerClass ~= "PALADIN" then return end
