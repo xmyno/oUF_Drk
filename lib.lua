@@ -1359,7 +1359,7 @@ end
 lib.addExperienceBar = function(self)
 	self.Experience = CreateFrame('StatusBar', nil, self)
 	self.Experience:SetPoint('BOTTOMLEFT', self, 'BOTTOMLEFT', ((self.Health:GetWidth()-self.Portrait:GetWidth())/2), 29)
-	self.Experience:SetWidth(self.Portrait:GetWidth())
+	self.Experience:SetWidth(self.Portrait:GetWidth() + 1)
 	self.Experience:SetHeight(3)
 	self.Experience:SetFrameLevel(6)
 	self.Experience:SetStatusBarTexture(cfg.statusbar_texture)
