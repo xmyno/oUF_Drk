@@ -1048,21 +1048,20 @@ lib.addHarmony = function(self)
 end
 
 -- SoulShard bar
-
 lib.addShards = function(self)
 
 	if playerClass ~= "WARLOCK" then return end
 
 	local wsb = CreateFrame("Frame", "WarlockSpecBars", self)
-	wsb:SetPoint("CENTER", self.Health, "TOP", 0, 1)
-	wsb:SetWidth(self.Health:GetWidth()/2+50)
+	wsb:SetPoint("CENTER", self.Health, "TOP", -6, 1)
+	wsb:SetWidth(self.Health:GetWidth() - 50)
 	wsb:SetHeight(5)
 	wsb:SetFrameLevel(10)
 
-	for i = 1, 4 do
+	for i = 1, 5 do
 		wsb[i] = CreateFrame("StatusBar", "WarlockSpecBars"..i, wsb)
 		wsb[i]:SetHeight(5)
-        wsb[i]:SetWidth(wsb:GetWidth() / 4)
+        wsb[i]:SetWidth(wsb:GetWidth() / 5)
 		wsb[i]:SetStatusBarTexture(cfg.statusbar_texture)
 		wsb[i]:SetStatusBarColor(.86,.22,1)
 		wsb[i].bg = wsb[i]:CreateTexture(nil,"BORDER")
