@@ -77,7 +77,7 @@ local cfg = CreateFrame("Frame")
             --["ROGUE"]         = tricks,
             ["SHAMAN"]          = "[Shaman:Riptide][Shaman:EarthShield]",
             --["WARLOCK"]       = ,
-            ["WARRIOR"]         = "[Warrior:Vigilance]",
+            --["WARRIOR"]       = ,
         },
         ["SQUARE"] = {
             --["DEATHKNIGHT"]   = ,

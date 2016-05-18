@@ -2,7 +2,6 @@ local addon, ns = ...
 local cfg = ns.cfg
 
 local tags = oUF.Tags
-local UnitAura, GetTime = UnitAura, GetTime
 
 local SVal = function(val)
 	if val then
@@ -299,7 +298,7 @@ end
 -- Class Buff Indicators --
 ---------------------------
 
-local GetTime = GetTime
+local UnitAura, GetTime = UnitAura, GetTime
 
 local EARTH_SHIELD = GetSpellInfo(974)
 tags.Events["Shaman:EarthShield"] = 'UNIT_AURA'
@@ -470,24 +469,6 @@ tags.Methods["Monk:RenewingMist"] = function(unit)
 	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, RENEWING_MIST)
 	if source and source == "player" then
 		return format("|cff0099cc%.0f|r ", expirationTime - GetTime())
-	end
-end
-
-local VIGILANCE = GetSpellInfo(114030)
-tags.Events["Warrior:Vigilance"] = 'UNIT_AURA'
-tags.Methods["Warrior:Vigilance"] = function(unit)
-	local _, _, _, _, _, _, expirationTime = UnitAura(unit, VIGILANCE)
-	if expirationTime then
-		return format("|cff33cc00%.0f|r ", expirationTime - GetTime())
-	end
-end
-
-local SAFEGUARD = GetSpellInfo(114029)
-tags.Events["Warrior:Safeguard"] = 'UNIT_AURA'
-tags.Methods["Warrior:Safeguard"] = function(unit)
-	local _, _, _, _, _, _, expirationTime, _ = UnitAura(unit, SAFEGUARD)
-	if expirationTime then
-		return format("|cff33cc00%.0f|r ", expirationTime - GetTime())
 	end
 end
 
