@@ -247,6 +247,7 @@ tags.Methods["drk:level"] = function(unit)
 	local c = UnitClassification(unit)
 	local l = UnitLevel(unit)
 	local d = GetQuestDifficultyColor(l)
+	local q = UnitIsQuestBoss(unit)
 
 	local str = l
 
@@ -272,6 +273,10 @@ tags.Methods["drk:level"] = function(unit)
 				str = string.format("|cff%02x%02x%02x%s",d.r*255,d.g*255,d.b*255,l)
 			end
 		end
+	end
+
+	if q then
+		str = string.format("%s|cffffd700Q|r", str)
 	end
 
 	return str
