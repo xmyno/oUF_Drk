@@ -139,17 +139,7 @@ tags.Methods["drk:DDG"] = function(u)
 end
 
 tags.Events["drk:power"] = 'UNIT_MAXPOWER UNIT_POWER'
-tags.Methods["drk:power"]  = function(u)
-	local min, max = UnitPower(u), UnitPowerMax(u)
-	if min~=max then
-		return ("%s/%s"):format(SVal(min), SVal(max))
-	else
-		return SVal(max)
-	end
-end
-
-tags.Events["my:power"] = 'UNIT_MAXPOWER UNIT_POWER'
-tags.Methods["my:power"] = function(unit)
+tags.Methods["drk:power"] = function(unit)
 	local curpp, maxpp = UnitPower(unit), UnitPowerMax(unit);
 	local playerClass, englishClass = UnitClass(unit);
 
@@ -165,61 +155,6 @@ tags.Methods["my:power"] = function(unit)
 		end
 	end
 end;
-
-
--- ComboPoints
-tags.Events["myComboPoints"] = 'UNIT_COMBO_POINTS PLAYER_TARGET_CHANGED'
-tags.Methods["myComboPoints"] = function(unit)
-	local cp, str
-	if(UnitExists'vehicle') then
-		cp = GetComboPoints('vehicle', 'target')
-	else
-		cp = GetComboPoints('player', 'target')
-	end
-
-	if (cp == 1) then
-		str = string.format("|cff69e80c%d|r",cp)
-	elseif cp == 2 then
-		str = string.format("|cffb2e80c%d|r",cp)
-	elseif cp == 3 then
-		str = string.format("|cffffd800%d|r",cp)
-	elseif cp == 4 then
-		str = string.format("|cffffba00%d|r",cp)
-	elseif cp == 5 then
-		str = string.format("|cfff10b0b%d|r",cp)
-	end
-
-	return str
-end
-
--- Deadly Poison Tracker
-tags.Events["myDeadlyPoison"] = 'UNIT_COMBO_POINTS PLAYER_TARGET_CHANGED UNIT_AURA'
-tags.Methods["myDeadlyPoison"] = function(unit)
-
-	local Spell = "Deadly Poison" or GetSpellInfo(43233)
-	local ct = hasUnitDebuff(unit, Spell)
-	local cp = GetComboPoints('player', 'target')
-
-	if cp > 0 then
-		if (not ct) then
-			str = ""
-		elseif (ct == 1) then
-			str = string.format("|cffc1e79f%d|r",ct)
-		elseif ct == 2 then
-			str = string.format("|cfface678%d|r",ct)
-		elseif ct == 3 then
-			str = string.format("|cff9de65c%d|r",ct)
-		elseif ct == 4 then
-			str = string.format("|cff8be739%d|r",ct)
-		elseif ct == 5 then
-			str = string.format("|cff90ff00%d|r",ct)
-		end
-	else
-		str = ""
-	end
-
-	return str
-end
 
 tags.Events["drk:xp"] = 'PLAYER_XP_UPDATE PLAYER_LEVEL_UP UNIT_PET_EXPERIENCE UPDATE_EXHAUSTION'
 tags.Methods["drk:xp"] = function(unit)

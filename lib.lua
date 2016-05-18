@@ -133,10 +133,10 @@ lib.addStrings = function(f)
 		else
 			name:SetPoint("RIGHT", hpval, "LEFT", -2, 0)
 			if f.mystyle == "player" then
-				f:Tag(name, "[drk:color][my:power]|r[drk:afkdnd]")
+				f:Tag(name, "[drk:color][drk:power]|r[drk:afkdnd]")
 			elseif f.mystyle == "target" then
 				f:Tag(name, "[drk:level] [drk:color][name][drk:afkdnd]")
-				f:Tag(powerval, "[my:power]")
+				f:Tag(powerval, "[drk:power]")
 			else
 				f:Tag(name, "[drk:color][name]")
 			end
