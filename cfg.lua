@@ -75,7 +75,7 @@ local cfg = CreateFrame("Frame")
             --["PALADIN"]       = ,
             ["PRIEST"]          = "[Priest:Renew][Priest:Atonement][Priest:ClarityOfWill][Priest:PowerWordShield]",
             --["ROGUE"]         = tricks,
-            ["SHAMAN"]          = "[Shaman:Riptide][Shaman:EarthShield]",
+            ["SHAMAN"]          = "[Shaman:Riptide]",
             --["WARLOCK"]       = ,
             --["WARRIOR"]       = ,
         },

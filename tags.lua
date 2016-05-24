@@ -240,24 +240,6 @@ end
 
 local UnitAura, GetTime = UnitAura, GetTime
 
-local EARTH_SHIELD = GetSpellInfo(974)
-tags.Events["Shaman:EarthShield"] = 'UNIT_AURA'
-tags.Methods["Shaman:EarthShield"] = function(unit)
-
-	local _, _, _, esCount, _, _, _, source = UnitAura(unit, EARTH_SHIELD)
-	if esCount then
-		if source == "player" then
-			if esCount > 3 then
-				return format("|cff33cc00%.0f|r ", esCount)
-			else
-				return format("|cffffcc00%.0f|r ", esCount)
-			end
-		else
-			return format("|cffaa2200%.0f|r ", esCount)
-		end
-	end
-end
-
 local RIPTIDE = GetSpellInfo(61295)
 tags.Events["Shaman:Riptide"] = 'UNIT_AURA'
 tags.Methods["Shaman:Riptide"] = function(unit)
