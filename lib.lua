@@ -1264,7 +1264,7 @@ end
 
 lib.addExperienceBar = function(self)
 	self.Experience = CreateFrame('StatusBar', nil, self)
-	self.Experience:SetPoint('BOTTOMLEFT', self, 'BOTTOMLEFT', ((self.Health:GetWidth()-self.Portrait:GetWidth())/2), 29)
+	self.Experience:SetPoint('BOTTOMLEFT', self, 'BOTTOMLEFT', 8.75, 29)
 	self.Experience:SetWidth(self.Portrait:GetWidth() + 1)
 	self.Experience:SetHeight(3)
 	self.Experience:SetFrameLevel(6)
@@ -1312,6 +1312,34 @@ lib.addExperienceBar = function(self)
 
 end
 
+lib.addArtifactPowerBar = function(self)
+	local ArtifactPower = CreateFrame('StatusBar', nil, self)
+	ArtifactPower:SetPoint('BOTTOMLEFT', self, 'BOTTOMLEFT', 8.75, 7)
+	ArtifactPower:SetWidth(233.45)
+	ArtifactPower:SetHeight(2)
+	ArtifactPower:SetFrameLevel(6)
+	ArtifactPower:SetStatusBarTexture(cfg.statusbar_texture)
+	ArtifactPower:GetStatusBarTexture():SetHorizTile(false)
+	ArtifactPower:SetStatusBarColor(.9, .8, .5)
+
+	ArtifactPower.text = lib.gen_fontstring(ArtifactPower, cfg.smallfont, 9, 'OUTLINE')
+	ArtifactPower.text:SetPoint("BOTTOM", ArtifactPower, "BOTTOM", 0, 0)
+
+	ArtifactPower.PostUpdate = function(self, event, isShown)
+	    if (not isShown) then return end
+    	self.text:SetFormattedText(
+    		"%d / %d%s",
+    		self.power,
+    		self.powerForNextTrait,
+    		self.numTraitsLearnable > 0 and "  +" .. self.numTraitsLearnable or ""
+    	)
+	end
+
+	ArtifactPower:SetAlpha(0)
+
+	self.ArtifactPower = ArtifactPower
+end
+
 --gen hilight texture
 lib.addHighlight = function(f)
     local OnEnter = function(f)
@@ -1319,6 +1347,9 @@ lib.addHighlight = function(f)
 		f.Highlight:Show()
 		if f.Experience ~= nil then
 			f.Experience.Text:SetAlpha(0.9)
+		end
+		if f.ArtifactPower ~= nil then
+			f.ArtifactPower:SetAlpha(1)
 		end
 		if f.mystyle == "raid" then
 			if not cfg.showTooltips then GameTooltip:Hide() end
@@ -1330,6 +1361,9 @@ lib.addHighlight = function(f)
 		f.Highlight:Hide()
 		if f.Experience ~= nil then
 			f.Experience.Text:SetAlpha(0)
+		end
+		if f.ArtifactPower ~= nil then
+			f.ArtifactPower:SetAlpha(0)
 		end
 		if f.mystyle == "raid" then
 			if cfg.showRoleIcons then f.LFDRole:SetAlpha(0) end

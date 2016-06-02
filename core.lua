@@ -32,6 +32,7 @@ local UnitSpecific = {
 		if cfg.AltPowerBarPlayer then lib.addAltPowerBar(self) end
 		lib.addAltPowerBarString(self)
 		if IsAddOnLoaded("oUF_Experience") then lib.addExperienceBar(self) end
+		if IsAddOnLoaded("oUF_ArtifactPower") then lib.addArtifactPowerBar(self) end
 
 		-- Buffs and Debuffs
 		if cfg.playerAuras then
