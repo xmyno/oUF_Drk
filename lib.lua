@@ -916,6 +916,31 @@ lib.PostUpdateRaidFramePower = function(Power, unit, min, max)
 
 end
 
+lib.addAdditionalPower = function(self)
+	local AdditionalPower = CreateFrame("StatusBar", "AdditionalPowerBar", self.Power)
+	AdditionalPower:SetHeight(3)
+	AdditionalPower:SetWidth(self.Power:GetWidth())
+	AdditionalPower:SetPoint("TOP", self.Power, "BOTTOM", 0, -3)
+	AdditionalPower:SetFrameLevel(10)
+	AdditionalPower:SetStatusBarTexture(cfg.statusbar_texture)
+	AdditionalPower:SetStatusBarColor(.117, .55, 1)
+	
+	AdditionalPower.bg = AdditionalPower:CreateTexture(nil, "BORDER")
+	AdditionalPower.bg:SetTexture(cfg.statusbar_texture)
+	AdditionalPower.bg:SetVertexColor(.05, .15, .4)
+	AdditionalPower.bg:SetPoint("TOPLEFT", AdditionalPower, "TOPLEFT", 0, 0)
+	AdditionalPower.bg:SetPoint("BOTTOMRIGHT", AdditionalPower, "BOTTOMRIGHT", 0, 0)
+
+	local h = CreateFrame("Frame", nil, AdditionalPower)
+	h:SetFrameLevel(0)
+	h:SetPoint("TOPLEFT", -4, 4)
+	h:SetPoint("BOTTOMRIGHT", 4, -4)
+	lib.createBackdrop(h, 0)
+
+	self.DruidMana = AdditionalPower
+	self.DruidMana.bg = AdditionalPower.bg
+end
+
 lib.addHarmony = function(self)
 	if playerClass ~= "MONK" then return end
 

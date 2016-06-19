@@ -58,6 +58,7 @@ local UnitSpecific = {
 		lib.addMirrorCastBar(self)
 
 		-- Class Bars
+		lib.addAdditionalPower(self)
 		if cfg.showRunebar then lib.addRunes(self) end
 		if cfg.showHolybar then lib.addHolyPower(self) end
 		if cfg.showHarmonybar then lib.addHarmony(self) end
