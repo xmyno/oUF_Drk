@@ -11,7 +11,7 @@ local cfg = ns.cfg
 local cast = ns.cast
 local lib = CreateFrame("Frame")
 local _, playerClass = UnitClass("player")
-oUF.colors.runes = {{0.87, 0.12, 0.23};{0.40, 0.95, 0.20};{0.14, 0.50, 1};{.70, .21, 0.94};}
+
 
 -----------------------
 -- Functions
@@ -133,10 +133,10 @@ lib.addStrings = function(f)
 		else
 			name:SetPoint("RIGHT", hpval, "LEFT", -2, 0)
 			if f.mystyle == "player" then
-				f:Tag(name, "[drk:color][my:power]|r[drk:afkdnd]")
+				f:Tag(name, "[drk:color][drk:power]|r[drk:afkdnd]")
 			elseif f.mystyle == "target" then
 				f:Tag(name, "[drk:level] [drk:color][name][drk:afkdnd]")
-				f:Tag(powerval, "[my:power]")
+				f:Tag(powerval, "[drk:power]")
 			else
 				f:Tag(name, "[drk:color][name]")
 			end
@@ -916,98 +916,29 @@ lib.PostUpdateRaidFramePower = function(Power, unit, min, max)
 
 end
 
-lib.addEclipseBar = function(self)
-	if playerClass ~= "DRUID" then return end
-	local eclipseBar = CreateFrame('Frame', nil, self)
-	if self.Debuffs then
-	eclipseBar:SetPoint('CENTER', self.Debuffs, 'BOTTOM', 0, -9)
-	else
-	eclipseBar:SetPoint('CENTER', self.Power, 'BOTTOM', 0, -7)
-	end
-	eclipseBar:SetFrameLevel(4)
-	eclipseBar:SetHeight(6)
-	eclipseBar:SetWidth(self:GetWidth()+.5)
-	local h = CreateFrame("Frame", nil, eclipseBar)
-	h:SetPoint("TOPLEFT",-3,3)
-	h:SetPoint("BOTTOMRIGHT",3,-3)
-	lib.createBackdrop(h,1)
-	eclipseBar.eBarBG = h
+lib.addAdditionalPower = function(self)
+	local AdditionalPower = CreateFrame("StatusBar", "AdditionalPowerBar", self.Power)
+	AdditionalPower:SetHeight(3)
+	AdditionalPower:SetWidth(self.Power:GetWidth())
+	AdditionalPower:SetPoint("TOP", self.Power, "BOTTOM", 0, -3)
+	AdditionalPower:SetFrameLevel(10)
+	AdditionalPower:SetStatusBarTexture(cfg.statusbar_texture)
+	AdditionalPower:SetStatusBarColor(.117, .55, 1)
+	
+	AdditionalPower.bg = AdditionalPower:CreateTexture(nil, "BORDER")
+	AdditionalPower.bg:SetTexture(cfg.statusbar_texture)
+	AdditionalPower.bg:SetVertexColor(.05, .15, .4)
+	AdditionalPower.bg:SetPoint("TOPLEFT", AdditionalPower, "TOPLEFT", 0, 0)
+	AdditionalPower.bg:SetPoint("BOTTOMRIGHT", AdditionalPower, "BOTTOMRIGHT", 0, 0)
 
-	local lunarBar = CreateFrame('StatusBar', nil, eclipseBar)
-	lunarBar:SetPoint('LEFT', eclipseBar, 'LEFT', 0, 0)
-	lunarBar:SetSize(eclipseBar:GetWidth(), eclipseBar:GetHeight())
-	lunarBar:SetStatusBarTexture(cfg.statusbar_texture)
-	lunarBar:SetStatusBarColor(.1, .3, .7)
-	lunarBar:SetFrameLevel(5)
+	local h = CreateFrame("Frame", nil, AdditionalPower)
+	h:SetFrameLevel(0)
+	h:SetPoint("TOPLEFT", -4, 4)
+	h:SetPoint("BOTTOMRIGHT", 4, -4)
+	lib.createBackdrop(h, 0)
 
-	local solarBar = CreateFrame('StatusBar', nil, eclipseBar)
-	solarBar:SetPoint('LEFT', lunarBar:GetStatusBarTexture(), 'RIGHT', 0, 0)
-	solarBar:SetSize(eclipseBar:GetWidth(), eclipseBar:GetHeight())
-	solarBar:SetStatusBarTexture(cfg.statusbar_texture)
-	solarBar:SetStatusBarColor(1,.85,.13)
-	solarBar:SetFrameLevel(5)
-
-
-	eclipseBar.SolarBar = solarBar
-	eclipseBar.LunarBar = lunarBar
-	self.EclipseBar = eclipseBar
-	self.EclipseBar.PostUnitAura = eclipseBarBuff
-
-	local EBText = lib.gen_fontstring(solarBar, cfg.font, 14, "OUTLINE")
-	EBText:SetPoint('CENTER', eclipseBar, 'CENTER', 0,0)
-	local EBText2 = lib.gen_fontstring(solarBar, cfg.font, 16, "THINOUTLINE")
-	EBText2:SetPoint('LEFT', EBText, 'RIGHT', 1,-1)
-
-	self.EclipseBar.PostUpdatePower = function(unit)
-		local eclipsePowerMax = UnitPowerMax('player', SPELL_POWER_ECLIPSE)
-		local eclipsePower = UnitPower('player', SPELL_POWER_ECLIPSE)/eclipsePowerMax*100
-
-		if ( GetEclipseDirection() == "sun" ) then
-			EBText:SetText(math.abs(eclipsePower) .. "  >>")
-		elseif ( GetEclipseDirection() == "moon" ) then
-			EBText:SetText("<<  " .. math.abs(eclipsePower))
-		else
-			EBText:SetText(math.abs(eclipsePower))
-		end
-
-		if (eclipsePower < 0) then
-			EBText2:SetText("|cff006accSTARFIRE|r")
-			EBText2:ClearAllPoints()
-			EBText2:SetPoint('RIGHT', EBText, 'LEFT', 1,-1)
-		elseif (eclipsePower > 0) then
-			EBText2:SetText("|cffeac500WRATH|r")
-			EBText2:ClearAllPoints()
-			EBText2:SetPoint('LEFT', EBText, 'RIGHT', 1,-1)
-		else
-			EBText2:SetText("")
-		end
-	end
-
-	self.EclipseBar.PostUpdateVisibility = function(unit)
-		local eclipsePowerMax = UnitPowerMax('player', SPELL_POWER_ECLIPSE)
-		local eclipsePower = UnitPower('player', SPELL_POWER_ECLIPSE)/eclipsePowerMax*100
-
-		if ( GetEclipseDirection() == "sun" ) then
-			EBText:SetText(math.abs(eclipsePower) .. "  >>")
-		elseif ( GetEclipseDirection() == "moon" ) then
-			EBText:SetText("<<  " .. math.abs(eclipsePower))
-		else
-			EBText:SetText(math.abs(eclipsePower))
-		end
-
-		if (eclipsePower < 0) then
-			EBText2:SetText("|cff006accSTARFIRE|r")
-			EBText2:ClearAllPoints()
-			EBText2:SetPoint('RIGHT', EBText, 'LEFT', 1,-1)
-		elseif (eclipsePower > 0) then
-			EBText2:SetText("|cffeac500WRATH|r")
-			EBText2:ClearAllPoints()
-			EBText2:SetPoint('LEFT', EBText, 'RIGHT', 1,-1)
-		else
-			EBText2:SetText("")
-		end
-	end
-
+	self.DruidMana = AdditionalPower
+	self.DruidMana.bg = AdditionalPower.bg
 end
 
 lib.addHarmony = function(self)
@@ -1047,61 +978,21 @@ lib.addHarmony = function(self)
 	self.MonkHarmonyBar = mhb
 end
 
---Shadow Orbs bar
-lib.addShadoworbs = function(self)
-	if playerClass ~= "PRIEST" then return end
-
-	local pso = CreateFrame("Frame", nil, self)
-	pso:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
-	pso:SetHeight(5)
-	pso:SetWidth(self.Health:GetWidth()/2+50)
-
-	for i = 1,5 do
-		pso[i] = CreateFrame("StatusBar", self:GetName().."_PriestShadowOrbs"..i, self)
-		pso[i]:SetHeight(5)
-		pso[i]:SetWidth(pso:GetWidth()/5-2)
-		pso[i]:SetStatusBarTexture(cfg.statusbar_texture)
-		pso[i]:SetStatusBarColor(.86,.22,1)
-		pso[i]:SetFrameLevel(11)
-		pso[i].bg = pso[i]:CreateTexture(nil, "BORDER")
-		pso[i].bg:SetTexture(cfg.statusbar_texture)
-		pso[i].bg:SetPoint("TOPLEFT", pso[i], "TOPLEFT", 0, 0)
-		pso[i].bg:SetPoint("BOTTOMRIGHT", pso[i], "BOTTOMRIGHT", 0, 0)
-		pso[i].bg.multiplier = 0.3
-
-		--helper backdrop
-		local h = CreateFrame("Frame", nil, pso[i])
-		h:SetFrameLevel(10)
-		h:SetPoint("TOPLEFT",-3,3)
-		h:SetPoint("BOTTOMRIGHT",3,-3)
-		lib.createBackdrop(h,1)
-
-		if (i == 1) then
-			pso[i]:SetPoint('LEFT', pso, 'LEFT', 1, 0)
-		else
-			pso[i]:SetPoint('TOPLEFT', pso[i-1], 'TOPRIGHT', 2, 0)
-		end
-	end
-
-	self.PriestShadowOrbs = pso
-end
-
 -- SoulShard bar
-
 lib.addShards = function(self)
 
 	if playerClass ~= "WARLOCK" then return end
 
 	local wsb = CreateFrame("Frame", "WarlockSpecBars", self)
-	wsb:SetPoint("CENTER", self.Health, "TOP", 0, 1)
-	wsb:SetWidth(self.Health:GetWidth()/2+50)
+	wsb:SetPoint("CENTER", self.Health, "TOP", -6, 1)
+	wsb:SetWidth(self.Health:GetWidth() - 50)
 	wsb:SetHeight(5)
 	wsb:SetFrameLevel(10)
 
-	for i = 1, 4 do
+	for i = 1, 5 do
 		wsb[i] = CreateFrame("StatusBar", "WarlockSpecBars"..i, wsb)
 		wsb[i]:SetHeight(5)
-        wsb[i]:SetWidth(wsb:GetWidth() / 4)
+        wsb[i]:SetWidth(wsb:GetWidth() / 5)
 		wsb[i]:SetStatusBarTexture(cfg.statusbar_texture)
 		wsb[i]:SetStatusBarColor(.86,.22,1)
 		wsb[i].bg = wsb[i]:CreateTexture(nil,"BORDER")
@@ -1127,80 +1018,120 @@ lib.addShards = function(self)
 	self.WarlockSpecBars = wsb
 end
 
--- HolyPowerbar
-lib.addHolyPower = function(self)
-	if playerClass ~= "PALADIN" then return end
+-- Arcane Charges (Arcane Mage)
+lib.addArcaneCharges = function(self)
 
-	local php = CreateFrame("Frame", nil, self)
-	php:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
-	php:SetHeight(5)
-	php:SetWidth(self.Health:GetWidth()/2+75)
+	if playerClass ~= "MAGE" then return end
 
-	--local maxHolyPower = UnitPowerMax("player",SPELL_POWER_HOLY_POWER)
+	local MageArcaneCharges = CreateFrame("Frame", "ArcaneChargesBar", self)
+	MageArcaneCharges:SetPoint("CENTER", self.Health, "TOP", -6, 1)
+	MageArcaneCharges:SetWidth(self.Health:GetWidth() - 50)
+	MageArcaneCharges:SetHeight(5)
+	MageArcaneCharges:SetFrameLevel(10)
 
-	for i = 1, 5 do
-		php[i] = CreateFrame("StatusBar", self:GetName().."_Holypower"..i, self)
-		php[i]:SetHeight(5)
-		php[i]:SetWidth((php:GetWidth()/5)-2)
-		php[i]:SetStatusBarTexture(cfg.statusbar_texture)
-		php[i]:SetStatusBarColor(.9,.95,.33)
-		php[i]:SetFrameLevel(11)
-		php[i].bg = php[i]:CreateTexture(nil, "BORDER")
-		php[i].bg:SetTexture(cfg.statusbar_texture)
-		php[i].bg:SetPoint("TOPLEFT", php[i], "TOPLEFT", 0, 0)
-		php[i].bg:SetPoint("BOTTOMRIGHT", php[i], "BOTTOMRIGHT", 0, 0)
-		php[i].bg.multiplier = 0.3
+	for i = 1, 4 do
+		MageArcaneCharges[i] = CreateFrame("StatusBar", "ArcaneChargesBar"..i, MageArcaneCharges)
+		MageArcaneCharges[i]:SetHeight(5)
+        MageArcaneCharges[i]:SetWidth(MageArcaneCharges:GetWidth() / 4)
+		MageArcaneCharges[i]:SetStatusBarTexture(cfg.statusbar_texture)
+		MageArcaneCharges[i]:SetStatusBarColor(.15,.55,.8)
+		MageArcaneCharges[i].bg = MageArcaneCharges[i]:CreateTexture(nil,"BORDER")
+		MageArcaneCharges[i].bg:SetTexture(cfg.statusbar_texture)
+		MageArcaneCharges[i].bg:SetVertexColor(0,0,0)
+		MageArcaneCharges[i].bg:SetPoint("TOPLEFT",MageArcaneCharges[i],"TOPLEFT",0,0)
+		MageArcaneCharges[i].bg:SetPoint("BOTTOMRIGHT",MageArcaneCharges[i],"BOTTOMRIGHT",0,0)
+		MageArcaneCharges[i].bg.multiplier = .3
 
-		local h = CreateFrame("Frame", nil, php[i])
+		local h = CreateFrame("Frame",nil,MageArcaneCharges[i])
 		h:SetFrameLevel(10)
 		h:SetPoint("TOPLEFT",-3,3)
 		h:SetPoint("BOTTOMRIGHT",3,-3)
 		lib.createBackdrop(h,1)
 
-		if (i == 1) then
-			php[i]:SetPoint('LEFT', php, 'LEFT', 1, 0)
+		if i == 1 then
+			MageArcaneCharges[i]:SetPoint("LEFT", MageArcaneCharges, "LEFT", 1, 0)
 		else
-			php[i]:SetPoint('TOPLEFT', php[i-1], "TOPRIGHT", 2, 0)
+			MageArcaneCharges[i]:SetPoint("LEFT", MageArcaneCharges[i-1], "RIGHT", 2, 0)
 		end
 	end
 
-	self.PaladinHolyPower = php
+	self.MageArcaneCharges = MageArcaneCharges
+end
+
+-- HolyPowerbar
+lib.addHolyPower = function(self)
+	if playerClass ~= "PALADIN" then return end
+
+	local PaladinHolyPower = CreateFrame("Frame", nil, self)
+	PaladinHolyPower:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
+	PaladinHolyPower:SetHeight(5)
+	PaladinHolyPower:SetWidth(self.Health:GetWidth() / 2 + 75)
+
+	for i = 1, 5 do
+		PaladinHolyPower[i] = CreateFrame("StatusBar", self:GetName().."_Holypower"..i, self)
+		PaladinHolyPower[i]:SetHeight(5)
+		PaladinHolyPower[i]:SetWidth((PaladinHolyPower:GetWidth() / 5) - 2)
+		PaladinHolyPower[i]:SetStatusBarTexture(cfg.statusbar_texture)
+		PaladinHolyPower[i]:SetStatusBarColor(.9, .95, .33)
+		PaladinHolyPower[i]:SetFrameLevel(11)
+		PaladinHolyPower[i].bg = PaladinHolyPower[i]:CreateTexture(nil, "BORDER")
+		PaladinHolyPower[i].bg:SetTexture(cfg.statusbar_texture)
+		PaladinHolyPower[i].bg:SetPoint("TOPLEFT", PaladinHolyPower[i], "TOPLEFT", 0, 0)
+		PaladinHolyPower[i].bg:SetPoint("BOTTOMRIGHT", PaladinHolyPower[i], "BOTTOMRIGHT", 0, 0)
+		PaladinHolyPower[i].bg.multiplier = 0.3
+
+		local h = CreateFrame("Frame", nil, PaladinHolyPower[i])
+		h:SetFrameLevel(10)
+		h:SetPoint("TOPLEFT", -3, 3)
+		h:SetPoint("BOTTOMRIGHT", 3, -3)
+		lib.createBackdrop(h, 1)
+
+		if (i == 1) then
+			PaladinHolyPower[i]:SetPoint('LEFT', PaladinHolyPower, 'LEFT', 1, 0)
+		else
+			PaladinHolyPower[i]:SetPoint('TOPLEFT', PaladinHolyPower[i-1], "TOPRIGHT", 2, 0)
+		end
+	end
+
+	self.PaladinHolyPower = PaladinHolyPower
 end
 
 -- runebar
 lib.addRunes = function(self)
 	if playerClass ~= "DEATHKNIGHT" then return end
 
-	self.Runes = CreateFrame("Frame", nil, self)
-	self.Runes:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
-	self.Runes:SetHeight(5)
-	self.Runes:SetWidth(self.Health:GetWidth()-15)
-
+	local Runes = CreateFrame("Frame", nil, self)
+	Runes:SetPoint('CENTER', self.Health, 'TOP', 2, 1)
+	Runes:SetHeight(5)
+	Runes:SetWidth(self.Health:GetWidth()-15)
 
 	for i= 1, 6 do
-		self.Runes[i] = CreateFrame("StatusBar", self:GetName().."_Runes"..i, self)
-		self.Runes[i]:SetHeight(5)
-		self.Runes[i]:SetWidth((self.Health:GetWidth() / 6)-5)
-		self.Runes[i]:SetStatusBarTexture(cfg.statusbar_texture)
-		self.Runes[i]:SetFrameLevel(11)
-		self.Runes[i].bg = self.Runes[i]:CreateTexture(nil, "BORDER")
-		self.Runes[i].bg:SetTexture(cfg.statusbar_texture)
-		self.Runes[i].bg:SetPoint("TOPLEFT", self.Runes[i], "TOPLEFT", 0, 0)
-		self.Runes[i].bg:SetPoint("BOTTOMRIGHT", self.Runes[i], "BOTTOMRIGHT", 0, 0)
-		self.Runes[i].bg.multiplier = 0.3
+		Runes[i] = CreateFrame("StatusBar", self:GetName().."_Runes"..i, self)
+		Runes[i]:SetHeight(5)
+		Runes[i]:SetWidth((self.Health:GetWidth() / 6)-5)
+		Runes[i]:SetStatusBarTexture(cfg.statusbar_texture)
+		Runes[i]:SetFrameLevel(11)
+		Runes[i]:SetStatusBarColor(0.14, 0.5, 0.6)
+		Runes[i].bg = Runes[i]:CreateTexture(nil, "BORDER")
+		Runes[i].bg:SetTexture(cfg.statusbar_texture)
+		Runes[i].bg:SetPoint("TOPLEFT", Runes[i], "TOPLEFT", 0, 0)
+		Runes[i].bg:SetPoint("BOTTOMRIGHT", Runes[i], "BOTTOMRIGHT", 0, 0)
+		Runes[i].bg:SetVertexColor(0.07, 0.15, 0.15)
 
-		local h = CreateFrame("Frame", nil, self.Runes[i])
+		local h = CreateFrame("Frame", nil, Runes[i])
 		h:SetFrameLevel(10)
 		h:SetPoint("TOPLEFT",-3,3)
 		h:SetPoint("BOTTOMRIGHT",3,-3)
 		lib.createBackdrop(h,1)
 
 		if (i == 1) then
-			self.Runes[i]:SetPoint('LEFT', self.Runes, 'LEFT', 1, 0)
+			Runes[i]:SetPoint('LEFT', Runes, 'LEFT', 1, 0)
 		else
-			self.Runes[i]:SetPoint('TOPLEFT', self.Runes[i-1], 'TOPRIGHT', 2, 0)
+			Runes[i]:SetPoint('TOPLEFT', Runes[i-1], 'TOPRIGHT', 2, 0)
 		end
 	end
+
+	self.Runes = Runes
 end
 
 -- combo points
@@ -1358,7 +1289,7 @@ end
 
 lib.addExperienceBar = function(self)
 	self.Experience = CreateFrame('StatusBar', nil, self)
-	self.Experience:SetPoint('BOTTOMLEFT', self, 'BOTTOMLEFT', ((self.Health:GetWidth()-self.Portrait:GetWidth())/2), 29)
+	self.Experience:SetPoint('BOTTOMLEFT', self, 'BOTTOMLEFT', 8.75, 29)
 	self.Experience:SetWidth(self.Portrait:GetWidth() + 1)
 	self.Experience:SetHeight(3)
 	self.Experience:SetFrameLevel(6)
@@ -1406,6 +1337,34 @@ lib.addExperienceBar = function(self)
 
 end
 
+lib.addArtifactPowerBar = function(self)
+	local ArtifactPower = CreateFrame('StatusBar', nil, self)
+	ArtifactPower:SetPoint('BOTTOMLEFT', self, 'BOTTOMLEFT', 8.75, 7)
+	ArtifactPower:SetWidth(233.45)
+	ArtifactPower:SetHeight(2)
+	ArtifactPower:SetFrameLevel(6)
+	ArtifactPower:SetStatusBarTexture(cfg.statusbar_texture)
+	ArtifactPower:GetStatusBarTexture():SetHorizTile(false)
+	ArtifactPower:SetStatusBarColor(.9, .8, .5)
+
+	ArtifactPower.text = lib.gen_fontstring(ArtifactPower, cfg.smallfont, 9, 'OUTLINE')
+	ArtifactPower.text:SetPoint("BOTTOM", ArtifactPower, "BOTTOM", 0, 0)
+
+	ArtifactPower.PostUpdate = function(self, event, isShown)
+	    if (not isShown) then return end
+    	self.text:SetFormattedText(
+    		"%d / %d%s",
+    		self.power,
+    		self.powerForNextTrait,
+    		self.numTraitsLearnable > 0 and "  +" .. self.numTraitsLearnable or ""
+    	)
+	end
+
+	ArtifactPower:SetAlpha(0)
+
+	self.ArtifactPower = ArtifactPower
+end
+
 --gen hilight texture
 lib.addHighlight = function(f)
     local OnEnter = function(f)
@@ -1413,6 +1372,9 @@ lib.addHighlight = function(f)
 		f.Highlight:Show()
 		if f.Experience ~= nil then
 			f.Experience.Text:SetAlpha(0.9)
+		end
+		if f.ArtifactPower ~= nil then
+			f.ArtifactPower:SetAlpha(1)
 		end
 		if f.mystyle == "raid" then
 			if not cfg.showTooltips then GameTooltip:Hide() end
@@ -1424,6 +1386,9 @@ lib.addHighlight = function(f)
 		f.Highlight:Hide()
 		if f.Experience ~= nil then
 			f.Experience.Text:SetAlpha(0)
+		end
+		if f.ArtifactPower ~= nil then
+			f.ArtifactPower:SetAlpha(0)
 		end
 		if f.mystyle == "raid" then
 			if cfg.showRoleIcons then f.LFDRole:SetAlpha(0) end

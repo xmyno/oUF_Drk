@@ -9,19 +9,14 @@
 local channelingTicks = {
 	-- warlock
 	[GetSpellInfo(689)] = 6, -- Drain Life
-    [GetSpellInfo(103103)] = 4, -- Drain Soul
 	-- druid
 	[GetSpellInfo(740)] = 4, -- Tranquility
-    [GetSpellInfo(16914)] = 10, -- Hurricane
-	[GetSpellInfo(106996)] = 10, -- Astral Storm
 	-- priest
     [GetSpellInfo(15407)] = 4, -- Mind Flay
-	[GetSpellInfo(129197)] = 4, -- Insanity (Mind Flay)
 	[GetSpellInfo(48045)] = 6, -- Mind Sear
 	[GetSpellInfo(47540)] = 3, -- Penance
 	-- mage
 	[GetSpellInfo(5143)] = 5, -- arcane missiles
-	[GetSpellInfo(10)] = 8, -- blizzard
 	[GetSpellInfo(12051)] = 3, -- evocation
     -- monk
     [GetSpellInfo(115175)] = 8, -- soothing mist

@@ -32,6 +32,7 @@ local UnitSpecific = {
 		if cfg.AltPowerBarPlayer then lib.addAltPowerBar(self) end
 		lib.addAltPowerBarString(self)
 		if IsAddOnLoaded("oUF_Experience") then lib.addExperienceBar(self) end
+		if IsAddOnLoaded("oUF_ArtifactPower") then lib.addArtifactPowerBar(self) end
 
 		-- Buffs and Debuffs
 		if cfg.playerAuras then
@@ -57,12 +58,12 @@ local UnitSpecific = {
 		lib.addMirrorCastBar(self)
 
 		-- Class Bars
+		lib.addAdditionalPower(self)
 		if cfg.showRunebar then lib.addRunes(self) end
 		if cfg.showHolybar then lib.addHolyPower(self) end
 		if cfg.showHarmonybar then lib.addHarmony(self) end
 		if cfg.showShardbar then lib.addShards(self) end
-		if cfg.showEclipsebar then lib.addEclipseBar(self) end
-		if cfg.showShadoworbsbar then lib.addShadoworbs(self) end
+		if cfg.showArcaneChargesbar then lib.addArcaneCharges(self) end
         if cfg.showComboPoints then lib.addCPoints(self) end
 
 		-- Event Handlers

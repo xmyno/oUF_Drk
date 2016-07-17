@@ -104,11 +104,11 @@ tags.Methods["drk:color"] = function(u)
 
 	if UnitIsDead(u) or UnitIsGhost(u) or not UnitIsConnected(u) then
 		return "|cffA0A0A0"
-	elseif (UnitIsTapped(u) and not UnitIsTappedByPlayer(u)) then
+	elseif UnitIsTapDenied(u) then
 		return hex(oUF.colors.tapped)
-	elseif (u == "pet") then
+	elseif u == "pet" then
 		return hex(oUF.colors.class[class])
-	elseif (UnitIsPlayer(u)) then
+	elseif UnitIsPlayer(u) then
 		return hex(oUF.colors.class[class])
 	elseif reaction then
 		return hex(oUF.colors.reaction[reaction])
@@ -139,17 +139,7 @@ tags.Methods["drk:DDG"] = function(u)
 end
 
 tags.Events["drk:power"] = 'UNIT_MAXPOWER UNIT_POWER'
-tags.Methods["drk:power"]  = function(u)
-	local min, max = UnitPower(u), UnitPowerMax(u)
-	if min~=max then
-		return ("%s/%s"):format(SVal(min), SVal(max))
-	else
-		return SVal(max)
-	end
-end
-
-tags.Events["my:power"] = 'UNIT_MAXPOWER UNIT_POWER'
-tags.Methods["my:power"] = function(unit)
+tags.Methods["drk:power"] = function(unit)
 	local curpp, maxpp = UnitPower(unit), UnitPowerMax(unit);
 	local playerClass, englishClass = UnitClass(unit);
 
@@ -165,61 +155,6 @@ tags.Methods["my:power"] = function(unit)
 		end
 	end
 end;
-
-
--- ComboPoints
-tags.Events["myComboPoints"] = 'UNIT_COMBO_POINTS PLAYER_TARGET_CHANGED'
-tags.Methods["myComboPoints"] = function(unit)
-	local cp, str
-	if(UnitExists'vehicle') then
-		cp = GetComboPoints('vehicle', 'target')
-	else
-		cp = GetComboPoints('player', 'target')
-	end
-
-	if (cp == 1) then
-		str = string.format("|cff69e80c%d|r",cp)
-	elseif cp == 2 then
-		str = string.format("|cffb2e80c%d|r",cp)
-	elseif cp == 3 then
-		str = string.format("|cffffd800%d|r",cp)
-	elseif cp == 4 then
-		str = string.format("|cffffba00%d|r",cp)
-	elseif cp == 5 then
-		str = string.format("|cfff10b0b%d|r",cp)
-	end
-
-	return str
-end
-
--- Deadly Poison Tracker
-tags.Events["myDeadlyPoison"] = 'UNIT_COMBO_POINTS PLAYER_TARGET_CHANGED UNIT_AURA'
-tags.Methods["myDeadlyPoison"] = function(unit)
-
-	local Spell = "Deadly Poison" or GetSpellInfo(43233)
-	local ct = hasUnitDebuff(unit, Spell)
-	local cp = GetComboPoints('player', 'target')
-
-	if cp > 0 then
-		if (not ct) then
-			str = ""
-		elseif (ct == 1) then
-			str = string.format("|cffc1e79f%d|r",ct)
-		elseif ct == 2 then
-			str = string.format("|cfface678%d|r",ct)
-		elseif ct == 3 then
-			str = string.format("|cff9de65c%d|r",ct)
-		elseif ct == 4 then
-			str = string.format("|cff8be739%d|r",ct)
-		elseif ct == 5 then
-			str = string.format("|cff90ff00%d|r",ct)
-		end
-	else
-		str = ""
-	end
-
-	return str
-end
 
 tags.Events["drk:xp"] = 'PLAYER_XP_UPDATE PLAYER_LEVEL_UP UNIT_PET_EXPERIENCE UPDATE_EXHAUSTION'
 tags.Methods["drk:xp"] = function(unit)
@@ -247,6 +182,7 @@ tags.Methods["drk:level"] = function(unit)
 	local c = UnitClassification(unit)
 	local l = UnitLevel(unit)
 	local d = GetQuestDifficultyColor(l)
+	local q = UnitIsQuestBoss(unit)
 
 	local str = l
 
@@ -274,6 +210,10 @@ tags.Methods["drk:level"] = function(unit)
 		end
 	end
 
+	if q then
+		str = string.format("%s|cffffd700Q|r", str)
+	end
+
 	return str
 end
 
@@ -298,25 +238,7 @@ end
 -- Class Buff Indicators --
 ---------------------------
 
-local GetTime = GetTime
-
-local EARTH_SHIELD = GetSpellInfo(974)
-tags.Events["Shaman:EarthShield"] = 'UNIT_AURA'
-tags.Methods["Shaman:EarthShield"] = function(unit)
-
-	local _, _, _, esCount, _, _, _, source = UnitAura(unit, EARTH_SHIELD)
-	if esCount then
-		if source == "player" then
-			if esCount > 3 then
-				return format("|cff33cc00%.0f|r ", esCount)
-			else
-				return format("|cffffcc00%.0f|r ", esCount)
-			end
-		else
-			return format("|cffaa2200%.0f|r ", esCount)
-		end
-	end
-end
+local UnitAura, GetTime = UnitAura, GetTime
 
 local RIPTIDE = GetSpellInfo(61295)
 tags.Events["Shaman:Riptide"] = 'UNIT_AURA'
@@ -353,25 +275,12 @@ tags.Methods["Priest:ClarityOfWill"] = function(unit)
 	end
 end
 
-local SPIRIT_SHELL = GetSpellInfo(114908)
-tags.Events["Priest:SpiritShell"] = 'UNIT_AURA'
-tags.Methods["Priest:SpiritShell"] = function(unit)
-
-	local _, _, _, _, _, _, expirationTime, _, _, _, spellId = UnitAura(unit, SPIRIT_SHELL)
-
+local ATONEMENT = GetSpellInfo(214206)
+tags.Events["Priest:Atonement"] = 'UNIT_AURA'
+tags.Methods["Priest:Atonement"] = function(unit)
+	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, ATONEMENT)
 	if expirationTime then
-		-- check if it's the spell buff itself and not the absorb buff. if yes search through buffs by index
-		if spellId == 109964 then
-			for i = 1, 40 do
-				_, _, _, _, _, _, expirationTime, _, _, _, spellId = UnitAura(unit, i)
-				-- we found the correct buff?
-				if spellId == 114908 then break end
-			end
-		end
-
-		if spellId == 114908 then
-			return format("|cffd814ff%.0f|r ", expirationTime - GetTime())
-		end
+		return format("|cff268ccc%.0f|r ", expirationTime - GetTime())
 	end
 end
 
@@ -381,6 +290,24 @@ tags.Methods["Priest:Renew"] = function(unit)
 	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, RENEW)
 	if source and source == "player" then
 		return format("|cff33cc00%.0f|r ", expirationTime - GetTime())
+	end
+end
+
+local INNERVATE = GetSpellInfo(29166)
+tags.Events["Druid:Innervate"] = 'UNIT_AURA'
+tags.Methods["Druid:Innervate"] = function(unit)
+	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, INNERVATE)
+	if expirationTime then
+		return format("|cff268ccc%.0f|r ", expirationTime - GetTime())
+	end
+end
+
+local IRONBARK = GetSpellInfo(102342)
+tags.Events["Druid:Ironbark"] = 'UNIT_AURA'
+tags.Methods["Druid:Ironbark"] = function(unit)
+	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, IRONBARK)
+	if expirationTime then
+		return format("|cffa52a2a%.0f|r ", expirationTime - GetTime())
 	end
 end
 
@@ -464,33 +391,6 @@ tags.Methods["Monk:RenewingMist"] = function(unit)
 	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, RENEWING_MIST)
 	if source and source == "player" then
 		return format("|cff0099cc%.0f|r ", expirationTime - GetTime())
-	end
-end
-
-local VIGILANCE = GetSpellInfo(114030)
-tags.Events["Warrior:Vigilance"] = 'UNIT_AURA'
-tags.Methods["Warrior:Vigilance"] = function(unit)
-	local _, _, _, _, _, _, expirationTime = UnitAura(unit, VIGILANCE)
-	if expirationTime then
-		return format("|cff33cc00%.0f|r ", expirationTime - GetTime())
-	end
-end
-
-local SAFEGUARD = GetSpellInfo(114029)
-tags.Events["Warrior:Safeguard"] = 'UNIT_AURA'
-tags.Methods["Warrior:Safeguard"] = function(unit)
-	local _, _, _, _, _, _, expirationTime, _ = UnitAura(unit, SAFEGUARD)
-	if expirationTime then
-		return format("|cff33cc00%.0f|r ", expirationTime - GetTime())
-	end
-end
-
-local DEATH_BARRIER = GetSpellInfo(115635)
-tags.Events["DK:DeathBarrier"] = 'UNIT_AURA'
-tags.Methods["DK:DeathBarrier"] = function(unit)
-	local _, _, _, _, _, _, expirationTime, _ = UnitAura(unit, DEATH_BARRIER)
-	if expirationTime then
-		return format("|cffffcc00%.0f|r ", expirationTime - GetTime())
 	end
 end
 

@@ -32,10 +32,9 @@ local cfg = CreateFrame("Frame")
 --class-specific bars
     cfg.showRunebar = true -- show DK rune bar
     cfg.showHolybar = true -- show Paladin HolyPower bar
-    cfg.showEclipsebar = true -- show druid Eclipse bar
     cfg.showShardbar = true -- show Warlock SoulShard bar
+    cfg.showArcaneChargesbar = true -- show Mage Arcane Charges bar
     cfg.showHarmonybar = true -- show Monk Harmony bar
-    cfg.showShadoworbsbar = true -- show Shadow Priest Shadow Orbs bar
     cfg.showComboPoints = true -- show Rogue Combo Points
 --castbar
     cfg.Castbars = true -- use built-in castbars
@@ -68,17 +67,17 @@ local cfg = CreateFrame("Frame")
 
     cfg.IndicatorList = {
         ["NUMBERS"] = {
-            ["DEATHKNIGHT"]     = "[DK:DeathBarrier]",
-            ["DRUID"]           = "[Druid:Lifebloom][Druid:Rejuv][Druid:Germination][Druid:Regrowth]",
+            --["DEATHKNIGHT"]   = ,
+            ["DRUID"]           = "[Druid:Innervate][Druid:Ironbark][Druid:Lifebloom][Druid:Rejuv][Druid:Germination][Druid:Regrowth]",
             --["HUNTER"]        = missdirect,
             --["MAGE"]          = ,
             ["MONK"]            = "[Monk:EnvelopingMist][Monk:RenewingMist]",
             --["PALADIN"]       = ,
-            ["PRIEST"]          = "[Priest:Renew][Priest:SpiritShell][Priest:ClarityOfWill][Priest:PowerWordShield]",
+            ["PRIEST"]          = "[Priest:Renew][Priest:Atonement][Priest:ClarityOfWill][Priest:PowerWordShield]",
             --["ROGUE"]         = tricks,
-            ["SHAMAN"]          = "[Shaman:Riptide][Shaman:EarthShield]",
+            ["SHAMAN"]          = "[Shaman:Riptide]",
             --["WARLOCK"]       = ,
-            ["WARRIOR"]         = "[Warrior:Vigilance]",
+            --["WARRIOR"]       = ,
         },
         ["SQUARE"] = {
             --["DEATHKNIGHT"]   = ,

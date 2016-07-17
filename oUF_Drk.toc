@@ -1,10 +1,10 @@
-## Interface: 60200
+## Interface: 70000
 ## Author: Drakull, Myno
 ## Title: oUF_Drk Fanupdate
 ## Version: r24
 ## Notes: PvE-oriented Layout for oUF
 ## RequiredDeps: oUF
-## OptionalDeps: oUF_Experience
+## OptionalDeps: oUF_Experience, oUF_ArtifactPower
 ## X-Category: UnitFrame
 
 cfg.lua
@@ -15,7 +15,7 @@ elements\oUF_WarlockSpecBars.lua
 elements\oUF_MonkHarmonyBar.lua
 elements\oUF_ComboPoints.lua
 elements\oUF_HolyPower.lua
-elements\oUF_ShadowOrbs.lua
+elements\oUF_ArcaneCharges.lua
 lib.lua
 core.lua
 elements\Indicators.lua
