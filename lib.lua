@@ -11,7 +11,7 @@ local cfg = ns.cfg
 local cast = ns.cast
 local lib = CreateFrame("Frame")
 local _, playerClass = UnitClass("player")
-oUF.colors.runes = {{0.87, 0.12, 0.23};{0.40, 0.95, 0.20};{0.14, 0.50, 1};{.70, .21, 0.94};}
+
 
 -----------------------
 -- Functions
@@ -1023,115 +1023,115 @@ lib.addArcaneCharges = function(self)
 
 	if playerClass ~= "MAGE" then return end
 
-	local acb = CreateFrame("Frame", "ArcaneChargesBar", self)
-	acb:SetPoint("CENTER", self.Health, "TOP", -6, 1)
-	acb:SetWidth(self.Health:GetWidth() - 50)
-	acb:SetHeight(5)
-	acb:SetFrameLevel(10)
+	local MageArcaneCharges = CreateFrame("Frame", "ArcaneChargesBar", self)
+	MageArcaneCharges:SetPoint("CENTER", self.Health, "TOP", -6, 1)
+	MageArcaneCharges:SetWidth(self.Health:GetWidth() - 50)
+	MageArcaneCharges:SetHeight(5)
+	MageArcaneCharges:SetFrameLevel(10)
 
 	for i = 1, 4 do
-		acb[i] = CreateFrame("StatusBar", "ArcaneChargesBar"..i, acb)
-		acb[i]:SetHeight(5)
-        acb[i]:SetWidth(acb:GetWidth() / 4)
-		acb[i]:SetStatusBarTexture(cfg.statusbar_texture)
-		acb[i]:SetStatusBarColor(.15,.55,.8)
-		acb[i].bg = acb[i]:CreateTexture(nil,"BORDER")
-		acb[i].bg:SetTexture(cfg.statusbar_texture)
-		acb[i].bg:SetVertexColor(0,0,0)
-		acb[i].bg:SetPoint("TOPLEFT",acb[i],"TOPLEFT",0,0)
-		acb[i].bg:SetPoint("BOTTOMRIGHT",acb[i],"BOTTOMRIGHT",0,0)
-		acb[i].bg.multiplier = .3
+		MageArcaneCharges[i] = CreateFrame("StatusBar", "ArcaneChargesBar"..i, MageArcaneCharges)
+		MageArcaneCharges[i]:SetHeight(5)
+        MageArcaneCharges[i]:SetWidth(MageArcaneCharges:GetWidth() / 4)
+		MageArcaneCharges[i]:SetStatusBarTexture(cfg.statusbar_texture)
+		MageArcaneCharges[i]:SetStatusBarColor(.15,.55,.8)
+		MageArcaneCharges[i].bg = MageArcaneCharges[i]:CreateTexture(nil,"BORDER")
+		MageArcaneCharges[i].bg:SetTexture(cfg.statusbar_texture)
+		MageArcaneCharges[i].bg:SetVertexColor(0,0,0)
+		MageArcaneCharges[i].bg:SetPoint("TOPLEFT",MageArcaneCharges[i],"TOPLEFT",0,0)
+		MageArcaneCharges[i].bg:SetPoint("BOTTOMRIGHT",MageArcaneCharges[i],"BOTTOMRIGHT",0,0)
+		MageArcaneCharges[i].bg.multiplier = .3
 
-		local h = CreateFrame("Frame",nil,acb[i])
+		local h = CreateFrame("Frame",nil,MageArcaneCharges[i])
 		h:SetFrameLevel(10)
 		h:SetPoint("TOPLEFT",-3,3)
 		h:SetPoint("BOTTOMRIGHT",3,-3)
 		lib.createBackdrop(h,1)
 
 		if i == 1 then
-			acb[i]:SetPoint("LEFT", acb, "LEFT", 1, 0)
+			MageArcaneCharges[i]:SetPoint("LEFT", MageArcaneCharges, "LEFT", 1, 0)
 		else
-			acb[i]:SetPoint("LEFT", acb[i-1], "RIGHT", 2, 0)
+			MageArcaneCharges[i]:SetPoint("LEFT", MageArcaneCharges[i-1], "RIGHT", 2, 0)
 		end
 	end
 
-	self.MageArcaneCharges = acb
+	self.MageArcaneCharges = MageArcaneCharges
 end
 
 -- HolyPowerbar
 lib.addHolyPower = function(self)
 	if playerClass ~= "PALADIN" then return end
 
-	local php = CreateFrame("Frame", nil, self)
-	php:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
-	php:SetHeight(5)
-	php:SetWidth(self.Health:GetWidth()/2+75)
-
-	--local maxHolyPower = UnitPowerMax("player",SPELL_POWER_HOLY_POWER)
+	local PaladinHolyPower = CreateFrame("Frame", nil, self)
+	PaladinHolyPower:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
+	PaladinHolyPower:SetHeight(5)
+	PaladinHolyPower:SetWidth(self.Health:GetWidth() / 2 + 75)
 
 	for i = 1, 5 do
-		php[i] = CreateFrame("StatusBar", self:GetName().."_Holypower"..i, self)
-		php[i]:SetHeight(5)
-		php[i]:SetWidth((php:GetWidth()/5)-2)
-		php[i]:SetStatusBarTexture(cfg.statusbar_texture)
-		php[i]:SetStatusBarColor(.9,.95,.33)
-		php[i]:SetFrameLevel(11)
-		php[i].bg = php[i]:CreateTexture(nil, "BORDER")
-		php[i].bg:SetTexture(cfg.statusbar_texture)
-		php[i].bg:SetPoint("TOPLEFT", php[i], "TOPLEFT", 0, 0)
-		php[i].bg:SetPoint("BOTTOMRIGHT", php[i], "BOTTOMRIGHT", 0, 0)
-		php[i].bg.multiplier = 0.3
+		PaladinHolyPower[i] = CreateFrame("StatusBar", self:GetName().."_Holypower"..i, self)
+		PaladinHolyPower[i]:SetHeight(5)
+		PaladinHolyPower[i]:SetWidth((PaladinHolyPower:GetWidth() / 5) - 2)
+		PaladinHolyPower[i]:SetStatusBarTexture(cfg.statusbar_texture)
+		PaladinHolyPower[i]:SetStatusBarColor(.9, .95, .33)
+		PaladinHolyPower[i]:SetFrameLevel(11)
+		PaladinHolyPower[i].bg = PaladinHolyPower[i]:CreateTexture(nil, "BORDER")
+		PaladinHolyPower[i].bg:SetTexture(cfg.statusbar_texture)
+		PaladinHolyPower[i].bg:SetPoint("TOPLEFT", PaladinHolyPower[i], "TOPLEFT", 0, 0)
+		PaladinHolyPower[i].bg:SetPoint("BOTTOMRIGHT", PaladinHolyPower[i], "BOTTOMRIGHT", 0, 0)
+		PaladinHolyPower[i].bg.multiplier = 0.3
 
-		local h = CreateFrame("Frame", nil, php[i])
+		local h = CreateFrame("Frame", nil, PaladinHolyPower[i])
 		h:SetFrameLevel(10)
-		h:SetPoint("TOPLEFT",-3,3)
-		h:SetPoint("BOTTOMRIGHT",3,-3)
-		lib.createBackdrop(h,1)
+		h:SetPoint("TOPLEFT", -3, 3)
+		h:SetPoint("BOTTOMRIGHT", 3, -3)
+		lib.createBackdrop(h, 1)
 
 		if (i == 1) then
-			php[i]:SetPoint('LEFT', php, 'LEFT', 1, 0)
+			PaladinHolyPower[i]:SetPoint('LEFT', PaladinHolyPower, 'LEFT', 1, 0)
 		else
-			php[i]:SetPoint('TOPLEFT', php[i-1], "TOPRIGHT", 2, 0)
+			PaladinHolyPower[i]:SetPoint('TOPLEFT', PaladinHolyPower[i-1], "TOPRIGHT", 2, 0)
 		end
 	end
 
-	self.PaladinHolyPower = php
+	self.PaladinHolyPower = PaladinHolyPower
 end
 
 -- runebar
 lib.addRunes = function(self)
 	if playerClass ~= "DEATHKNIGHT" then return end
 
-	self.Runes = CreateFrame("Frame", nil, self)
-	self.Runes:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
-	self.Runes:SetHeight(5)
-	self.Runes:SetWidth(self.Health:GetWidth()-15)
-
+	local Runes = CreateFrame("Frame", nil, self)
+	Runes:SetPoint('CENTER', self.Health, 'TOP', 2, 1)
+	Runes:SetHeight(5)
+	Runes:SetWidth(self.Health:GetWidth()-15)
 
 	for i= 1, 6 do
-		self.Runes[i] = CreateFrame("StatusBar", self:GetName().."_Runes"..i, self)
-		self.Runes[i]:SetHeight(5)
-		self.Runes[i]:SetWidth((self.Health:GetWidth() / 6)-5)
-		self.Runes[i]:SetStatusBarTexture(cfg.statusbar_texture)
-		self.Runes[i]:SetFrameLevel(11)
-		self.Runes[i].bg = self.Runes[i]:CreateTexture(nil, "BORDER")
-		self.Runes[i].bg:SetTexture(cfg.statusbar_texture)
-		self.Runes[i].bg:SetPoint("TOPLEFT", self.Runes[i], "TOPLEFT", 0, 0)
-		self.Runes[i].bg:SetPoint("BOTTOMRIGHT", self.Runes[i], "BOTTOMRIGHT", 0, 0)
-		self.Runes[i].bg.multiplier = 0.3
+		Runes[i] = CreateFrame("StatusBar", self:GetName().."_Runes"..i, self)
+		Runes[i]:SetHeight(5)
+		Runes[i]:SetWidth((self.Health:GetWidth() / 6)-5)
+		Runes[i]:SetStatusBarTexture(cfg.statusbar_texture)
+		Runes[i]:SetFrameLevel(11)
+		Runes[i]:SetStatusBarColor(0.14, 0.5, 0.6)
+		Runes[i].bg = Runes[i]:CreateTexture(nil, "BORDER")
+		Runes[i].bg:SetTexture(cfg.statusbar_texture)
+		Runes[i].bg:SetPoint("TOPLEFT", Runes[i], "TOPLEFT", 0, 0)
+		Runes[i].bg:SetPoint("BOTTOMRIGHT", Runes[i], "BOTTOMRIGHT", 0, 0)
+		Runes[i].bg:SetVertexColor(0.07, 0.15, 0.15)
 
-		local h = CreateFrame("Frame", nil, self.Runes[i])
+		local h = CreateFrame("Frame", nil, Runes[i])
 		h:SetFrameLevel(10)
 		h:SetPoint("TOPLEFT",-3,3)
 		h:SetPoint("BOTTOMRIGHT",3,-3)
 		lib.createBackdrop(h,1)
 
 		if (i == 1) then
-			self.Runes[i]:SetPoint('LEFT', self.Runes, 'LEFT', 1, 0)
+			Runes[i]:SetPoint('LEFT', Runes, 'LEFT', 1, 0)
 		else
-			self.Runes[i]:SetPoint('TOPLEFT', self.Runes[i-1], 'TOPRIGHT', 2, 0)
+			Runes[i]:SetPoint('TOPLEFT', Runes[i-1], 'TOPRIGHT', 2, 0)
 		end
 	end
+
+	self.Runes = Runes
 end
 
 -- combo points
