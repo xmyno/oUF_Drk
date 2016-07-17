@@ -1,10 +1,10 @@
-## Interface: 62000
+## Interface: 70000
 ## Author: Drakull, Myno
 ## Title: oUF_Drk Fanupdate
-## Version: r23
+## Version: r24
 ## Notes: PvE-oriented Layout for oUF
 ## RequiredDeps: oUF
-## OptionalDeps: oUF_Experience
+## OptionalDeps: oUF_Experience, oUF_ArtifactPower
 ## X-Category: UnitFrame
 
 cfg.lua
