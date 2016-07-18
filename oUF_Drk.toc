@@ -1,7 +1,7 @@
 ## Interface: 70000
 ## Author: Drakull, Myno
 ## Title: oUF_Drk Fanupdate
-## Version: r24
+## Version: r25
 ## Notes: PvE-oriented Layout for oUF
 ## RequiredDeps: oUF
 ## OptionalDeps: oUF_Experience, oUF_ArtifactPower
