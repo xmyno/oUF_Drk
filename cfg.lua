@@ -61,8 +61,8 @@ local cfg = CreateFrame("Frame")
     cfg.showThreatIndicator = true -- Show Threat Indicator on raid frames
 
     cfg.raidOrientationHorizontal = false
-    cfg.raidX = -410
-    cfg.raidY = 190
+    cfg.raidX = not cfg.raidOrientationHorizontal and -491 or -410
+    cfg.raidY = not cfg.raidOrientationHorizontal and 190 or 227
     cfg.raidScale = 1
 
     cfg.IndicatorList = {

@@ -365,7 +365,7 @@ oUF:Factory(function(self)
 
 		self:SetActiveStyle('drkRaid')
 		local raid = {}
-		for i = 1, 5 do
+		for i = 1, 6 do
 			local header = oUF:SpawnHeader(
 			  "drkGroup"..i,
 			  nil,
@@ -378,7 +378,7 @@ oUF:Factory(function(self)
 			  "columnSpacing",      7,
 			  "groupFilter",        tostring(i),
 			  "groupBy",            "GROUP",
-			  "groupingOrder",      "1,2,3,4,5",
+			  "groupingOrder",      "1,2,3,4,5,6",
 			  "sortMethod",         "NAME",
 			  "columnAnchorPoint",  "RIGHT",
 			  "maxColumns",         5,
