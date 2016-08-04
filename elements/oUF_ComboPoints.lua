@@ -2,8 +2,9 @@ local _, ns = ...
 local oUF = ns.oUF or oUF
 assert(oUF, "oUF_ComboPoints was unable to locate oUF install")
 
-local UnitPower = UnitPower
+local UnitPower, UnitPowerMax = UnitPower, UnitPowerMax
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
+local cur, max, oldMax;
 
 local Update = function(self, event, unit, powerType)
     if unit and (unit ~= 'player' and unit ~= 'vehicle') then return end
@@ -14,15 +15,29 @@ local Update = function(self, event, unit, powerType)
         cpoints:PreUpdate()
     end
 
-    local cp
     if UnitHasVehicleUI('player') and UnitPower('vehicle', 4) >= 1 then
-        cp = UnitPower('vehicle', 4)
+        cur = UnitPower('vehicle', 4)
+        max = MAX_COMBO_POINTS
     else
-        cp = UnitPower('player', 4)
+        cur = UnitPower('player', 4)
+        max = UnitPowerMax('player', 4)
     end
 
-    for i=1, MAX_COMBO_POINTS do
-        if(i <= cp) then
+    if not oldMax or max ~= oldMax then
+        local width = cpoints:GetWidth()
+        for i = 1, max do
+            cpoints[i]:SetWidth(width / max - 2)
+        end
+        if oldMax and max < oldMax then
+            for i = max + 1, oldMax do
+                cpoints[i]:Hide()
+            end
+        end
+        oldMax = max
+    end
+
+    for i = 1, max do
+        if i <= cur then
             cpoints[i]:Show()
         else
             cpoints[i]:Hide()
@@ -49,6 +64,7 @@ local Enable = function(self)
         cpoints.ForceUpdate = ForceUpdate
 
         self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
+        self:RegisterEvent('UNIT_MAXPOWER', Path)
 
         for index = 1, MAX_COMBO_POINTS do
             local cpoint = cpoints[index]
@@ -66,6 +82,7 @@ local Disable = function(self)
     local cpoints = self.DrkCPoints
     if(cpoints) then
         self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
+        self:UnregisterEvent('UNIT_MAXPOWER', Path)
     end
 end
 

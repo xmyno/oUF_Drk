@@ -1136,16 +1136,14 @@ end
 
 -- combo points
 lib.addCPoints = function(self)
-	--if (playerClass == "ROGUE" or playerClass == "DRUID") then
 	local dcp = CreateFrame("Frame", nil, self)
 	dcp:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
 	dcp:SetHeight(5)
 	dcp:SetWidth(self.Health:GetWidth()/2+75)
 
-	for i= 1, 5 do
+	for i= 1, 8 do
 		dcp[i] = CreateFrame("StatusBar", self:GetName().."_CPoints"..i, self)
 		dcp[i]:SetHeight(5)
-		dcp[i]:SetWidth((dcp:GetWidth()/5)-2)
 		dcp[i]:SetStatusBarTexture(cfg.statusbar_texture)
 		dcp[i]:SetFrameLevel(11)
 		dcp[i].bg = dcp[i]:CreateTexture(nil, "BORDER")
@@ -1166,12 +1164,15 @@ lib.addCPoints = function(self)
 			dcp[i]:SetPoint('TOPLEFT', dcp[i-1], 'TOPRIGHT', 2, 0)
 		end
 	end
+
 	dcp[1]:SetStatusBarColor(.3,.9,.3)
 	dcp[2]:SetStatusBarColor(.3,.9,.3)
 	dcp[3]:SetStatusBarColor(.3,.9,.3)
 	dcp[4]:SetStatusBarColor(.9,.9,0)
 	dcp[5]:SetStatusBarColor(.9,.3,.3)
-	--end
+	dcp[6]:SetStatusBarColor(.9,.3,.3)
+	dcp[7]:SetStatusBarColor(.9,.3,.3)
+	dcp[8]:SetStatusBarColor(.9,.3,.3)
 
 	self.DrkCPoints = dcp
 end
