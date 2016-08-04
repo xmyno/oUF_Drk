@@ -1286,31 +1286,34 @@ lib.addRaidDebuffs = function(self)
 
 end
 
-
 lib.addExperienceBar = function(self)
-	self.Experience = CreateFrame('StatusBar', nil, self)
-	self.Experience:SetPoint('BOTTOMLEFT', self, 'BOTTOMLEFT', 8.75, 29)
-	self.Experience:SetWidth(self.Portrait:GetWidth() + 1)
-	self.Experience:SetHeight(3)
-	self.Experience:SetFrameLevel(6)
-	self.Experience:SetStatusBarTexture(cfg.statusbar_texture)
-	self.Experience:GetStatusBarTexture():SetHorizTile(false)
-	self.Experience:SetStatusBarColor(.407, .13, .545)
+	local Experience = CreateFrame('StatusBar', nil, self)
 
-	self.Experience.Rested = CreateFrame('StatusBar',nil,self.Experience)
-	self.Experience.Rested:SetAllPoints(self.Experience)
-	self.Experience.Rested:SetStatusBarTexture(cfg.statusbar_texture)
-	self.Experience.Rested:SetStatusBarColor(.117,.55,1)
+	Experience:SetPoint('TOPRIGHT', self.Health, 'TOPLEFT', -3, 0)
+	Experience:SetWidth(3)
+	Experience:SetHeight(self:GetHeight())
+	Experience:SetFrameLevel(6)
+	Experience:SetStatusBarTexture(cfg.statusbar_texture)
+	Experience:SetStatusBarColor(.407, .13, .545)
 
-	self.Experience.Rested.bg = self.Experience.Rested:CreateTexture(nil, 'BACKGROUND')
-	self.Experience.Rested.bg:SetAllPoints(self.Experience)
-	self.Experience.Rested.bg:SetTexture(cfg.statusbar_texture)
-	self.Experience.Rested.bg:SetVertexColor(0,0,0)
+	Experience:SetOrientation("VERTICAL")
+	Experience:GetStatusBarTexture():SetHorizTile(false)
+	Experience:GetStatusBarTexture():SetVertTile(true)
 
-	local h = CreateFrame("Frame", nil, self.Experience.Rested)
+	Experience.Rested = CreateFrame('StatusBar', nil, Experience)
+	Experience.Rested:SetAllPoints(Experience)
+	Experience.Rested:SetStatusBarTexture(cfg.statusbar_texture)
+	Experience.Rested:SetStatusBarColor(.117,.55,1)
+
+	Experience.Rested.bg = Experience.Rested:CreateTexture(nil, 'BACKGROUND')
+	Experience.Rested.bg:SetAllPoints(Experience)
+	Experience.Rested.bg:SetTexture(cfg.statusbar_texture)
+	Experience.Rested.bg:SetVertexColor(0, 0, 0)
+
+	local h = CreateFrame("Frame", nil, Experience.Rested)
 	h:SetFrameLevel(5)
-	h:SetPoint("TOPLEFT",-3,3)
-	h:SetPoint("BOTTOMRIGHT",3,-3)
+	h:SetPoint("TOPLEFT", -3, 3)
+	h:SetPoint("BOTTOMRIGHT", 3, -3)
 		local backdrop_tab = {
 			bgFile = cfg.backdrop_texture,
 			edgeFile = cfg.backdrop_edge_texture,
@@ -1328,39 +1331,63 @@ lib.addExperienceBar = function(self)
 	h:SetBackdropColor(0,0,0,1)
 	h:SetBackdropBorderColor(0,0,0,0.8)
 
-	self.Experience.Text = lib.gen_fontstring(self.Experience,cfg.smallfont,9,'OUTLINE')
-	self.Experience.Text:SetPoint("CENTER",self.Experience,"BOTTOM",0,0)
-	self:Tag(self.Experience.Text,"[drk:xp]")
+	Experience.Text = lib.gen_fontstring(Experience, cfg.smallfont, 8, 'OUTLINE')
+	Experience.Text:SetPoint("BOTTOMRIGHT", self.Power, "BOTTOMLEFT", -1, 0)
+	Experience.Text:SetJustifyH("RIGHT")
+	Experience.Text:SetWordWrap(true)
 
-	self.Experience.Text:SetAlpha(0)
-	self.Experience.PostUpdate = ExpOverrideText
+	self:Tag(Experience.Text, "[drk:xp]")
+	Experience.Text:SetAlpha(0)
 
+	self.Experience = Experience
 end
 
 lib.addArtifactPowerBar = function(self)
 	local ArtifactPower = CreateFrame('StatusBar', nil, self)
-	ArtifactPower:SetPoint('BOTTOMLEFT', self, 'BOTTOMLEFT', 8.75, 7)
-	ArtifactPower:SetWidth(233.45)
-	ArtifactPower:SetHeight(2)
+	if UnitLevel('player') == MAX_PLAYER_LEVEL then
+		ArtifactPower:SetPoint('TOPRIGHT', self.Health, 'TOPLEFT', -3, 0)
+	else
+		ArtifactPower:SetPoint('TOPRIGHT', self.Experience, 'TOPLEFT', -3, 0)
+	end
+	ArtifactPower:SetWidth(3)
+	ArtifactPower:SetHeight(self:GetHeight())
 	ArtifactPower:SetFrameLevel(6)
 	ArtifactPower:SetStatusBarTexture(cfg.statusbar_texture)
 	ArtifactPower:GetStatusBarTexture():SetHorizTile(false)
+	ArtifactPower:GetStatusBarTexture():SetVertTile(true)
+	ArtifactPower:SetOrientation("VERTICAL")
 	ArtifactPower:SetStatusBarColor(.9, .8, .5)
 
-	ArtifactPower.text = lib.gen_fontstring(ArtifactPower, cfg.smallfont, 9, 'OUTLINE')
-	ArtifactPower.text:SetPoint("BOTTOM", ArtifactPower, "BOTTOM", 0, 0)
+	ArtifactPower.bg = ArtifactPower:CreateTexture(nil, 'BACKGROUND')
+	ArtifactPower.bg:SetAllPoints(ArtifactPower)
+	ArtifactPower.bg:SetTexture(cfg.statusbar_texture)
+	ArtifactPower.bg:SetVertexColor(0, 0, 0)
+
+	local h = CreateFrame("Frame", nil, ArtifactPower)
+	h:SetFrameLevel(5)
+	h:SetPoint("TOPLEFT", -3, 3)
+	h:SetPoint("BOTTOMRIGHT", 3, -3)
+	lib.createBackdrop(h, 1)
+
+	ArtifactPower.Text = lib.gen_fontstring(ArtifactPower, cfg.smallfont, 8, 'OUTLINE')
+	ArtifactPower.Text:SetPoint("TOPRIGHT", self.Health, "TOPLEFT", -1, 0)
+	ArtifactPower.Text:SetJustifyH("RIGHT")
+	ArtifactPower.Text:SetWordWrap(true)
+	ArtifactPower.Text:SetAlpha(0)
 
 	ArtifactPower.PostUpdate = function(self, event, isShown)
 	    if (not isShown) then return end
-    	self.text:SetFormattedText(
+    	self.Text:SetFormattedText(
     		"%d / %d%s",
     		self.power,
     		self.powerForNextTrait,
-    		self.numTraitsLearnable > 0 and "  +" .. self.numTraitsLearnable or ""
+    		self.numTraitsLearnable > 0 and "\n  +" .. self.numTraitsLearnable .. " trait" or ""
     	)
 	end
 
-	ArtifactPower:SetAlpha(0)
+	if not cfg.alwaysShowArtifactXPBar then
+		ArtifactPower:SetAlpha(0)
+	end
 
 	self.ArtifactPower = ArtifactPower
 end
@@ -1374,7 +1401,10 @@ lib.addHighlight = function(f)
 			f.Experience.Text:SetAlpha(0.9)
 		end
 		if f.ArtifactPower ~= nil then
-			f.ArtifactPower:SetAlpha(1)
+			if not cfg.alwaysShowArtifactXPBar then
+				f.ArtifactPower:SetAlpha(1)
+			end
+			f.ArtifactPower.Text:SetAlpha(1)
 		end
 		if f.mystyle == "raid" then
 			if not cfg.showTooltips then GameTooltip:Hide() end
@@ -1388,7 +1418,10 @@ lib.addHighlight = function(f)
 			f.Experience.Text:SetAlpha(0)
 		end
 		if f.ArtifactPower ~= nil then
-			f.ArtifactPower:SetAlpha(0)
+			if not cfg.alwaysShowArtifactXPBar then
+				f.ArtifactPower:SetAlpha(0)
+			end
+			f.ArtifactPower.Text:SetAlpha(0)
 		end
 		if f.mystyle == "raid" then
 			if cfg.showRoleIcons then f.LFDRole:SetAlpha(0) end

@@ -170,9 +170,9 @@ tags.Methods["drk:xp"] = function(unit)
 	local rested = GetXPExhaustion()
 	if(rested and rested > 0) then
 		rested = math.floor((rested / UnitXPMax(unit) * 100 + 0.05)*10)/10
-		return ("%s/%s | %s%% (%s%% RXP)"):format(curxp, maxxp, perxp, rested)
+		return ("%s / %s\n%s%% (%s%% RXP)"):format(curxp, maxxp, perxp, rested)
 	else
-		return ("%s/%s | %s%%"):format(curxp, maxxp, perxp)
+		return ("%s / %s\n%s%%"):format(curxp, maxxp, perxp)
 	end
 end
 
