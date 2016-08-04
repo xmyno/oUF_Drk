@@ -27,7 +27,7 @@ local UnitSpecific = {
 		lib.addStrings(self)
 		lib.addHighlight(self)
 		lib.addPowerBar(self)
-		lib.addPortrait(self)
+		if cfg.showPortraits then lib.addPortrait(self) end
 
 		if cfg.AltPowerBarPlayer then lib.addAltPowerBar(self) end
 		lib.addAltPowerBarString(self)
@@ -83,7 +83,7 @@ local UnitSpecific = {
 		lib.addStrings(self)
 		lib.addHighlight(self)
 		lib.addPowerBar(self)
-		lib.addPortrait(self)
+		if cfg.showPortraits then lib.addPortrait(self) end
 
 		-- Bar Style
 		self.Health.frequentUpdates = true

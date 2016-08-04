@@ -457,7 +457,7 @@ lib.addCastBar = function(f)
 	if not cfg.Castbars then return end
     local s = CreateFrame("StatusBar", "oUF_DrkCastbar"..f.mystyle, f)
 	if f.mystyle == "player" then
-		if cfg.playerCastBarOnUnitframe then
+		if cfg.playerCastBarOnUnitframe and cfg.showPortraits then
 			s:SetPoint("TOPLEFT",f.Portrait,"TOPLEFT",21,.5)
 			s:SetHeight(f.Portrait:GetHeight()+1.5)
 			s:SetWidth(f:GetWidth()-37.45)
@@ -467,7 +467,7 @@ lib.addCastBar = function(f)
 			s:SetWidth(cfg.playerCastBarWidth)
 		end
     elseif f.mystyle == "target" then
-		if cfg.targetCastBarOnUnitframe then
+		if cfg.targetCastBarOnUnitframe and cfg.showPortraits then
 			s:SetPoint("TOPLEFT",f.Portrait,"TOPLEFT",21,.5)
 			s:SetHeight(f.Portrait:GetHeight()+1.5)
 			s:SetWidth(f:GetWidth()-37.45)
