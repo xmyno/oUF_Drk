@@ -155,7 +155,7 @@ lib.addPowerBar = function(f)
 	if f.mystyle=="boss" then
 		s:SetWidth(250)
 		s:SetHeight(8)
-		s:SetPoint("BOTTOMLEFT",f,"BOTTOMLEFT",0,0)
+		s:SetPoint("TOPLEFT", f.Health, "BOTTOMLEFT", 0, -3)
 		s:SetStatusBarColor(165/255, 73/255, 23/255, 1)
 	else
 		s:SetHeight(retVal(f,f:GetHeight()*.26,f:GetHeight()*.2,2))
@@ -477,13 +477,13 @@ lib.addCastBar = function(f)
 			s:SetWidth(cfg.targetCastBarWidth)
 		end
 	elseif f.mystyle=="boss" then
-		s:SetPoint("TOP",f.Power,"TOP",13,0)
-		s:SetHeight(20)
-		s:SetWidth(f:GetWidth()-26)
+		s:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", 17, -3)
+		s:SetHeight(16)
+		s:SetWidth(f:GetWidth() - 17)
    else
-		s:SetPoint("TOPRIGHT",f,"TOPRIGHT",-.5,26)
+		s:SetPoint("BOTTOMLEFT", f, "TOPLEFT", 19, 3)
 		s:SetHeight(18)
-		s:SetWidth(f:GetWidth()-23.5)
+		s:SetWidth(f:GetWidth() - 19)
     end
     s:SetStatusBarTexture(cfg.statusbar_texture)
     s:SetStatusBarColor(.5, .5, 1,1)
@@ -529,7 +529,7 @@ lib.addCastBar = function(f)
 		i:SetPoint("RIGHT",s,"LEFT",-5,0)
 		i:SetSize(s:GetHeight()-1,s:GetHeight()-1)
 	else
-		i:SetPoint("RIGHT",s,"LEFT",-4,0)
+		i:SetPoint("RIGHT",s,"LEFT",-1,0)
 		i:SetSize(s:GetHeight(),s:GetHeight())
 	end
     i:SetTexCoord(0.1, 0.9, 0.1, 0.9)
@@ -632,8 +632,8 @@ local myPostCreateIcon = function(self, button)
 	--helper
 	local h = CreateFrame("Frame", nil, button)
 	h:SetFrameLevel(0)
-	h:SetPoint("TOPLEFT",-5,5)
-	h:SetPoint("BOTTOMRIGHT",5,-5)
+	h:SetPoint("TOPLEFT",-4,4)
+	h:SetPoint("BOTTOMRIGHT",4,-4)
 	lib.createBackdrop(h,0)
 end
 
@@ -729,12 +729,12 @@ lib.addBuffs = function(f)
     b:SetHeight(b.size*2)
     b:SetWidth(f:GetWidth())
 	if f.mystyle == "player" then
-		b:SetPoint("TOPRIGHT", f, "TOPLEFT", -5, -1)
+		b:SetPoint("TOPRIGHT", f, "TOPLEFT", -4, 0)
 		b.initialAnchor = "TOPRIGHT"
 		b["growth-x"] = "LEFT"
 		b["growth-y"] = "DOWN"
 	else
-		b:SetPoint("TOPLEFT", f, "TOPRIGHT", 5, -1)
+		b:SetPoint("TOPLEFT", f, "TOPRIGHT", 4, 0)
 		b.initialAnchor = "TOPLEFT"
 		b["growth-x"] = "RIGHT"
 		b["growth-y"] = "DOWN"
@@ -754,7 +754,7 @@ lib.addDebuffs = function(f)
     b:SetHeight(b.size)
     b:SetWidth(f:GetWidth())
 
-	b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", .5, -5)
+	b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", 0, -4)
     b.initialAnchor = "TOPLEFT"
     b["growth-x"] = "RIGHT"
     b["growth-y"] = "DOWN"
@@ -773,7 +773,7 @@ lib.addTotAuras = function(f)
     b.spacing = 5
     b:SetHeight(b.size)
     b:SetWidth(f:GetWidth())
-	b:SetPoint("TOPLEFT", f, "TOPRIGHT", 5, -1)
+	b:SetPoint("TOPLEFT", f, "TOPRIGHT", 4, 0)
 	b.initialAnchor = "TOPLEFT"
 	b["growth-x"] = "RIGHT"
 	b["growth-y"] = "DOWN"
@@ -791,7 +791,7 @@ lib.addFocusAuras = function(f)
     b.spacing = 5
     b:SetHeight(b.size)
     b:SetWidth(f:GetWidth())
-	b:SetPoint("TOPLEFT", f, "TOPRIGHT", 5, -1)
+	b:SetPoint("TOPLEFT", f, "TOPRIGHT", 4, 0)
 	b.initialAnchor = "TOPLEFT"
 	b["growth-x"] = "RIGHT"
 	b["growth-y"] = "DOWN"
@@ -809,7 +809,7 @@ lib.addBossBuffs = function(f)
     b.spacing = 5
     b:SetHeight(b.size)
     b:SetWidth(f:GetWidth())
-	b:SetPoint("TOPLEFT", f, "TOPRIGHT", 5, -1)
+	b:SetPoint("TOPLEFT", f, "TOPRIGHT", 4, 0)
 	b.initialAnchor = "TOPLEFT"
 	b["growth-x"] = "RIGHT"
 	b["growth-y"] = "DOWN"
@@ -827,7 +827,7 @@ lib.addBossDebuffs = function(f)
     b.spacing = 5
     b:SetHeight(b.size)
     b:SetWidth(f:GetWidth())
-	b:SetPoint("BOTTOMLEFT", f, "BOTTOMRIGHT", 5, 1)
+	b:SetPoint("BOTTOMLEFT", f.Power, "BOTTOMRIGHT", 4, 0)
 	b.initialAnchor = "TOPLEFT"
 	b["growth-x"] = "RIGHT"
 	b["growth-y"] = "DOWN"

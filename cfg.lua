@@ -10,7 +10,7 @@ local cfg = CreateFrame("Frame")
 
 --unitframes
     cfg.unitframeWidth = 250
-    cfg.unitframeScale = 1 -- Keep between 1 and 1.25 to have a good result, 1 = standard
+    cfg.unitframeScale = 1 -- Keep between 1 and 1.25 to have a good result, 1 is default
     cfg.showPortraits = true
     cfg.alwaysShowArtifactXPBar = false
 --player
@@ -21,7 +21,7 @@ local cfg = CreateFrame("Frame")
     cfg.targetY = 360 -- y-coordinate of the target frame
 --boss
     cfg.bossX = 15 -- x-coordinate of boss frames
-    cfg.bossY = -40 -- y-coordinate is for the first bossframe, additional frames will grow upwards (75px each)
+    cfg.bossY = -30 -- y-coordinate is for the first bossframe, additional frames will grow upwards (75px each)
 --auras
     cfg.playerAuras = false -- show player buffs and debuffs, disables Blizzard buff bar
     cfg.AltPowerBarPlayer = false --show altpowerbar on player frame, false = blizzard standard
@@ -42,13 +42,13 @@ local cfg = CreateFrame("Frame")
     cfg.Castbars = true -- use built-in castbars
     --player
     cfg.playerCastBarOnUnitframe = true
-    cfg.playerCastBarX = 0
-    cfg.playerCastBarY = 200
+    cfg.playerCastBarX = 14
+    cfg.playerCastBarY = 210
     cfg.playerCastBarWidth = 300
     cfg.playerCastBarHeight = 30
     --target
     cfg.targetCastBarOnUnitframe = true
-    cfg.targetCastBarX = 0
+    cfg.targetCastBarX = 7
     cfg.targetCastBarY = 250
     cfg.targetCastBarWidth = 200
     cfg.targetCastBarHeight = 25
