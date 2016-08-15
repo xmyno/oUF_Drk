@@ -37,17 +37,17 @@ local candispell = {
 }
 
 local border
-local backdrop_tab = { 
-	bgFile = cfg.backdrop_texture, 
+local backdrop_tab = {
+	bgFile = cfg.backdrop_texture,
 	edgeFile = cfg.backdrop_edge_texture,
 	tile = false,
-	tileSize = 0, 
-	edgeSize = 5, 
-	insets = { 
-		left = 3, 
-		right = 3, 
-		top = 3, 
-		bottom = 3,
+	tileSize = 0,
+	edgeSize = 4,
+	insets = {
+		left = 2,
+		right = 2,
+		top = 2,
+		bottom = 2,
 	},
 }
 local gen_backdrop = function(f,r,g,b)
@@ -59,15 +59,15 @@ end
 local createAuraIcon = function(debuffs)
 	local button = CreateFrame("Button", nil, debuffs)
 	button:EnableMouse(false)
-	button:SetFrameLevel(5)
-	
+	button:SetFrameLevel(6)
+
 	button:SetSize(debuffs.size, debuffs.size)
 
 	local icon = button:CreateTexture(nil, "BACKGROUND")
 	icon:SetPoint("TOPLEFT",button,"TOPLEFT",-1,1)
 	icon:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",1.3,-1.3)
 	icon:SetTexCoord(.05, .95, .05, .95)
-	
+
 	local cd = CreateFrame("Cooldown", nil, button)
 	cd:SetReverse(true)
 	cd:SetFrameLevel(7)
@@ -75,12 +75,12 @@ local createAuraIcon = function(debuffs)
 	cd:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",1.3,-1.3)
 
 	local border = CreateFrame("Frame", nil, button)
-	border:SetFrameLevel(4)
-	border:SetPoint("TOPLEFT",-7,6)
-	border:SetPoint("BOTTOMRIGHT",6,-7)
+	border:SetFrameLevel(5)
+	border:SetPoint("TOPLEFT",-5,5)
+	border:SetPoint("BOTTOMRIGHT",5,-5)
 	gen_backdrop(border,0,0,0)
 
-	
+
 	local count = button:CreateFontString(nil, "OVERLAY")
 	count:SetFont(cfg.smallfont,9,"OUTLINE")
 	count:SetShadowColor(0,0,0,0.8)
@@ -93,16 +93,16 @@ local createAuraIcon = function(debuffs)
 	overlay:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
 	overlay:SetTexCoord(0.03, 0.97, 0.03, 0.97)
 	button.overlay = overlay
-	
+
 	button:SetPoint("BOTTOMLEFT", debuffs, "BOTTOMLEFT")
-	
+
 	button.parent = debuffs
 	button.icon = icon
 	button.count = count
 	button.cd = cd
 	button.cddone = false
 	button:Hide()
-	
+
 	debuffs.button = button
 end
 
@@ -114,7 +114,7 @@ local updateDebuff = function(icon, texture, count, dtype, duration, timeLeft)
 		icon.overlay:SetVertexColor(color.r,color.g,color.b)
 	end
 	icon.overlay:Show()
-	
+
 	icon.icon:SetTexture(texture)
 	icon.count:SetText((count > 1 and count))
 end
@@ -126,41 +126,41 @@ local updateIcon = function(unit, debuffs)
 	while true do
 		local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, 'HARMFUL')
 		if not name then break end
-		
+
 		local icon = debuffs.button
 		local show = debuffs.CustomFilter(debuffs, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID)
-		
+
 		if not show then
 			if dtype and candispell[dtype][playerClass] and candispell[dtype][playerClass][cfg.spec] then
 				show = true
 				icon.priority = 5
 			end
 		end
-		
+
 		if(show) then
 			if not cur then
 				cur = icon.priority
 				updateDebuff(icon, texture, count, dtype, duration, timeLeft)
-				if icon.timeLeft == nil then 
+				if icon.timeLeft == nil then
 					icon.timeLeft = timeLeft
 					icon.cd:SetCooldown(GetTime(),duration)
-				elseif timeLeft>icon.timeLeft then 
+				elseif timeLeft>icon.timeLeft then
 					icon.timeLeft = timeLeft
 					icon.cd:SetCooldown(GetTime(),duration)
 				end
 			else
 				if icon.priority > cur then
 					updateDebuff(icon, texture, count, dtype, duration, timeLeft)
-					if icon.timeLeft == nil then 
+					if icon.timeLeft == nil then
 						icon.timeLeft = timeLeft
 						icon.cd:SetCooldown(GetTime(),duration)
-					elseif timeLeft>icon.timeLeft then 
+					elseif timeLeft>icon.timeLeft then
 						icon.timeLeft = timeLeft
 						icon.cd:SetCooldown(GetTime(),duration)
 					end
 				end
 			end
-			
+
 			icon:Show()
 			hide = false
 		end

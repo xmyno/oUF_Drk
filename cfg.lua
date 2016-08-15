@@ -15,13 +15,17 @@ local cfg = CreateFrame("Frame")
     cfg.alwaysShowArtifactXPBar = false
 --player
     cfg.playerX = -180 -- x-coordinate of the player frame
-    cfg.playerY = 360 -- y-coordinate of the player frame
+    cfg.playerY = 325 -- y-coordinate of the player frame
+    cfg.showExperienceBar = true
+    cfg.showArtifactPowerBar = true
 --target
     cfg.targetX = 180 -- x-coordinate of the target frame
-    cfg.targetY = 360 -- y-coordinate of the target frame
+    cfg.targetY = 325 -- y-coordinate of the target frame
 --boss
-    cfg.bossX = 15 -- x-coordinate of boss frames
-    cfg.bossY = -30 -- y-coordinate is for the first bossframe, additional frames will grow upwards (75px each)
+    cfg.bossX = 10 -- x-offset of boss frames, from side
+    cfg.bossY = -200 -- y-offset of boss frames, from center, this is for the first bossframe, additional frames will grow upwards (75px each)
+    cfg.bossWidth = 200
+    cfg.bossSide = "RIGHT"
 --auras
     cfg.playerAuras = false -- show player buffs and debuffs, disables Blizzard buff bar
     cfg.AltPowerBarPlayer = false --show altpowerbar on player frame, false = blizzard standard
@@ -36,7 +40,7 @@ local cfg = CreateFrame("Frame")
     cfg.showHolybar = true -- show Paladin HolyPower bar
     cfg.showShardbar = true -- show Warlock SoulShard bar
     cfg.showArcaneChargesbar = true -- show Mage Arcane Charges bar
-    cfg.showHarmonybar = true -- show Monk Harmony bar
+    cfg.showChibar = true -- show Monk Chi bar
     cfg.showComboPoints = true -- show Rogue Combo Points
 --castbar
     cfg.Castbars = true -- use built-in castbars
@@ -54,11 +58,13 @@ local cfg = CreateFrame("Frame")
     cfg.targetCastBarHeight = 25
 --raid&party frames
     cfg.showRaid = true -- show raid frames
+    cfg.raidStyle = "BARS"
     cfg.raidShowSolo = true -- show raid frames even when solo
     cfg.showIncHeals = true -- Show incoming heals in player and raid frames
     cfg.showTooltips = true -- Show Tooltips on raid frames
-    cfg.enableRightClickMenu = false -- Enables the right click menu for raid frames
-    cfg.showRoleIcons = false -- Show Role Icons on raid frames
+    cfg.enableRightClickMenu = true -- Enables the right click menu for raid frames
+    cfg.showRoleIcons = true -- Show Role Icons on raid frames
+    cfg.showRoleIconsHoverOnly = false
     cfg.showIndicators = true -- Show Class Indicators on raid frames (HoT's, buffs etc.)
     cfg.showThreatIndicator = true -- Show Threat Indicator on raid frames
 
