@@ -212,11 +212,11 @@ local create = function(self)
 	end
 	-- Tag Texts
 	do
-		local name = core.createFontString(self.Health, cfg.font, 14, "OUTLINE")
+		local name = core.createFontString(self.Health, cfg.font, cfg.fontsize.unitframe, "OUTLINE")
 		name:SetPoint("LEFT", self, "RIGHT", 3, 0)
 		name:SetJustifyH("LEFT")
 		self.NameText = name
-		local hpval = core.createFontString(self.Health, cfg.font, 13, "OUTLINE")
+		local hpval = core.createFontString(self.Health, cfg.font, cfg.fontsize.unitframe - 1, "OUTLINE")
 		hpval:SetPoint("CENTER", self, "CENTER", 0, 0)
 		hpval:SetJustifyH("MIDDLE")
 		hpval.frequentUpdates = true
@@ -254,14 +254,14 @@ local create = function(self)
 		local numbers = self.Health:CreateFontString(nil, "OVERLAY")
 		numbers:ClearAllPoints()
 		numbers:SetPoint("BOTTOMRIGHT", self.Health, "BOTTOMRIGHT", 0, 0)
-		numbers:SetFont(cfg.font, 13, "OUTLINE")
+		numbers:SetFont(cfg.font, cfg.fontsize.unitframe - 1, "OUTLINE")
 		numbers.frequentUpdates = 0.25
 		self:Tag(numbers, cfg.IndicatorList["NUMBERS"][playerClass])
 
 		local squares = self.Health:CreateFontString(nil, "OVERLAY")
 		squares:ClearAllPoints()
 		squares:SetPoint("TOPRIGHT", numbers, "TOPLEFT", 0, 1)
-		squares:SetFont(cfg.squarefont, 10, "OUTLINE")
+		squares:SetFont(cfg.squarefont, cfg.fontsize.unitframe - 4, "OUTLINE")
 		squares.frequentUpdates = 0.25
 		self:Tag(squares, cfg.IndicatorList["SQUARE"][playerClass])
 	end

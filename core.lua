@@ -156,12 +156,12 @@ function core.PostCreateIcon(self, button)
 	button.overlay.Hide = function(self) self:SetVertexColor(0.3, 0.3, 0.3) end
 
 
-	button.time = core.createFontString(button, cfg.smallfont, 8, "OUTLINE")
+	button.time = core.createFontString(button, cfg.smallfont, cfg.fontsize.auras, "OUTLINE")
 	button.time:SetPoint("BOTTOMLEFT", button, -2, -2)
 	button.time:SetJustifyH('CENTER')
 	button.time:SetVertexColor(1,1,1)
 
-	button.count = core.createFontString(button, cfg.smallfont, 8, "OUTLINE")
+	button.count = core.createFontString(button, cfg.smallfont, cfg.fontsize.auras, "OUTLINE")
 	button.count:ClearAllPoints()
 	button.count:SetPoint("TOPRIGHT", button, 2, 2)
 	button.count:SetVertexColor(1,1,1)

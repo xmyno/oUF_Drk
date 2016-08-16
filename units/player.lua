@@ -41,14 +41,14 @@ local create = function(self)
 	end
 	-- Tag Texts
 	do
-		local name = core.createFontString(self.Health, cfg.font, 14, "NONE")
+		local name = core.createFontString(self.Health, cfg.font, cfg.fontsize.unitframe, "NONE")
 		name:SetPoint("LEFT", self.Health, "TOPLEFT", 5, -10)
 		name:SetJustifyH("LEFT")
 		name.frequentUpdates = true
-		local hpval = core.createFontString(self.Health, cfg.font, 14, "NONE")
+		local hpval = core.createFontString(self.Health, cfg.font, cfg.fontsize.unitframe, "NONE")
 		hpval:SetPoint("RIGHT", self.Health, "TOPRIGHT", -3, -10)
 		hpval.frequentUpdates = true
-		local powerval = core.createFontString(self.Health, cfg.font, 14, "THINOUTLINE")
+		local powerval = core.createFontString(self.Health, cfg.font, cfg.fontsize.unitframe, "THINOUTLINE")
 		powerval:SetPoint("RIGHT", self.Health, "BOTTOMRIGHT", 3, -16)
 
 		name:SetPoint("RIGHT", hpval, "LEFT", -2, 0)
@@ -142,7 +142,7 @@ local create = function(self)
 		end
 		altpphelpframe:SetFrameLevel(7)
 		altpphelpframe:SetSize(30, 10)
-		local altppbartext = core.createFontString(altpphelpframe, cfg.font, 8, "OUTLINE")
+		local altppbartext = core.createFontString(altpphelpframe, cfg.font, cfg.fontsize.smalltext, "OUTLINE")
 		altppbartext:SetPoint("LEFT", altpphelpframe, "LEFT", 0, 0)
 		altppbartext:SetJustifyH("LEFT")
 
@@ -208,7 +208,7 @@ local create = function(self)
 		h:SetPoint("BOTTOMRIGHT", 3, -3)
 		core.createBackdrop(h, 1)
 
-		Experience.Text = core.createFontString(Experience, cfg.smallfont, 8, 'OUTLINE')
+		Experience.Text = core.createFontString(Experience, cfg.smallfont, cfg.fontsize.smalltext, 'OUTLINE')
 		Experience.Text:SetPoint("BOTTOMRIGHT", self.Power, "BOTTOMLEFT", -1, 0)
 		Experience.Text:SetJustifyH("RIGHT")
 		Experience.Text:SetWordWrap(true)
@@ -246,7 +246,7 @@ local create = function(self)
 		h:SetPoint("BOTTOMRIGHT", 3, -3)
 		core.createBackdrop(h, 1)
 
-		ArtifactPower.Text = core.createFontString(ArtifactPower, cfg.smallfont, 8, 'OUTLINE')
+		ArtifactPower.Text = core.createFontString(ArtifactPower, cfg.smallfont, cfg.fontsize.smalltext, 'OUTLINE')
 		ArtifactPower.Text:SetPoint("TOPRIGHT", self.Health, "TOPLEFT", -1, 0)
 		ArtifactPower.Text:SetJustifyH("RIGHT")
 		ArtifactPower.Text:SetWordWrap(true)
@@ -311,11 +311,11 @@ local create = function(self)
 	    sp:SetAlpha(0.5)
 	    sp:SetHeight(s:GetHeight()*2.5)
 	    --spell text
-	    local txt = core.createFontString(s, cfg.font, 12, "NONE")
+	    local txt = core.createFontString(s, cfg.font, cfg.fontsize.castbar, "NONE")
 	    txt:SetPoint("LEFT", 4, 0)
 	    txt:SetJustifyH("LEFT")
 	    --time
-	    local t = core.createFontString(s, cfg.font, 12, "NONE")
+	    local t = core.createFontString(s, cfg.font, cfg.fontsize.castbar, "NONE")
 	    t:SetPoint("RIGHT", -2, 0)
 	    txt:SetPoint("RIGHT", t, "LEFT", -5, 0)
 	    --icon
@@ -345,7 +345,7 @@ local create = function(self)
 		s:SetFrameLevel(10)
 		s.SafeZone = z
 		--custom latency display
-		local l = core.createFontString(s, cfg.font, 10, "THINOUTLINE")
+		local l = core.createFontString(s, cfg.font, cfg.fontsize.castbar - 2, "THINOUTLINE")
 		l:SetPoint("CENTER", -2, 17)
 		l:SetJustifyH("RIGHT")
 		l:Hide()

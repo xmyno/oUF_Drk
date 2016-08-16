@@ -74,6 +74,15 @@ local cfg = CreateFrame("Frame")
     cfg.raidY = cfg.raidOrientationHorizontal and 227 or 190
     cfg.raidScale = 1
 
+    cfg.fontsize = {
+        auras = 8, -- time and stacks
+        unitframe = 14, -- player, target, boss
+        smallunitframe = 12, -- raid, focus, target, targettarget, pet
+        castbar = 12,
+        smalltext = 8, -- exp bar, artifact power bar
+    }
+
+
     cfg.IndicatorList = {
         ["NUMBERS"] = {
             --["DEATHKNIGHT"]   = ,

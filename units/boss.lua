@@ -38,14 +38,14 @@ local create = function(self)
 	end
 	-- Tag Texts
 	do
-		local name = core.createFontString(self.Health, cfg.font, 14, "NONE")
+		local name = core.createFontString(self.Health, cfg.font, cfg.fontsize.unitframe, "NONE")
 		name:SetPoint("LEFT", self.Health, "TOPLEFT", 5, -10)
 		name:SetJustifyH("LEFT")
 		name.frequentUpdates = true
-		local hpval = core.createFontString(self.Health, cfg.font, 14, "NONE")
+		local hpval = core.createFontString(self.Health, cfg.font, cfg.fontsize.unitframe, "NONE")
 		hpval:SetPoint("RIGHT", self.Health, "TOPRIGHT", -3, -10)
 		hpval.frequentUpdates = true
-		local powerval = core.createFontString(self.Health, cfg.font, 14, "THINOUTLINE")
+		local powerval = core.createFontString(self.Health, cfg.font, cfg.fontsize.unitframe, "THINOUTLINE")
 		powerval:SetPoint("RIGHT", self.Health, "BOTTOMRIGHT", 3, -16)
 
 		name:SetPoint("RIGHT", hpval, "LEFT", -2, 0)
@@ -137,11 +137,11 @@ local create = function(self)
 	    sp:SetAlpha(0.5)
 	    sp:SetHeight(s:GetHeight()*2.5)
 	    --spell text
-	    local txt = core.createFontString(s, cfg.font, 12, "NONE")
+	    local txt = core.createFontString(s, cfg.font, cfg.fontsize.castbar, "NONE")
 	    txt:SetPoint("LEFT", 4, 0)
 	    txt:SetJustifyH("LEFT")
 	    --time
-	    local t = core.createFontString(s, cfg.font, 12, "NONE")
+	    local t = core.createFontString(s, cfg.font, cfg.fontsize.castbar, "NONE")
 	    t:SetPoint("RIGHT", -2, 0)
 	    txt:SetPoint("RIGHT", t, "LEFT", -5, 0)
 	    --icon

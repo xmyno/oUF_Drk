@@ -136,15 +136,13 @@ local create = function(self)
 	end
 	-- Tag Texts
 	do
-		local name = core.createFontString(self.Health, cfg.raidfont, 12, "NONE")
+		local name = core.createFontString(self.Health, cfg.raidfont, cfg.fontsize.smallunitframe, "NONE")
 		name:SetPoint("LEFT", self.Health, "TOPLEFT", 1, -6)
 		name:SetJustifyH("LEFT")
 		name.frequentUpdates = true
-		local hpval = core.createFontString(self.Health, cfg.font, 13, "OUTLINE")
+		local hpval = core.createFontString(self.Health, cfg.font, cfg.fontsize.smallunitframe + 1, "OUTLINE")
 		hpval:SetPoint("LEFT", self.Health, "BOTTOMLEFT", 0, 6)
 		hpval.frequentUpdates = true
-		local powerval = core.createFontString(self.Health, cfg.font, 14, "THINOUTLINE")
-		powerval:SetPoint("RIGHT", self.Health, "BOTTOMRIGHT", 3, -16)
 
 		name:SetPoint("RIGHT", self, "RIGHT", -1, 0)
 		self:Tag(name, "[drk:color][name][drk:raidafkdnd]")
@@ -243,14 +241,14 @@ local create = function(self)
 		self.NumbersIndicator = self.Health:CreateFontString(nil,"OVERLAY")
 		self.NumbersIndicator:ClearAllPoints()
 		self.NumbersIndicator:SetPoint("BOTTOMRIGHT",self.Health,"BOTTOMRIGHT",4,-4)
-		self.NumbersIndicator:SetFont(cfg.font,13,"THINOUTLINE")
+		self.NumbersIndicator:SetFont(cfg.font, cfg.fontsize.smallunitframe + 1,"THINOUTLINE")
 		self.NumbersIndicator.frequentUpdates = .25
 		self:Tag(self.NumbersIndicator,cfg.IndicatorList["NUMBERS"][playerClass])
 
 		self.SquareIndicator = self.Health:CreateFontString(nil,"OVERLAY")
 		self.SquareIndicator:ClearAllPoints()
 		self.SquareIndicator:SetPoint("BOTTOMRIGHT",self.NumbersIndicator,"BOTTOMLEFT",3,1)
-		self.SquareIndicator:SetFont(cfg.squarefont,10,"THINOUTLINE")
+		self.SquareIndicator:SetFont(cfg.squarefont, cfg.fontsize.smallunitframe - 2,"THINOUTLINE")
 		self.SquareIndicator.frequentUpdates = .25
 		self:Tag(self.SquareIndicator,cfg.IndicatorList["SQUARE"][playerClass])
 	end
@@ -258,7 +256,7 @@ local create = function(self)
 		self.ThreatIndicator = self.Health:CreateFontString(nil,"OVERLAY")
 		self.ThreatIndicator:ClearAllPoints()
 		self.ThreatIndicator:SetPoint("LEFT",self.Health,"LEFT",1,0)
-		self.ThreatIndicator:SetFont(cfg.squarefont,6,"THINOUTLINE")
+		self.ThreatIndicator:SetFont(cfg.squarefont,cfg.fontsize.smalltext - 2,"THINOUTLINE")
 		self.ThreatIndicator.frequentUpdates = .25
 		self:Tag(self.ThreatIndicator,"[drk:threat]")
 	end
