@@ -1,424 +1,338 @@
 local addon, ns = ...
 
 local cfg = ns.cfg
-local lib = ns.lib
+local cast = ns.cast
+local core = CreateFrame("Frame")
+local _, playerClass = UnitClass("player")
+
+
+-----------------------
+-- General
+-----------------------
 
 oUF.colors.smooth = {
 	1, 0, 0, --low health
 	1, .196, .196, --half health
 	.165, .188, .196 --max health
 }
-
------------------------
--- Style Functions
------------------------
-
-local UnitSpecific = {
-
-	player = function(self, ...)
-
-		self.mystyle = "player"
-
-		-- Size and Scale
-		self:SetSize(cfg.unitframeWidth*cfg.unitframeScale, 50*cfg.unitframeScale)
-
-		-- Generate Bars
-		lib.addHealthBar(self)
-		lib.addStrings(self)
-		lib.addHighlight(self)
-		lib.addPowerBar(self)
-		lib.addPortrait(self)
-
-		if cfg.AltPowerBarPlayer then lib.addAltPowerBar(self) end
-		lib.addAltPowerBarString(self)
-		if IsAddOnLoaded("oUF_Experience") then lib.addExperienceBar(self) end
-		if IsAddOnLoaded("oUF_ArtifactPower") then lib.addArtifactPowerBar(self) end
-
-		-- Buffs and Debuffs
-		if cfg.playerAuras then
-			BuffFrame:Hide()
-			lib.addBuffs(self)
-			lib.addDebuffs(self)
-		end
-
-		self.Health.frequentUpdates = true
-		self.Health.colorSmooth = true
-		self.Health.bg.multiplier = 0.3
-		self.Power.colorClass = true
-		self.Power.bg.multiplier = 0.5
-
-		-- oUF_Smooth
-		self.Health.Smooth = true
-		self.Power.Smooth = true
-
-		-- Elements
-		lib.addCastBar(self)
-		lib.addInfoIcons(self)
-		lib.addHealPred(self)
-		lib.addMirrorCastBar(self)
-
-		-- Class Bars
-		lib.addAdditionalPower(self)
-		if cfg.showRunebar then lib.addRunes(self) end
-		if cfg.showHolybar then lib.addHolyPower(self) end
-		if cfg.showHarmonybar then lib.addHarmony(self) end
-		if cfg.showShardbar then lib.addShards(self) end
-		if cfg.showArcaneChargesbar then lib.addArcaneCharges(self) end
-        if cfg.showComboPoints then lib.addCPoints(self) end
-
-		-- Event Handlers
-		self:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED", cfg.updateSpec)
-
-	end,
-
-	target = function(self, ...)
-
-		self.mystyle = "target"
-
-		-- Size and Scale
-		self:SetSize(cfg.unitframeWidth*cfg.unitframeScale, 50*cfg.unitframeScale)
-
-		-- Generate Bars
-		lib.addHealthBar(self)
-		lib.addStrings(self)
-		lib.addHighlight(self)
-		lib.addPowerBar(self)
-		lib.addPortrait(self)
-
-		-- Bar Style
-		self.Health.frequentUpdates = true
-		self.Health.colorSmooth = true
-		self.Health.bg.multiplier = 0.3
-		self.Power.colorTapping = true
-		self.Power.colorDisconnected = true
-		self.Power.colorClass = true
-		self.Power.colorReaction = true
-		self.Power.bg.multiplier = 0.5
-
-		-- oUF_Smooth
-		self.Health.Smooth = true
-		self.Power.Smooth = true
-
-		-- Elements
-		lib.addInfoIcons(self)
-		lib.addCastBar(self)
-		if cfg.targetBuffs then lib.addBuffs(self) end
-		if cfg.targetDebuffs then lib.addDebuffs(self) end
-		lib.addHealPred(self)
-		lib.addAltPowerBar(self)
-		lib.addAltPowerBarString(self)
-	end,
-
-	focus = function(self, ...)
-
-		self.mystyle = "focus"
-
-		-- Size and Scale
-		self:SetSize((cfg.unitframeWidth/2-5)*cfg.unitframeScale, 25*cfg.unitframeScale)
-
-		-- Generate Bars
-		lib.addHealthBar(self)
-		lib.addStrings(self)
-		lib.addHighlight(self)
-		lib.addPowerBar(self)
-
-		-- Bar Style
-		self.Health.frequentUpdates = false
-		self.Health.colorSmooth = true
-		self.Health.bg.multiplier = 0.3
-		self.Power.colorTapping = true
-		self.Power.colorDisconnected = true
-		self.Power.colorClass = true
-		self.Power.colorReaction = true
-		self.Power.colorHealth = true
-		self.Power.bg.multiplier = 0.5
-
-		-- oUF_Smooth
-		self.Health.Smooth = true
-
-		-- Elements
-		lib.addInfoIcons(self)
-		lib.addCastBar(self)
-		if cfg.focusBuffs or cfg.focusDebuffs then lib.addFocusAuras(self) end
-
-	end,
-
-	targettarget = function(self, ...)
-
-		self.mystyle = "tot"
-
-		-- Size and Scale
-		self:SetSize((cfg.unitframeWidth/2-5)*cfg.unitframeScale, 25*cfg.unitframeScale)
-
-		-- Generate Bars
-		lib.addHealthBar(self)
-		lib.addStrings(self)
-		lib.addHighlight(self)
-		lib.addPowerBar(self)
-
-		-- Bar Style
-		self.Health.frequentUpdates = false
-		self.Health.colorSmooth = true
-		self.Health.bg.multiplier = 0.3
-		self.Power.colorTapping = true
-		self.Power.colorDisconnected = true
-		self.Power.colorClass = true
-		self.Power.colorReaction = true
-		self.Power.colorHealth = true
-		self.Power.bg.multiplier = 0.5
-
-		-- oUF_Smooth
-		self.Health.Smooth = true
-
-		-- Elements
-		lib.addInfoIcons(self)
-		lib.addCastBar(self)
-		if cfg.totBuffs or cfg.totDebuffs then lib.addTotAuras(self) end
-
-	end,
-
-	focustarget = function(self, ...)
-
-		self.mystyle = "focustarget"
-
-		-- Size and Scale
-		self:SetSize((cfg.unitframeWidth/2-5)*cfg.unitframeScale, 25*cfg.unitframeScale)
-
-		-- Generate Bars
-		lib.addHealthBar(self)
-		lib.addStrings(self)
-		lib.addHighlight(self)
-		lib.addPowerBar(self)
-
-		-- Bar Style
-		self.Health.frequentUpdates = false
-		self.Health.colorSmooth = true
-		self.Health.bg.multiplier = 0.3
-		self.Power.colorTapping = true
-		self.Power.colorDisconnected = true
-		self.Power.colorClass = true
-		self.Power.colorReaction = true
-		self.Power.colorHealth = true
-		self.Power.bg.multiplier = 0.5
-
-		--Elements
-		lib.addInfoIcons(self)
-		lib.addCastBar(self)
-
-	end,
-
-	pet = function(self, ...)
-
-		self.mystyle = "pet"
-
-		-- Size and Scale
-		self:SetSize((cfg.unitframeWidth/2-5)*cfg.unitframeScale, 25*cfg.unitframeScale)
-
-		-- Generate Bars
-		lib.addHealthBar(self)
-		lib.addStrings(self)
-		lib.addHighlight(self)
-		lib.addPowerBar(self)
-
-		-- Bar Style
-		self.Health.frequentUpdates = false
-		self.Health.colorSmooth = true
-		self.Health.bg.multiplier = 0.3
-		self.Power.colorTapping = true
-		self.Power.colorDisconnected = true
-		self.Power.colorClass = true
-		self.Power.colorReaction = true
-		self.Power.colorHealth = true
-		self.Power.bg.multiplier = 0.5
-
-		-- Elements
-		lib.addInfoIcons(self)
-		lib.addCastBar(self)
-
-	end,
-
-	raid = function(self, ...)
-
-		self.mystyle = "raid"
-
-		-- Range Check
-		self.Range = {
-			insideAlpha = 1,
-			outsideAlpha = .6,
-		}
-
-		-- Generate Bars
-		lib.addHealthBar(self)
-		lib.addStrings(self)
-		lib.addHighlight(self)
-		lib.addPowerBar(self)
-
-		-- Bar Style
-		self.colors.health = { r=.12, g=.12, b=.12, a=1 }
-		self.Health.colorHealth = true
-		self.Health.bg:SetVertexColor(.4,.4,.4,1)
-		self.Health.frequentUpdates = true
-		self.Power.colorClass = true
-		self.Power.bg.multiplier = .35
-		self.Power:SetAlpha(.9)
-
-		-- Elements
-		lib.addInfoIcons(self)
-		lib.CreateTargetBorder(self)
-		lib.addHealPred(self)
-		lib.addRaidDebuffs(self)
-		self.DrkIndicators = cfg.showIndicators and true or false
-		self.showThreatIndicator = cfg.showThreatIndicator and true or false
-
-		-- Event Handlers
-		self.Health.PostUpdate = lib.PostUpdateRaidFrame
-		self.Power.PostUpdate = lib.PostUpdateRaidFramePower
-		self:RegisterEvent('PLAYER_TARGET_CHANGED', lib.ChangedTarget)
-		self:RegisterEvent('GROUP_ROSTER_UPDATE', lib.ChangedTarget)
-		--self:RegisterEvent("UNIT_THREAT_LIST_UPDATE", lib.UpdateThreat)
-		--self:RegisterEvent("UNIT_THREAT_SITUATION_UPDATE", lib.UpdateThreat)
-	end,
-}
-
-
------------------------
--- Register Styles
------------------------
-
--- Global Style
-local GlobalStyle = function(self, unit, isSingle)
-	self:RegisterForClicks('AnyUp')
-
-	-- Call Unit Specific Styles
-	if (UnitSpecific[unit]) then
-		return UnitSpecific[unit](self)
-	end
-end
-
--- Raid Style
-local RaidStyle = function(self, unit)
-	if (cfg.enableRightClickMenu) then
-		self:RegisterForClicks('AnyUp')
-	end
-
-	-- Call Unit Specific Styles
-	if (UnitSpecific[unit]) then
-		return UnitSpecific[unit](self)
-	end
-end
-
--- Boss Style
-local BossStyle = function(self, unit)
-	self.mystyle="boss"
-
-	-- Size and Scale
-	self:SetSize(cfg.unitframeWidth*cfg.unitframeScale, 50*cfg.unitframeScale)
-
-	-- Generate Bars
-	lib.addHealthBar(self)
-	lib.addStrings(self)
-	lib.addPowerBar(self)
-	lib.addAltPowerBar(self)
-	--lib.addAltPowerBarString(self)
-
-	-- Bar Style
-	self.Health.colorSmooth = true
-	self.Health.frequentUpdates = true
-	self.Health.bg.multiplier = 0.2
-	self.Power.colorClass = true
-	self.Power.colorReaction = true
-	self.Power.colorHealth = true
-	self.Power.bg.multiplier = 0.2
-
-	-- Elements
-	lib.addInfoIcons(self)
-	lib.addCastBar(self)
-	lib.addBossBuffs(self)
-	lib.addBossDebuffs(self)
-end
-
-
------------------------
--- Spawn Frames
------------------------
-
-oUF:RegisterStyle('drkGlobal', GlobalStyle)
-oUF:RegisterStyle('drkRaid', RaidStyle)
-oUF:RegisterStyle('drkBoss', BossStyle)
-
-oUF:Factory(function(self)
-	-- Single Frames
-	self:SetActiveStyle('drkGlobal')
-
-	self:Spawn('player'):SetPoint("TOPRIGHT",UIParent,"BOTTOM", cfg.playerX, cfg.playerY)
-	self:Spawn('target'):SetPoint("TOPLEFT",UIParent,"BOTTOM", cfg.targetX, cfg.targetY)
-
-	self:Spawn('targettarget'):SetPoint("BOTTOMRIGHT",oUF_drkGlobalTarget,"TOPRIGHT", 0, 7)
-	self:Spawn('pet'):SetPoint("BOTTOMLEFT",oUF_drkGlobalPlayer,"TOPLEFT", 0, 7)
-	self:Spawn('focus'):SetPoint("BOTTOMRIGHT",oUF_drkGlobalPlayer,"TOPRIGHT", 0, 7)
-	self:Spawn('focustarget'):SetPoint("BOTTOMLEFT",oUF_drkGlobalTarget,"TOPLEFT", 0, 7)
-
-	-- Raid Frames
-	if cfg.showRaid then
-		local point = cfg.raidOrientationHorizontal and "LEFT" or "TOP"
-		local soloraid = cfg.raidShowSolo and "custom show;" or "party,raid10,raid25,raid40;"
-
-		self:SetActiveStyle('drkRaid')
-		local raid = {}
-		for i = 1, 5 do
-			local header = oUF:SpawnHeader(
-			  "drkGroup"..i,
-			  nil,
-			  soloraid,
-			  "showRaid",           true,
-			  "point",              point,
-			  "startingIndex",		1,
-			  "yOffset",            -5,
-			  "xoffset",            4,
-			  "columnSpacing",      7,
-			  "groupFilter",        tostring(i),
-			  "groupBy",            "GROUP",
-			  "groupingOrder",      "1,2,3,4,5",
-			  "sortMethod",         "NAME",
-			  "columnAnchorPoint",  "RIGHT",
-			  "maxColumns",         5,
-			  "unitsPerColumn",     5,
-			  "oUF-initialConfigFunction", [[
-				self:SetHeight(32)
-				self:SetWidth(77)
-			  ]]
-			)
-
-			if i == 1 then
-				header:SetAttribute("showSolo", true)
-				header:SetAttribute("showPlayer", true)
-				header:SetAttribute("showParty", true)
-				header:SetPoint("TOPLEFT",UIParent,"BOTTOMRIGHT",cfg.raidX,cfg.raidY)
-			else
-				if cfg.raidOrientationHorizontal then
-					header:SetPoint("TOPLEFT",raid[i-1],"BOTTOMLEFT",0,-5)
-				else
-					header:SetPoint("TOPLEFT",raid[i-1],"TOPRIGHT",4,0)
-				end
-			end
-			header:SetScale(cfg.raidScale)
-			raid[i] = header
-		end
-	end
-end)
-
--- Boss Frames
-oUF:SetActiveStyle('drkBoss')
-local boss1 = oUF:Spawn("boss1", "oUF_Boss1")
-boss1:SetPoint("TOPLEFT", UIParent, "LEFT", cfg.bossX, cfg.bossY)
-local boss2 = oUF:Spawn("boss2", "oUF_Boss2")
-boss2:SetPoint("TOPLEFT", UIParent, "LEFT", cfg.bossX, cfg.bossY+75)
-local boss3 = oUF:Spawn("boss3", "oUF_Boss3")
-boss3:SetPoint("TOPLEFT", UIParent, "LEFT", cfg.bossX, cfg.bossY+150)
-local boss4 = oUF:Spawn("boss4", "oUF_Boss4")
-boss4:SetPoint("TOPLEFT", UIParent, "LEFT", cfg.bossX, cfg.bossY+225)
-local boss5 = oUF:Spawn("boss5", "oUF_Boss5")
-boss5:SetPoint("TOPLEFT", UIParent, "LEFT", cfg.bossX, cfg.bossY+300)
-
-
 oUF:DisableBlizzard('party')
+
+function core.createBackdrop(f, size)
+	f:SetBackdrop({
+		bgFile = cfg.backdrop_texture,
+		edgeFile = cfg.backdrop_edge_texture,
+		tile = false,
+		tileSize = 0,
+		edgeSize = 5-size,
+		insets = {
+			left = 3-size,
+			right = 3-size,
+			top = 3-size,
+			bottom = 3-size,
+		}
+	})
+	f:SetBackdropColor(0, 0, 0, 1)
+	f:SetBackdropBorderColor(0, 0, 0, 0.8)
+end
+
+function core.createFontString(f, name, size, outline)
+	local fs = f:CreateFontString(nil, "OVERLAY")
+	fs:SetFont(name, size, outline)
+	fs:SetShadowColor(0, 0, 0, 0.8)
+	fs:SetShadowOffset(1, -1)
+	fs:SetWordWrap(false)
+	return fs
+end
+
+function core.addHighlight(f)
+    local OnEnter = function(f)
+		UnitFrame_OnEnter(f)
+		f.Highlight:Show()
+		if f.Experience ~= nil then
+			f.Experience.Text:SetAlpha(0.9)
+		end
+		if f.ArtifactPower ~= nil then
+			if not cfg.alwaysShowArtifactXPBar then
+				f.ArtifactPower:SetAlpha(1)
+			end
+			f.ArtifactPower.Text:SetAlpha(1)
+		end
+		if f.unitType == "raid" then
+			if not cfg.showTooltips then GameTooltip:Hide() end
+			if cfg.showRoleIcons and cfg.showRoleIconsHoverOnly then f.LFDRole:SetAlpha(1) end
+		end
+    end
+    local OnLeave = function(f)
+		UnitFrame_OnLeave(f)
+		f.Highlight:Hide()
+		if f.Experience ~= nil then
+			f.Experience.Text:SetAlpha(0)
+		end
+		if f.ArtifactPower ~= nil then
+			if not cfg.alwaysShowArtifactXPBar then
+				f.ArtifactPower:SetAlpha(0)
+			end
+			f.ArtifactPower.Text:SetAlpha(0)
+		end
+		if f.unitType == "raid" then
+			if cfg.showRoleIcons and cfg.showRoleIconsHoverOnly then f.LFDRole:SetAlpha(0) end
+		end
+    end
+    f:SetScript("OnEnter", OnEnter)
+    f:SetScript("OnLeave", OnLeave)
+
+    local hl = f.Health:CreateTexture(nil, "OVERLAY")
+    hl:SetAllPoints(f.Health)
+    hl:SetTexture(cfg.highlight_texture)
+    hl:SetVertexColor(0.5, 0.5, 0.5, 0.1)
+    hl:SetBlendMode("ADD")
+    hl:Hide()
+    f.Highlight = hl
+end
+
+function core.HealPrediction_Override(self, event, unit)
+	local element = self.HealPrediction
+	local parent = self.Health
+
+	local health, maxHealth = UnitHealth(unit), UnitHealthMax(unit)
+	if maxHealth == 0 or UnitIsDeadOrGhost(unit) then
+		element.healingBar:Hide()
+		element.absorbsBar:Hide()
+		return
+	end
+
+	local missing = maxHealth - health
+	local healing = UnitGetIncomingHeals(unit) or 0
+
+	if (healing / maxHealth) >= 0.01 and missing > 0 then
+		local bar = element.healingBar
+		bar:Show()
+		bar:SetMinMaxValues(0, maxHealth)
+		if healing > missing then
+			bar:SetValue(missing)
+			missing = 0
+		else
+			bar:SetValue(healing)
+			missing = missing - healing
+		end
+		parent = bar
+	else
+		element.healingBar:Hide()
+	end
+
+	local absorbs = UnitGetTotalAbsorbs(unit) or 0
+	if (absorbs / maxHealth) >= 0.01 and missing > 0 then
+		local bar = element.absorbsBar
+		bar:Show()
+		bar:SetPoint("TOPLEFT", parent:GetStatusBarTexture(), "TOPRIGHT")
+		bar:SetPoint("BOTTOMLEFT", parent:GetStatusBarTexture(), "BOTTOMRIGHT")
+		bar:SetMinMaxValues(0, maxHealth)
+		if absorbs > missing then
+			bar:SetValue(missing)
+		else
+			bar:SetValue(absorbs)
+		end
+	else
+		element.absorbsBar:Hide()
+	end
+end
+
+
+-----------------------
+-- Buffs & Debuffs
+-----------------------
+
+function core.PostCreateIcon(self, button)
+	self.showDebuffType = true
+	self.disableCooldown = true
+	button.cd.noOCC = true
+	button.cd.noCooldownCount = true
+
+	button.icon:SetTexCoord(.04, .96, .04, .96)
+	button.icon:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
+	button.icon:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
+	button.overlay:SetTexture(border)
+	button.overlay:SetTexCoord(0,1,0,1)
+	button.overlay.Hide = function(self) self:SetVertexColor(0.3, 0.3, 0.3) end
+
+
+	button.time = core.createFontString(button, cfg.smallfont, 8, "OUTLINE")
+	button.time:SetPoint("BOTTOMLEFT", button, -2, -2)
+	button.time:SetJustifyH('CENTER')
+	button.time:SetVertexColor(1,1,1)
+
+	button.count = core.createFontString(button, cfg.smallfont, 8, "OUTLINE")
+	button.count:ClearAllPoints()
+	button.count:SetPoint("TOPRIGHT", button, 2, 2)
+	button.count:SetVertexColor(1,1,1)
+
+	--helper
+	local h = CreateFrame("Frame", nil, button)
+	h:SetFrameLevel(0)
+	h:SetPoint("TOPLEFT",-4,4)
+	h:SetPoint("BOTTOMRIGHT",4,-4)
+	core.createBackdrop(h,0)
+end
+function core.PostUpdateIcon(self, unit, icon, index, offset, filter, isDebuff)
+
+	local _, _, _, _, _, duration, expirationTime, unitCaster, _ = UnitAura(unit, index, icon.filter)
+
+	if duration and duration > 0 then
+		icon.time:Show()
+		icon.timeLeft = expirationTime
+		icon:SetScript("OnUpdate", CreateBuffTimer)
+	else
+		icon.time:Hide()
+		icon.timeLeft = math.huge
+		icon:SetScript("OnUpdate", nil)
+	end
+
+	-- Desaturate non-Player Debuffs
+	if(unit == "target") then
+		if(icon.filter == "HARMFUL") then
+			if (unitCaster == 'player' or unitCaster == 'vehicle') then
+				icon.icon:SetDesaturated(nil)
+			elseif(not UnitPlayerControlled(unit)) then -- If Unit is Player Controlled don't desaturate debuffs
+				icon:SetBackdropColor(0, 0, 0)
+				icon.overlay:SetVertexColor(0.3, 0.3, 0.3)
+				icon.icon:SetDesaturated(1)
+			end
+		end
+	end
+
+	-- Right Click Cancel Buff/Debuff
+	icon:SetScript('OnMouseUp', function(self, mouseButton)
+		if mouseButton == 'RightButton' then
+			CancelUnitBuff('player', index)
+		end
+	end)
+
+	icon.first = true
+end
+
+function core.formatTime(s)
+	local day, hour, minute = 86400, 3600, 60
+	if s >= day then
+		return format("%dd", floor(s/day + 0.5)), s % day
+	elseif s >= hour then
+		return format("%dh", floor(s/hour + 0.5)), s % hour
+	elseif s >= minute then
+		if s <= minute * 5 then
+			return format("%d:%02d", floor(s/60), s % minute), s - floor(s)
+		end
+		return format("%dm", floor(s/minute + 0.5)), s % minute
+	elseif s >= minute / 12 then
+		return floor(s + 0.5), (s * 100 - floor(s * 100))/100
+	end
+	return format("%.1f", s), (s * 100 - floor(s * 100))/100
+end
+
+function core.createBuffTimer(self, elapsed)
+	if self.timeLeft then
+		self.elapsed = (self.elapsed or 0) + elapsed
+		if self.elapsed >= 0.1 then
+			if not self.first then
+				self.timeLeft = self.timeLeft - self.elapsed
+			else
+				self.timeLeft = self.timeLeft - GetTime()
+				self.first = false
+			end
+			if self.timeLeft > 0 then
+				local time = formatTime(self.timeLeft)
+					self.time:SetText(time)
+				if self.timeLeft < 5 then
+					self.time:SetTextColor(1, 0.5, 0.5)
+				else
+					self.time:SetTextColor(.7, .7, .7)
+				end
+			else
+				self.time:Hide()
+				self:SetScript("OnUpdate", nil)
+			end
+			self.elapsed = 0
+		end
+	end
+end
+
+function core.addBuffs(f)
+    b = CreateFrame("Frame", nil, f)
+    b.size = 20
+    b.num = 20
+    b.spacing = 5
+    b.onlyShowPlayer = false
+    b:SetHeight(b.size*2)
+    b:SetWidth(f:GetWidth())
+	if f.unitType == "player" then
+		b:SetPoint("TOPRIGHT", f, "TOPLEFT", -4, 0)
+		b.initialAnchor = "TOPRIGHT"
+		b["growth-x"] = "LEFT"
+		b["growth-y"] = "DOWN"
+	else
+		b:SetPoint("TOPLEFT", f, "TOPRIGHT", 4, 0)
+		b.initialAnchor = "TOPLEFT"
+		b["growth-x"] = "RIGHT"
+		b["growth-y"] = "DOWN"
+	end
+	b.PostCreateIcon = core.PostCreateIcon
+    b.PostUpdateIcon = core.PostUpdateIcon
+
+    f.Buffs = b
+end
+
+function core.addDebuffs(f)
+    b = CreateFrame("Frame", nil, f)
+    b.size = 20
+	b.num = 10
+	b.onlyShowPlayer = false
+    b.spacing = 5
+    b:SetHeight(b.size)
+    b:SetWidth(f:GetWidth())
+
+	b:SetPoint("TOPLEFT", f.Power, "BOTTOMLEFT", 0, -4)
+    b.initialAnchor = "TOPLEFT"
+    b["growth-x"] = "RIGHT"
+    b["growth-y"] = "DOWN"
+    b.PostCreateIcon = core.PostCreateIcon
+    b.PostUpdateIcon = core.PostUpdateIcon
+	b:SetFrameLevel(1)
+
+    f.Debuffs = b
+end
+
+
+-----------------------
+-- Mirror Bar
+-----------------------
+
+do
+	for _, bar in pairs({'MirrorTimer1','MirrorTimer2','MirrorTimer3',}) do
+		--for i, region in pairs({_G[bar]:GetRegions()}) do
+		--	if (region.GetTexture and region:GetTexture() == 'SolidTexture') then
+		--	  region:Hide()
+		--	end
+		--end
+		_G[bar..'Border']:Hide()
+		_G[bar]:SetParent(UIParent)
+		_G[bar]:SetScale(1)
+		_G[bar]:SetHeight(16)
+		_G[bar]:SetWidth(280)
+		_G[bar]:SetBackdropColor(0.1, 0.1, 0.1)
+		_G[bar..'Background'] = _G[bar]:CreateTexture(bar..'Background', 'BACKGROUND', _G[bar])
+		_G[bar..'Background']:SetTexture(cfg.statusbar_texture)
+		_G[bar..'Background']:SetAllPoints(bar)
+		_G[bar..'Background']:SetVertexColor(0.15, 0.15, 0.15, 0.75)
+		_G[bar..'Text']:SetFont(cfg.font, 14)
+		_G[bar..'Text']:ClearAllPoints()
+		_G[bar..'Text']:SetPoint('CENTER', MirrorTimer1StatusBar, 0, 1)
+		_G[bar..'StatusBar']:SetAllPoints(_G[bar])
+
+		--glowing borders
+		local h = CreateFrame("Frame", nil, _G[bar])
+		h:SetFrameLevel(0)
+		h:SetPoint("TOPLEFT", -3, 3)
+		h:SetPoint("BOTTOMRIGHT", 3, -3)
+		core.createBackdrop(h, 0)
+	end
+end
+
+ns.core = core

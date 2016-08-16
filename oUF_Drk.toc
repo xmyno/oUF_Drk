@@ -1,11 +1,14 @@
 ## Interface: 70000
 ## Author: Drakull, Myno
-## Title: oUF_Drk Fanupdate
-## Version: r25
+## Title: oUF_Drk
+## Version: r26
 ## Notes: PvE-oriented Layout for oUF
 ## RequiredDeps: oUF
-## OptionalDeps: oUF_Experience, oUF_ArtifactPower
 ## X-Category: UnitFrame
+
+embeds\oUF_ArtifactPower\oUF_ArtifactPower.lua
+embeds\oUF_Experience\oUF_Experience.lua
+embeds\oUF_Smooth\oUF_Smooth.lua
 
 cfg.lua
 tags.lua
@@ -16,6 +19,14 @@ elements\oUF_MonkHarmonyBar.lua
 elements\oUF_ComboPoints.lua
 elements\oUF_HolyPower.lua
 elements\oUF_ArcaneCharges.lua
-lib.lua
 core.lua
-elements\Indicators.lua
+
+units\player.lua
+units\target.lua
+units\focus.lua
+units\focustarget.lua
+units\targettarget.lua
+units\pet.lua
+units\raid_rect.lua
+units\raid_bars.lua
+units\boss.lua
