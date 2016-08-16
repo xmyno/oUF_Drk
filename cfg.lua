@@ -25,7 +25,8 @@ local cfg = CreateFrame("Frame")
     cfg.bossX = 10 -- x-offset of boss frames, from side
     cfg.bossY = -200 -- y-offset of boss frames, from center, this is for the first bossframe, additional frames will grow upwards (75px each)
     cfg.bossWidth = 200
-    cfg.bossSide = "RIGHT"
+    cfg.bossSide = "RIGHT" -- "LEFT" or "RIGHT", highly depending on raidStyle settings
+    -- recommended: raidStyle "BARS" -> "RIGHT", "RECT" -> "LEFT"
 --auras
     cfg.playerAuras = false -- show player buffs and debuffs, disables Blizzard buff bar
     cfg.AltPowerBarPlayer = false --show altpowerbar on player frame, false = blizzard standard
@@ -58,19 +59,19 @@ local cfg = CreateFrame("Frame")
     cfg.targetCastBarHeight = 25
 --raid&party frames
     cfg.showRaid = true -- show raid frames
-    cfg.raidStyle = "BARS"
+    cfg.raidStyle = "BARS" -- "RECT" or "BARS"
     cfg.raidShowSolo = true -- show raid frames even when solo
     cfg.showIncHeals = true -- Show incoming heals in player and raid frames
     cfg.showTooltips = true -- Show Tooltips on raid frames
     cfg.enableRightClickMenu = true -- Enables the right click menu for raid frames
     cfg.showRoleIcons = true -- Show Role Icons on raid frames
-    cfg.showRoleIconsHoverOnly = false
+    cfg.showRoleIconsHoverOnly = false -- Show Role Icons only when hovering over the frame
     cfg.showIndicators = true -- Show Class Indicators on raid frames (HoT's, buffs etc.)
     cfg.showThreatIndicator = true -- Show Threat Indicator on raid frames
 
     cfg.raidOrientationHorizontal = false
-    cfg.raidX = not cfg.raidOrientationHorizontal and -491 or -410
-    cfg.raidY = not cfg.raidOrientationHorizontal and 190 or 227
+    cfg.raidX = cfg.raidOrientationHorizontal and -410 or -491
+    cfg.raidY = cfg.raidOrientationHorizontal and 227 or 190
     cfg.raidScale = 1
 
     cfg.IndicatorList = {
