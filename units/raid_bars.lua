@@ -5,11 +5,12 @@ local core = ns.core
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local UnitClass = UnitClass
 local UnitThreatSituation = UnitThreatSituation
-
+local GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC = GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC
 local _, playerClass = UnitClass("player")
+local raid, n, max
 
 -- Create Target Border
-local createTargetBorder = function(self)
+local CreateTargetBorder = function(self)
 	local glowBorder = {edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1}
 	self.TargetBorder = CreateFrame("Frame", nil, self)
 	self.TargetBorder:SetPoint("TOPLEFT", self, "TOPLEFT", -1, 1)
@@ -21,7 +22,7 @@ local createTargetBorder = function(self)
 end
 
 -- Raid Frames Target Highlight Border
-local onChangedTarget = function(self, event, unit)
+local OnChangedTarget = function(self, event)
 	if UnitIsUnit('target', self.unit) then
 		self.TargetBorder:Show()
 	else
@@ -29,7 +30,30 @@ local onChangedTarget = function(self, event, unit)
 	end
 end
 
-local addRaidDebuffs = function(self)
+local UpdateLayout = function()
+	if InCombatLockdown() then return end
+
+	if (select(3, GetInstanceInfo())) == DIFFICULTY_PRIMARYRAID_MYTHIC then
+		raid[5]:SetAlpha(0)
+		raid[6]:SetAlpha(0)
+		max = 20
+	else
+		raid[5]:SetAlpha(1)
+		raid[6]:SetAlpha(1)
+		max = 30
+	end
+
+	n = math.min(GetNumGroupMembers(), max)
+	for i, header in next, raid do
+		if i == 1 then
+			header:SetPoint("TOPLEFT", UIParent, "LEFT", 10, n * 12 + 100)
+		else
+			header:SetPoint("TOPLEFT", raid[i-1], "BOTTOMLEFT", 0, -10)
+		end
+	end
+end
+
+local AddRaidDebuffs = function(self)
 	local raid_debuffs = cfg.DebuffWatchList
 
 	local debuffs = raid_debuffs.debuffs
@@ -48,7 +72,7 @@ local addRaidDebuffs = function(self)
 	debuffs:SetWidth(14)
 	debuffs:SetHeight(14)
 	debuffs:SetFrameLevel(7)
-	debuffs:SetPoint("LEFT", self, "LEFT", 20, 4)
+	debuffs:SetPoint("RIGHT", self, "RIGHT", -35, 4)
 	debuffs.size = 12
 
 	debuffs.CustomFilter = CustomFilter
@@ -121,7 +145,7 @@ local create = function(self)
 	do
 		local s = CreateFrame("StatusBar", nil, self)
 		s:SetFrameLevel(1)
-		s:SetHeight(14)
+		s:SetHeight(15)
 		s:SetWidth(self:GetWidth())
 		s:SetPoint("TOP", 0, 0)
 		s:SetStatusBarTexture("Interface\\ChatFrame\\ChatFrameBackground")
@@ -182,17 +206,17 @@ local create = function(self)
 		if cfg.showRoleIcons then
 			local LFDRole = h:CreateTexture(nil, 'OVERLAY')
 			LFDRole:SetSize(10, 10)
-			LFDRole:SetPoint('CENTER', self, 'LEFT', 0, 0)
+			LFDRole:SetPoint('CENTER', self, 'LEFT', 0, -6)
 			LFDRole:SetAlpha(1)
 			self.LFDRole = LFDRole
 	    end
 		-- Leader, Assist, Master Looter Icon
 		local li = h:CreateTexture(nil, "OVERLAY")
-		li:SetPoint("TOPLEFT", self, 2, 7)
+		li:SetPoint("TOPLEFT", self, 2, 5)
 		li:SetSize(10, 10)
 		self.Leader = li
 		local ai = h:CreateTexture(nil, "OVERLAY")
-		ai:SetPoint("TOPLEFT", self, 2, 7)
+		ai:SetPoint("TOPLEFT", self, 2, 5)
 		ai:SetSize(10, 10)
 		self.Assistant = ai
 		local ml = h:CreateTexture(nil, 'OVERLAY')
@@ -201,13 +225,13 @@ local create = function(self)
 		self.MasterLooter = ml
 		-- Raid Marks
 		local ri = h:CreateTexture(nil, "OVERLAY")
-		ri:SetPoint("TOPRIGHT", self, "TOPRIGHT", -28, 6)
-		ri:SetSize(11, 11)
+		ri:SetPoint("TOP", self, "TOP", 0, 5)
+		ri:SetSize(13, 13)
 		self.RaidIcon = ri
 		-- Ready Check
 		local rc = h:CreateTexture(nil, "OVERLAY")
 		rc:SetSize(12, 12)
-		rc:SetPoint("TOPRIGHT", self.Health, "TOPRIGHT", -16, 7)
+		rc:SetPoint("RIGHT", self.Health, "RIGHT", 4, 0)
 		self.ReadyCheck = rc
 	end
 	-- Tag Texts
@@ -215,16 +239,15 @@ local create = function(self)
 		local name = core.createFontString(self.Health, cfg.font, cfg.fontsize.unitframe, "OUTLINE")
 		name:SetPoint("LEFT", self, "RIGHT", 3, 0)
 		name:SetJustifyH("LEFT")
-		self.NameText = name
-		local hpval = core.createFontString(self.Health, cfg.font, cfg.fontsize.unitframe - 1, "OUTLINE")
+		local hpval = core.createFontString(self.Health, cfg.font, cfg.fontsize.unitframe, "OUTLINE")
 		hpval:SetPoint("CENTER", self, "CENTER", 0, 0)
 		hpval:SetJustifyH("MIDDLE")
 		hpval.frequentUpdates = true
 
-		self:Tag(name, "[drk:color][name][drk:raidafkdnd]")
+		self:Tag(name, "|cffdadada[name]|r[drk:raidafkdnd]") --[drk:color]
 		self:Tag(hpval, "[drk:raidhp]")
 	end
-	createTargetBorder(self)
+	CreateTargetBorder(self)
 	-- Heal Prediction
 	if cfg.showIncHeals then
 		local healing = CreateFrame('StatusBar', nil, self.Health)
@@ -249,7 +272,7 @@ local create = function(self)
 			Override = core.HealPrediction_Override
 		}
 	end
-	addRaidDebuffs(self)
+	AddRaidDebuffs(self)
 	if cfg.showIndicators then
 		local numbers = self.Health:CreateFontString(nil, "OVERLAY")
 		numbers:ClearAllPoints()
@@ -279,22 +302,16 @@ local create = function(self)
 		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', ThreatUpdate)
 	end
 
-		--local threat = self.Health:
-
-		-- local threat = self.Health:CreateFontString(nil, "OVERLAY")
-		-- threat:ClearAllPoints()
-		-- threat:SetPoint("LEFT", self.Health, "LEFT", 2, 0)
-		-- threat:SetFont(cfg.squarefont, 6, "OUTLINE")
-		-- threat.frequentUpdates = 0.25
-		-- self:Tag(threat,"[drk:threat]")
-
-
 	-- Event Handlers
 	self.Health.PostUpdate = PostUpdateRaidFrame
 	--self.Power.PostUpdate = PostUpdateRaidFramePower
-	self:RegisterEvent('PLAYER_TARGET_CHANGED', onChangedTarget)
-	self:RegisterEvent('GROUP_ROSTER_UPDATE', onChangedTarget)
-
+	self:RegisterEvent("PLAYER_TARGET_CHANGED", OnChangedTarget)
+	self:RegisterEvent("GROUP_ROSTER_UPDATE", function(self, event)
+		OnChangedTarget(self, event)
+		UpdateLayout()
+	end)
+	self:RegisterEvent("PLAYER_REGEN_ENABLED", UpdateLayout)
+	self:RegisterEvent("PLAYER_ENTERING_WORLD", UpdateLayout)
 
 end
 
@@ -305,7 +322,7 @@ if cfg.showRaid and cfg.raidStyle == "BARS" then
 
 	oUF:RegisterStyle('drk:raid', create)
 	oUF:SetActiveStyle('drk:raid')
-	local raid = {}
+	raid = {}
 	for i = 1, 6 do
 		local header = oUF:SpawnHeader(
 		  "drkGroup"..i,
@@ -314,7 +331,7 @@ if cfg.showRaid and cfg.raidStyle == "BARS" then
 		  "showRaid",           true,
 		  "point",              "TOP",
 		  "startingIndex",		1,
-		  "yOffset",            -4,
+		  "yOffset",            -5,
 		  "xoffset",            4,
 		  "columnSpacing",      7,
 		  "groupFilter",        tostring(i),
@@ -325,8 +342,8 @@ if cfg.showRaid and cfg.raidStyle == "BARS" then
 		  "maxColumns",         5,
 		  "unitsPerColumn",     5,
 		  "oUF-initialConfigFunction", [[
-			self:SetHeight(14)
-			self:SetWidth(125)
+			self:SetHeight(15)
+			self:SetWidth(150)
 		  ]]
 		)
 
@@ -335,9 +352,9 @@ if cfg.showRaid and cfg.raidStyle == "BARS" then
 			header:SetAttribute("showPlayer", true)
 			header:SetAttribute("showParty", true)
 
-			header:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 10, -125)
+			header:SetPoint("TOPLEFT", UIParent, "LEFT", 10, 112)
 		else
-			header:SetPoint("TOPLEFT", raid[i-1], "BOTTOMLEFT", 0, -8)
+			header:SetPoint("TOPLEFT", raid[i-1], "BOTTOMLEFT", 0, -10)
 		end
 
 		header:SetScale(cfg.raidScale)

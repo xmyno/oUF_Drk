@@ -76,8 +76,8 @@ local createAuraIcon = function(debuffs)
 
 	local border = CreateFrame("Frame", nil, button)
 	border:SetFrameLevel(5)
-	border:SetPoint("TOPLEFT",-5,5)
-	border:SetPoint("BOTTOMRIGHT",5,-5)
+	border:SetPoint("TOPLEFT",-3,3)
+	border:SetPoint("BOTTOMRIGHT",3,-3)
 	gen_backdrop(border,0,0,0)
 
 
