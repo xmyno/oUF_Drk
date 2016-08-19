@@ -91,6 +91,8 @@ function core.addHighlight(f)
 end
 
 function core.HealPrediction_Override(self, event, unit)
+	if self.unit ~= unit then return end
+
 	local element = self.HealPrediction
 	local parent = self.Health
 
