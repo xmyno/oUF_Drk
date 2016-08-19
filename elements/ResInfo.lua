@@ -92,3 +92,7 @@ LibResInfo.RegisterCallback("oUF_ResInfo", "LibResInfo_ResCastCancelled", Callba
 LibResInfo.RegisterCallback("oUF_ResInfo", "LibResInfo_ResPending", Callback)
 LibResInfo.RegisterCallback("oUF_ResInfo", "LibResInfo_ResUsed", Callback)
 LibResInfo.RegisterCallback("oUF_ResInfo", "LibResInfo_ResExpired", Callback)
+LibResInfo.RegisterCallback("oUF_ResInfo", "LibResInfo_MassResStarted", Callback)
+LibResInfo.RegisterCallback("oUF_ResInfo", "LibResInfo_MassResCancelled", Callback)
+LibResInfo.RegisterCallback("oUF_ResInfo", "LibResInfo_MassResFinished", Callback)
+LibResInfo.RegisterCallback("oUF_ResInfo", "LibResInfo_UnitUpdate", Callback)
