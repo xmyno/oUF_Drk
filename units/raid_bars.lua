@@ -58,7 +58,18 @@ local UpdateLayout = function()
 	n = math.min(GetNumGroupMembers(), max)
 	for i, header in next, raid do
 		if i == 1 then
-			header:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 10, n * 19 + cfg.raidOffsetY)
+			local offset, anchor
+			if cfg.raidGrowth == "UP" then
+				offset = n * 19 + cfg.raidOffsetY
+				anchor = "TOPLEFT"
+			elseif cfg.raidGrowth == "HOVER" then
+				offset = n * 15 + cfg.raidOffsetY
+				anchor = "LEFT"
+			elseif cfg.raidGrowth == "DOWN" then
+				offset = cfg.raidOffsetY
+				anchor = "TOPLEFT"
+			end
+			header:SetPoint("TOPLEFT", UIParent, anchor, 10, offset)
 		else
 			header:SetPoint("TOPLEFT", raid[i-1], "BOTTOMLEFT", 0, -10)
 		end
@@ -302,13 +313,11 @@ if cfg.showRaid and cfg.raidStyle == "BARS" then
 			header:SetAttribute("showSolo", true)
 			header:SetAttribute("showPlayer", true)
 			header:SetAttribute("showParty", true)
-
-			header:SetPoint("TOPLEFT", UIParent, "LEFT", 10, cfg.raidOffsetY)
-		else
-			header:SetPoint("TOPLEFT", raid[i-1], "BOTTOMLEFT", 0, -10)
 		end
 
 		header:SetScale(cfg.raidScale)
 		raid[i] = header
 	end
+
+	UpdateLayout()
 end
