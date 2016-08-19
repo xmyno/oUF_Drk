@@ -114,24 +114,6 @@ local PostUpdateRaidFrame = function(Health, unit, min, max)
 	end
 end
 
--- local PostUpdateRaidFramePower = function(Power, unit, min, max)
--- 	local dc = not UnitIsConnected(unit)
--- 	local dead = UnitIsDead(unit)
--- 	local ghost = UnitIsGhost(unit)
-
--- 	Power:SetAlpha(1)
-
--- 	if dc or dead or ghost then
--- 		if(dc) then
--- 			Power:SetAlpha(.3)
--- 		elseif(ghost) then
--- 			Power:SetAlpha(.3)
--- 		elseif(dead) then
--- 			Power:SetAlpha(.3)
--- 		end
--- 	end
-
--- end
 
 local create = function(self)
 	self.unitType = "raid"
@@ -175,27 +157,6 @@ local create = function(self)
 		self.Health.bg.multiplier = 0.1
 		self.Health.Smooth = true
 	end
-	-- Power
-	-- do
-	-- 	local s = CreateFrame("StatusBar", nil, self)
-	-- 	s:SetFrameLevel(1)
-	-- 	s:SetHeight(1)
-	-- 	s:SetWidth(self:GetWidth())
-	--     s:SetStatusBarTexture(cfg.powerbar_texture)
-	-- 	s:GetStatusBarTexture():SetHorizTile(true)
-	-- 	s:SetPoint("BOTTOM", self, "BOTTOM", 0, 0)
-	-- 	s.frequentUpdates = true
-
-	--     local b = s:CreateTexture(nil, "BACKGROUND")
-	--     b:SetTexture(cfg.powerbar_texture)
-	--     b:SetAllPoints(s)
-
-	--     self.Power = s
-	--     self.Power.bg = b
-	--     self.Power.colorPower = true
-	-- 	self.Power.bg.multiplier = 0.35
-	-- 	self.Power:SetAlpha(0.9)
-	-- end
 	-- Highlight
 	core.addHighlight(self)
 	-- Info Icons
@@ -294,7 +255,6 @@ local create = function(self)
 
 	-- Event Handlers
 	self.Health.PostUpdate = PostUpdateRaidFrame
-	--self.Power.PostUpdate = PostUpdateRaidFramePower
 	self:RegisterEvent("PLAYER_TARGET_CHANGED", OnChangedTarget)
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", function(self, event)
 		OnChangedTarget(self, event)
