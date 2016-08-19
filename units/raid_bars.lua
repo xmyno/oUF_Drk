@@ -170,7 +170,7 @@ local create = function(self)
 			local LFDRole = h:CreateTexture(nil, 'OVERLAY')
 			LFDRole:SetSize(10, 10)
 			LFDRole:SetPoint('CENTER', self, 'LEFT', 0, -6)
-			LFDRole:SetAlpha(1)
+			LFDRole:SetAlpha(cfg.showRoleIconsHoverOnly and 0 or 1)
 			self.LFDRole = LFDRole
 	    end
 		-- Leader, Assist, Master Looter Icon
