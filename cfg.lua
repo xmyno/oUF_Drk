@@ -69,6 +69,9 @@ local cfg = CreateFrame("Frame")
     cfg.showIndicators = true -- Show Class Indicators on raid frames (HoT's, buffs etc.)
     cfg.showThreatIndicator = true -- Show Threat Indicator on raid frames
 
+    -- these are for BARS layout only
+    cfg.raidOffsetY = -625
+    -- these are for RECT layout only
     cfg.raidOrientationHorizontal = false
     cfg.raidX = cfg.raidOrientationHorizontal and -410 or -491
     cfg.raidY = cfg.raidOrientationHorizontal and 227 or 190
