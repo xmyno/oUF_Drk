@@ -81,6 +81,19 @@ tags.Methods["drk:nameboss"] = function(u, r)
 	return UnitName(r or u)
 end
 --end fix for boss bar update
+
+local UnitName, UnitThreatSituation
+    = UnitName, UnitThreatSituation
+tags.Events["drk:name+threat"] = 'UNIT_NAME_UPDATE UNIT_TARGETABLE_CHANGED UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE'
+tags.Methods["drk:name+threat"] = function(u)
+	local status = UnitThreatSituation(u)
+	if status and status > 1 then
+		return ("|cffcc3300%s|r"):format(UnitName(u))
+	else
+		return ("|cffdadada%s|r"):format(UnitName(u))
+	end
+end
+
 tags.Events["drk:raidhp"] = 'UNIT_HEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 tags.Methods["drk:raidhp"] = function(u)
 	local ddg = _TAGS["drk:DDG"](u)

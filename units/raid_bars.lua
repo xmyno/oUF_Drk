@@ -121,16 +121,6 @@ end
 
 -- end
 
-local ThreatUpdate = function(self)
-	local status = UnitThreatSituation(self.unit)
-	if status and status > 1 then
-		self.ThreatIndicator:SetAlpha(1)
-	else
-		self.ThreatIndicator:SetAlpha(0)
-	end
-end
-
-
 local create = function(self)
 	self.unitType = "raid"
 	self.Range = {
@@ -244,7 +234,7 @@ local create = function(self)
 		hpval:SetJustifyH("MIDDLE")
 		hpval.frequentUpdates = true
 
-		self:Tag(name, "|cffdadada[name]|r[drk:raidafkdnd]") --[drk:color]
+		self:Tag(name, "[drk:name+threat][drk:raidafkdnd]")
 		self:Tag(hpval, "[drk:raidhp]")
 	end
 	CreateTargetBorder(self)
@@ -287,19 +277,6 @@ local create = function(self)
 		squares:SetFont(cfg.squarefont, cfg.fontsize.unitframe - 4, "OUTLINE")
 		squares.frequentUpdates = 0.25
 		self:Tag(squares, cfg.IndicatorList["SQUARE"][playerClass])
-	end
-	if cfg.showThreatIndicator then
-		local threat = self.Health:CreateTexture(nil, "OVERLAY")
-		threat:SetTexture("Interface\\ChatFrame\\ChatFrameBackground")
-		threat:SetPoint("LEFT", self.Health, "RIGHT", 1, 0)
-		threat:SetVertexColor(0.8, 0.2, 0)
-		threat:SetWidth(1)
-		threat:SetHeight(self:GetHeight())
-		threat:SetAlpha(0)
-
-		self.ThreatIndicator = threat
-		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ThreatUpdate)
-		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', ThreatUpdate)
 	end
 
 	-- Event Handlers
