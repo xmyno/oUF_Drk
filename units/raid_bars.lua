@@ -223,14 +223,15 @@ local create = function(self)
 		healing:SetFrameLevel(1)
 
 		local absorbs = CreateFrame('StatusBar', nil, self.Health)
-		absorbs:SetPoint('TOPLEFT', healing:GetStatusBarTexture(), 'TOPRIGHT')
-		absorbs:SetPoint('BOTTOMLEFT', healing:GetStatusBarTexture(), 'BOTTOMRIGHT')
+		absorbs:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT')
+		absorbs:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
 		absorbs:SetWidth(self:GetWidth())
 		absorbs:SetStatusBarTexture(cfg.statusbar_texture)
 		absorbs:SetStatusBarColor(0.25, 0.8, 1, 0.5)
 		absorbs:SetFrameLevel(1)
 
 		self.HealPrediction = {
+			frequentUpdates = true,
 			healingBar = healing,
 			absorbsBar = absorbs,
 			Override = core.HealPrediction_Override
