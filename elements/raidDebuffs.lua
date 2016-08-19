@@ -59,7 +59,7 @@ end
 local createAuraIcon = function(debuffs)
 	local button = CreateFrame("Button", nil, debuffs)
 	button:EnableMouse(false)
-	button:SetFrameLevel(6)
+	button:SetFrameLevel(8)
 
 	button:SetSize(debuffs.size, debuffs.size)
 
@@ -70,12 +70,12 @@ local createAuraIcon = function(debuffs)
 
 	local cd = CreateFrame("Cooldown", nil, button)
 	cd:SetReverse(true)
-	cd:SetFrameLevel(7)
+	cd:SetFrameLevel(9)
 	cd:SetPoint("TOPLEFT",button,"TOPLEFT",-1,1)
 	cd:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",1.3,-1.3)
 
 	local border = CreateFrame("Frame", nil, button)
-	border:SetFrameLevel(5)
+	border:SetFrameLevel(7)
 	border:SetPoint("TOPLEFT",-3,3)
 	border:SetPoint("BOTTOMRIGHT",3,-3)
 	gen_backdrop(border,0,0,0)

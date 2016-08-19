@@ -1,0 +1,22 @@
+## Interface: 70000
+## Version: 1
+
+## Title: Lib: ResInfo-1.0
+## Notes: Library to provide information about resurrections in your group.
+## Notes-deDE: Eine Bibliothek, um Informationen über Wiederbelebungen in der Gruppe zu liefern.
+## Notes-esES: Una biblioteca para proporcionar información sobre resurreciones en tu grupo.
+## Notes-esMX: Una biblioteca para proporcionar información sobre resurreciones en tu grupo.
+
+## Author: Phanx
+## X-Email: addons@phanx.net
+## X-Category: Library
+## X-Copyright: Copyright (c) 2012-2016 Phanx. All rights reserved.
+## X-Website: https://github.com/Phanx/LibResInfo
+
+## LoadOnDemand: 1
+## OptionalDependencies: LibStub, CallbackHandler-1.0
+
+LibStub\LibStub.lua
+CallbackHandler-1.0\CallbackHandler-1.0.lua
+
+LibResInfo-1.0.lua

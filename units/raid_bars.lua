@@ -2,23 +2,35 @@ local addon, ns = ...
 local cfg = ns.cfg
 local core = ns.core
 
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local UnitClass = UnitClass
-local UnitThreatSituation = UnitThreatSituation
-local GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC = GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC
+local UnitClass, UnitThreatSituation, GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC, RAID_CLASS_COLORS
+    = UnitClass, UnitThreatSituation, GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC, RAID_CLASS_COLORS
+
 local _, playerClass = UnitClass("player")
 local raid, n, max
 
 -- Create Target Border
 local CreateTargetBorder = function(self)
-	local glowBorder = {edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1}
-	self.TargetBorder = CreateFrame("Frame", nil, self)
-	self.TargetBorder:SetPoint("TOPLEFT", self, "TOPLEFT", -1, 1)
-	self.TargetBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 1, -1)
-	self.TargetBorder:SetBackdrop(glowBorder)
-	self.TargetBorder:SetFrameLevel(4)
-	self.TargetBorder:SetBackdropBorderColor(0.95, 0.95, 0.95, 1)
-	self.TargetBorder:Hide()
+	local backdrop = {edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1}
+	local targetBorder = CreateFrame("Frame", nil, self)
+	targetBorder:SetPoint("TOPLEFT", self, "TOPLEFT", -2, 2)
+	targetBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 2, -2)
+	targetBorder:SetBackdrop(backdrop)
+	targetBorder:SetFrameLevel(5)
+	targetBorder:SetBackdropBorderColor(0.95, 0.95, 0.95, 1)
+	targetBorder:Hide()
+	self.TargetBorder = targetBorder
+end
+
+local CreateResInfoBorder = function(self)
+	local backdrop = {edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1}
+	local resInfoBorder = CreateFrame("Frame", nil, self)
+	resInfoBorder:SetPoint("TOPLEFT", self, "TOPLEFT", -2, 2)
+	resInfoBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 2, -2)
+	resInfoBorder:SetBackdrop(backdrop)
+	resInfoBorder:SetFrameLevel(4)
+	resInfoBorder:SetBackdropBorderColor(0.85, 0.65, 0.12, 1)
+	resInfoBorder:Hide()
+	self.ResInfo = resInfoBorder
 end
 
 -- Raid Frames Target Highlight Border
@@ -46,7 +58,7 @@ local UpdateLayout = function()
 	n = math.min(GetNumGroupMembers(), max)
 	for i, header in next, raid do
 		if i == 1 then
-			header:SetPoint("TOPLEFT", UIParent, "LEFT", 10, n * 12 + 100)
+			header:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 10, n * 19 + cfg.raidOffsetY)
 		else
 			header:SetPoint("TOPLEFT", raid[i-1], "BOTTOMLEFT", 0, -10)
 		end
@@ -102,34 +114,6 @@ local PostUpdateRaidFrame = function(Health, unit, min, max)
 	end
 end
 
--- local PostUpdateRaidFramePower = function(Power, unit, min, max)
--- 	local dc = not UnitIsConnected(unit)
--- 	local dead = UnitIsDead(unit)
--- 	local ghost = UnitIsGhost(unit)
-
--- 	Power:SetAlpha(1)
-
--- 	if dc or dead or ghost then
--- 		if(dc) then
--- 			Power:SetAlpha(.3)
--- 		elseif(ghost) then
--- 			Power:SetAlpha(.3)
--- 		elseif(dead) then
--- 			Power:SetAlpha(.3)
--- 		end
--- 	end
-
--- end
-
-local ThreatUpdate = function(self)
-	local status = UnitThreatSituation(self.unit)
-	if status and status > 1 then
-		self.ThreatIndicator:SetAlpha(1)
-	else
-		self.ThreatIndicator:SetAlpha(0)
-	end
-end
-
 
 local create = function(self)
 	self.unitType = "raid"
@@ -173,27 +157,6 @@ local create = function(self)
 		self.Health.bg.multiplier = 0.1
 		self.Health.Smooth = true
 	end
-	-- Power
-	-- do
-	-- 	local s = CreateFrame("StatusBar", nil, self)
-	-- 	s:SetFrameLevel(1)
-	-- 	s:SetHeight(1)
-	-- 	s:SetWidth(self:GetWidth())
-	--     s:SetStatusBarTexture(cfg.powerbar_texture)
-	-- 	s:GetStatusBarTexture():SetHorizTile(true)
-	-- 	s:SetPoint("BOTTOM", self, "BOTTOM", 0, 0)
-	-- 	s.frequentUpdates = true
-
-	--     local b = s:CreateTexture(nil, "BACKGROUND")
-	--     b:SetTexture(cfg.powerbar_texture)
-	--     b:SetAllPoints(s)
-
-	--     self.Power = s
-	--     self.Power.bg = b
-	--     self.Power.colorPower = true
-	-- 	self.Power.bg.multiplier = 0.35
-	-- 	self.Power:SetAlpha(0.9)
-	-- end
 	-- Highlight
 	core.addHighlight(self)
 	-- Info Icons
@@ -207,7 +170,7 @@ local create = function(self)
 			local LFDRole = h:CreateTexture(nil, 'OVERLAY')
 			LFDRole:SetSize(10, 10)
 			LFDRole:SetPoint('CENTER', self, 'LEFT', 0, -6)
-			LFDRole:SetAlpha(1)
+			LFDRole:SetAlpha(cfg.showRoleIconsHoverOnly and 0 or 1)
 			self.LFDRole = LFDRole
 	    end
 		-- Leader, Assist, Master Looter Icon
@@ -244,10 +207,11 @@ local create = function(self)
 		hpval:SetJustifyH("MIDDLE")
 		hpval.frequentUpdates = true
 
-		self:Tag(name, "|cffdadada[name]|r[drk:raidafkdnd]") --[drk:color]
+		self:Tag(name, "[drk:name+threat][drk:raidafkdnd]")
 		self:Tag(hpval, "[drk:raidhp]")
 	end
 	CreateTargetBorder(self)
+	CreateResInfoBorder(self)
 	-- Heal Prediction
 	if cfg.showIncHeals then
 		local healing = CreateFrame('StatusBar', nil, self.Health)
@@ -259,14 +223,15 @@ local create = function(self)
 		healing:SetFrameLevel(1)
 
 		local absorbs = CreateFrame('StatusBar', nil, self.Health)
-		absorbs:SetPoint('TOPLEFT', healing:GetStatusBarTexture(), 'TOPRIGHT')
-		absorbs:SetPoint('BOTTOMLEFT', healing:GetStatusBarTexture(), 'BOTTOMRIGHT')
+		absorbs:SetPoint('TOPLEFT', self.Health:GetStatusBarTexture(), 'TOPRIGHT')
+		absorbs:SetPoint('BOTTOMLEFT', self.Health:GetStatusBarTexture(), 'BOTTOMRIGHT')
 		absorbs:SetWidth(self:GetWidth())
 		absorbs:SetStatusBarTexture(cfg.statusbar_texture)
 		absorbs:SetStatusBarColor(0.25, 0.8, 1, 0.5)
 		absorbs:SetFrameLevel(1)
 
 		self.HealPrediction = {
+			frequentUpdates = true,
 			healingBar = healing,
 			absorbsBar = absorbs,
 			Override = core.HealPrediction_Override
@@ -288,23 +253,9 @@ local create = function(self)
 		squares.frequentUpdates = 0.25
 		self:Tag(squares, cfg.IndicatorList["SQUARE"][playerClass])
 	end
-	if cfg.showThreatIndicator then
-		local threat = self.Health:CreateTexture(nil, "OVERLAY")
-		threat:SetTexture("Interface\\ChatFrame\\ChatFrameBackground")
-		threat:SetPoint("LEFT", self.Health, "RIGHT", 1, 0)
-		threat:SetVertexColor(0.8, 0.2, 0)
-		threat:SetWidth(1)
-		threat:SetHeight(self:GetHeight())
-		threat:SetAlpha(0)
-
-		self.ThreatIndicator = threat
-		self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ThreatUpdate)
-		self:RegisterEvent('UNIT_THREAT_SITUATION_UPDATE', ThreatUpdate)
-	end
 
 	-- Event Handlers
 	self.Health.PostUpdate = PostUpdateRaidFrame
-	--self.Power.PostUpdate = PostUpdateRaidFramePower
 	self:RegisterEvent("PLAYER_TARGET_CHANGED", OnChangedTarget)
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", function(self, event)
 		OnChangedTarget(self, event)
@@ -352,7 +303,7 @@ if cfg.showRaid and cfg.raidStyle == "BARS" then
 			header:SetAttribute("showPlayer", true)
 			header:SetAttribute("showParty", true)
 
-			header:SetPoint("TOPLEFT", UIParent, "LEFT", 10, 112)
+			header:SetPoint("TOPLEFT", UIParent, "LEFT", 10, cfg.raidOffsetY)
 		else
 			header:SetPoint("TOPLEFT", raid[i-1], "BOTTOMLEFT", 0, -10)
 		end
