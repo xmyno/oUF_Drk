@@ -70,7 +70,8 @@ local cfg = CreateFrame("Frame")
     cfg.showThreatIndicator = true -- Show Threat Indicator on raid frames
 
     -- these are for BARS layout only
-    cfg.raidOffsetY = -625
+    cfg.raidOffsetY = 30
+    cfg.raidGrowth = "HOVER"
     -- these are for RECT layout only
     cfg.raidOrientationHorizontal = false
     cfg.raidX = cfg.raidOrientationHorizontal and -410 or -491
