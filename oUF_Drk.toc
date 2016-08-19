@@ -6,6 +6,10 @@
 ## RequiredDeps: oUF
 ## X-Category: UnitFrame
 
+libs\LibStub\LibStub.lua
+libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+libs\LibResInfo-1.0\LibResInfo-1.0.lua
+
 embeds\oUF_ArtifactPower\oUF_ArtifactPower.lua
 embeds\oUF_Experience\oUF_Experience.lua
 embeds\oUF_Smooth\oUF_Smooth.lua
@@ -14,6 +18,7 @@ cfg.lua
 tags.lua
 castbar.lua
 elements\raidDebuffs.lua
+elements\ResInfo.lua
 elements\oUF_WarlockSpecBars.lua
 elements\oUF_MonkHarmonyBar.lua
 elements\oUF_ComboPoints.lua

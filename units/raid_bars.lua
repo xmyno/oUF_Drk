@@ -2,23 +2,35 @@ local addon, ns = ...
 local cfg = ns.cfg
 local core = ns.core
 
-local RAID_CLASS_COLORS = RAID_CLASS_COLORS
-local UnitClass = UnitClass
-local UnitThreatSituation = UnitThreatSituation
-local GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC = GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC
+local UnitClass, UnitThreatSituation, GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC, RAID_CLASS_COLORS
+    = UnitClass, UnitThreatSituation, GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC, RAID_CLASS_COLORS
+
 local _, playerClass = UnitClass("player")
 local raid, n, max
 
 -- Create Target Border
 local CreateTargetBorder = function(self)
-	local glowBorder = {edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1}
-	self.TargetBorder = CreateFrame("Frame", nil, self)
-	self.TargetBorder:SetPoint("TOPLEFT", self, "TOPLEFT", -1, 1)
-	self.TargetBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 1, -1)
-	self.TargetBorder:SetBackdrop(glowBorder)
-	self.TargetBorder:SetFrameLevel(4)
-	self.TargetBorder:SetBackdropBorderColor(0.95, 0.95, 0.95, 1)
-	self.TargetBorder:Hide()
+	local backdrop = {edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1}
+	local targetBorder = CreateFrame("Frame", nil, self)
+	targetBorder:SetPoint("TOPLEFT", self, "TOPLEFT", -2, 2)
+	targetBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 2, -2)
+	targetBorder:SetBackdrop(backdrop)
+	targetBorder:SetFrameLevel(5)
+	targetBorder:SetBackdropBorderColor(0.95, 0.95, 0.95, 1)
+	targetBorder:Hide()
+	self.TargetBorder = targetBorder
+end
+
+local CreateResInfoBorder = function(self)
+	local backdrop = {edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1}
+	local resInfoBorder = CreateFrame("Frame", nil, self)
+	resInfoBorder:SetPoint("TOPLEFT", self, "TOPLEFT", -2, 2)
+	resInfoBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 2, -2)
+	resInfoBorder:SetBackdrop(backdrop)
+	resInfoBorder:SetFrameLevel(4)
+	resInfoBorder:SetBackdropBorderColor(0.85, 0.65, 0.12, 1)
+	resInfoBorder:Hide()
+	self.ResInfo = resInfoBorder
 end
 
 -- Raid Frames Target Highlight Border
@@ -238,6 +250,7 @@ local create = function(self)
 		self:Tag(hpval, "[drk:raidhp]")
 	end
 	CreateTargetBorder(self)
+	CreateResInfoBorder(self)
 	-- Heal Prediction
 	if cfg.showIncHeals then
 		local healing = CreateFrame('StatusBar', nil, self.Health)
