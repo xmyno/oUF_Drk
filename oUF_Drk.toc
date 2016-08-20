@@ -1,7 +1,7 @@
 ## Interface: 70000
 ## Author: Drakull, Myno
 ## Title: oUF_Drk
-## Version: r27
+## Version: r27a
 ## Notes: PvE-oriented Layout for oUF
 ## RequiredDeps: oUF
 ## X-Category: UnitFrame
