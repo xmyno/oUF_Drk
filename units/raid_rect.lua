@@ -2,6 +2,8 @@ local addon, ns = ...
 local cfg = ns.cfg
 local core = ns.core
 
+local _, playerClass = UnitClass("player")
+
 -- Create Target Border
 local createTargetBorder = function(self)
 	local glowBorder = {edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1}
