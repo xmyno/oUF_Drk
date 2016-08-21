@@ -461,12 +461,12 @@ local create = function(self)
 			Runes[i]:SetWidth((self.Health:GetWidth() / 6)-5)
 			Runes[i]:SetStatusBarTexture(cfg.statusbar_texture)
 			Runes[i]:SetFrameLevel(11)
-			Runes[i]:SetStatusBarColor(0.14, 0.5, 0.6)
+			Runes[i]:SetStatusBarColor(70/255, 180/255, 210/255)
 			Runes[i].bg = Runes[i]:CreateTexture(nil, "BORDER")
 			Runes[i].bg:SetTexture(cfg.statusbar_texture)
 			Runes[i].bg:SetPoint("TOPLEFT", Runes[i], "TOPLEFT", 0, 0)
 			Runes[i].bg:SetPoint("BOTTOMRIGHT", Runes[i], "BOTTOMRIGHT", 0, 0)
-			Runes[i].bg:SetVertexColor(0.07, 0.15, 0.15)
+			Runes[i].bg.multiplier = 0.2
 
 			local h = CreateFrame("Frame", nil, Runes[i])
 			h:SetFrameLevel(10)
@@ -477,7 +477,7 @@ local create = function(self)
 			if (i == 1) then
 				Runes[i]:SetPoint('LEFT', Runes, 'LEFT', 1, 0)
 			else
-				Runes[i]:SetPoint('TOPLEFT', Runes[i-1], 'TOPRIGHT', 2, 0)
+				Runes[i]:SetPoint('TOPLEFT', Runes[i-1], 'TOPRIGHT', 1, 0)
 			end
 		end
 
