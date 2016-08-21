@@ -144,6 +144,50 @@ end
 -- Buffs & Debuffs
 -----------------------
 
+function core.formatTime(s)
+	local day, hour, minute = 86400, 3600, 60
+	if s >= day then
+		return format("%dd", floor(s/day + 0.5)), s % day
+	elseif s >= hour then
+		return format("%dh", floor(s/hour + 0.5)), s % hour
+	elseif s >= minute then
+		if s <= minute * 5 then
+			return format("%d:%02d", floor(s/60), s % minute), s - floor(s)
+		end
+		return format("%dm", floor(s/minute + 0.5)), s % minute
+	elseif s >= minute / 12 then
+		return floor(s + 0.5), (s * 100 - floor(s * 100))/100
+	end
+	return format("%.1f", s), (s * 100 - floor(s * 100))/100
+end
+
+function core.createBuffTimer(self, elapsed)
+	if self.timeLeft then
+		self.elapsed = (self.elapsed or 0) + elapsed
+		if self.elapsed >= 0.1 then
+			if not self.first then
+				self.timeLeft = self.timeLeft - self.elapsed
+			else
+				self.timeLeft = self.timeLeft - GetTime()
+				self.first = false
+			end
+			if self.timeLeft > 0 then
+				local time = core.formatTime(self.timeLeft)
+					self.time:SetText(time)
+				if self.timeLeft < 5 then
+					self.time:SetTextColor(1, 0.5, 0.5)
+				else
+					self.time:SetTextColor(.7, .7, .7)
+				end
+			else
+				self.time:Hide()
+				self:SetScript("OnUpdate", nil)
+			end
+			self.elapsed = 0
+		end
+	end
+end
+
 function core.PostCreateIcon(self, button)
 	self.showDebuffType = true
 	self.disableCooldown = true
@@ -175,6 +219,7 @@ function core.PostCreateIcon(self, button)
 	h:SetPoint("BOTTOMRIGHT",4,-4)
 	core.createBackdrop(h,0)
 end
+
 function core.PostUpdateIcon(self, unit, icon, index, offset, filter, isDebuff)
 
 	local _, _, _, _, _, duration, expirationTime, unitCaster, _ = UnitAura(unit, index, icon.filter)
@@ -182,7 +227,7 @@ function core.PostUpdateIcon(self, unit, icon, index, offset, filter, isDebuff)
 	if duration and duration > 0 then
 		icon.time:Show()
 		icon.timeLeft = expirationTime
-		icon:SetScript("OnUpdate", CreateBuffTimer)
+		icon:SetScript("OnUpdate", core.createBuffTimer)
 	else
 		icon.time:Hide()
 		icon.timeLeft = math.huge
@@ -210,50 +255,6 @@ function core.PostUpdateIcon(self, unit, icon, index, offset, filter, isDebuff)
 	end)
 
 	icon.first = true
-end
-
-function core.formatTime(s)
-	local day, hour, minute = 86400, 3600, 60
-	if s >= day then
-		return format("%dd", floor(s/day + 0.5)), s % day
-	elseif s >= hour then
-		return format("%dh", floor(s/hour + 0.5)), s % hour
-	elseif s >= minute then
-		if s <= minute * 5 then
-			return format("%d:%02d", floor(s/60), s % minute), s - floor(s)
-		end
-		return format("%dm", floor(s/minute + 0.5)), s % minute
-	elseif s >= minute / 12 then
-		return floor(s + 0.5), (s * 100 - floor(s * 100))/100
-	end
-	return format("%.1f", s), (s * 100 - floor(s * 100))/100
-end
-
-function core.createBuffTimer(self, elapsed)
-	if self.timeLeft then
-		self.elapsed = (self.elapsed or 0) + elapsed
-		if self.elapsed >= 0.1 then
-			if not self.first then
-				self.timeLeft = self.timeLeft - self.elapsed
-			else
-				self.timeLeft = self.timeLeft - GetTime()
-				self.first = false
-			end
-			if self.timeLeft > 0 then
-				local time = formatTime(self.timeLeft)
-					self.time:SetText(time)
-				if self.timeLeft < 5 then
-					self.time:SetTextColor(1, 0.5, 0.5)
-				else
-					self.time:SetTextColor(.7, .7, .7)
-				end
-			else
-				self.time:Hide()
-				self:SetScript("OnUpdate", nil)
-			end
-			self.elapsed = 0
-		end
-	end
 end
 
 function core.addBuffs(f)
