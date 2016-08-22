@@ -2,7 +2,6 @@ local _, ns = ...
 local cfg = ns.cfg
 local lib = ns.lib
 local oUF = ns.oUF or oUF
---local rd = CreateFrame("Frame")
 
 local playerClass = select(2,UnitClass("player"))
 local candispell = {
@@ -36,7 +35,6 @@ local candispell = {
 	}
 }
 
-local border
 local backdrop_tab = {
 	bgFile = cfg.backdrop_texture,
 	edgeFile = cfg.backdrop_edge_texture,

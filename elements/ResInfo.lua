@@ -43,7 +43,7 @@ function Update(self, event, unit)
 	end
 
 	if element.PostUpdate then
-		element:PostUpdate(unit, status, text)
+		element:PostUpdate(unit, status)
 	end
 end
 

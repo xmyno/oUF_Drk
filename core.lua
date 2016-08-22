@@ -258,7 +258,7 @@ function core.PostUpdateIcon(self, unit, icon, index, offset, filter, isDebuff)
 end
 
 function core.addBuffs(f)
-    b = CreateFrame("Frame", nil, f)
+    local b = CreateFrame("Frame", nil, f)
     b.size = 20
     b.num = 20
     b.spacing = 5
@@ -283,7 +283,7 @@ function core.addBuffs(f)
 end
 
 function core.addDebuffs(f)
-    b = CreateFrame("Frame", nil, f)
+    local b = CreateFrame("Frame", nil, f)
     b.size = 20
 	b.num = 10
 	b.onlyShowPlayer = false

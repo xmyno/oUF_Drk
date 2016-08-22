@@ -2,8 +2,8 @@ local addon, ns = ...
 local cfg = ns.cfg
 local core = ns.core
 
-local UnitClass, UnitThreatSituation, GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC, RAID_CLASS_COLORS
-    = UnitClass, UnitThreatSituation, GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC, RAID_CLASS_COLORS
+local UnitClass, GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC
+    = UnitClass, GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC
 
 local _, playerClass = UnitClass("player")
 local raid, n, max
@@ -107,7 +107,6 @@ local PostUpdateRaidFrame = function(Health, unit, min, max)
 	local dc = not UnitIsConnected(unit)
 	local dead = UnitIsDead(unit)
 	local ghost = UnitIsGhost(unit)
-	local inrange = UnitInRange(unit)
 
 	Health:SetAlpha(1)
 	Health:SetValue(min)

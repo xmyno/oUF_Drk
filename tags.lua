@@ -34,14 +34,25 @@ tags.Methods["drk:perhp"] = function(u)
 	end
 end
 
+tags.Events["drk:DDG"] = 'UNIT_HEALTH'
+tags.Methods["drk:DDG"] = function(u)
+	if UnitIsDead(u) then
+		return "|cffCFCFCF Dead|r"
+	elseif UnitIsGhost(u) then
+		return "|cffCFCFCF Ghost|r"
+	elseif not UnitIsConnected(u) then
+		return "|cffCFCFCF Off|r"
+	end
+end
+
 tags.Events["drk:hp"] = 'UNIT_HEALTH UNIT_MAXHEALTH'
 tags.Methods["drk:hp"] = function(u)
-	local ddg = _TAGS["drk:DDG"](u)
+	local ddg = tags.Methods["drk:DDG"](u)
 
 	if ddg then
 		return ddg
 	else
-		local per = _TAGS["drk:perhp"](u) or 0
+		local per = tags.Methods["drk:perhp"](u) or 0
 		local min, max = UnitHealth(u), UnitHealthMax(u)
 		if u == "player" or u == "target" then
 			if min~=max then
@@ -57,12 +68,12 @@ end
 -- fix for boss bar update
 tags.Events["drk:hpboss"] = 'UNIT_HEALTH_FREQUENT UNIT_MAXHEALTH UNIT_TARGETABLE_CHANGED'
 tags.Methods["drk:hpboss"] = function(u)
-	local ddg = _TAGS["drk:DDG"](u)
+	local ddg = tags.Methods["drk:DDG"](u)
 
 	if ddg then
 		return ddg
 	else
-		local per = _TAGS["drk:perhp"](u) or 0
+		local per = tags.Methods["drk:perhp"](u) or 0
 		local min, max = UnitHealth(u), UnitHealthMax(u)
 		if u == "player" or u == "target" then
 			if min~=max then
@@ -96,12 +107,12 @@ end
 
 tags.Events["drk:raidhp"] = 'UNIT_HEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED'
 tags.Methods["drk:raidhp"] = function(u)
-	local ddg = _TAGS["drk:DDG"](u)
+	local ddg = tags.Methods["drk:DDG"](u)
 
 	if ddg then
 		return ddg
 	else
-		local missinghp = SVal(_TAGS["missinghp"](u)) or ""
+		local missinghp = SVal(tags.Methods["missinghp"](u)) or ""
 		if missinghp ~= "" then
 			return ("-%s"):format(missinghp)
 		else
@@ -138,17 +149,6 @@ end
 tags.Events["drk:raidafkdnd"] = 'PLAYER_FLAGS_CHANGED'
 tags.Methods["drk:raidafkdnd"] = function(unit)
 	return UnitIsAFK(unit) and "|cffCFCFCF AFK|r" or UnitIsDND(unit) and "|cffCFCFCF DND|r" or ""
-end
-
-tags.Events["drk:DDG"] = 'UNIT_HEALTH'
-tags.Methods["drk:DDG"] = function(u)
-	if UnitIsDead(u) then
-		return "|cffCFCFCF Dead|r"
-	elseif UnitIsGhost(u) then
-		return "|cffCFCFCF Ghost|r"
-	elseif not UnitIsConnected(u) then
-		return "|cffCFCFCF Off|r"
-	end
 end
 
 tags.Events["drk:power"] = 'UNIT_MAXPOWER UNIT_POWER'
@@ -327,7 +327,7 @@ end
 local LIFEBLOOM = GetSpellInfo(33763)
 tags.Events["Druid:Lifebloom"] = 'UNIT_AURA'
 tags.Methods["Druid:Lifebloom"] = function(unit)
-	local _, _, _, stacks, _, _, expirationTime, source = UnitAura(unit, LIFEBLOOM)
+	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, LIFEBLOOM)
 	if source and source == "player" then
 		return format("|cffffcc00%.0f|r ", expirationTime - GetTime())
 	end

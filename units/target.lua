@@ -214,14 +214,6 @@ local create = function(self)
         end)
 		-- PvP Icon
 		local PvP = h:CreateTexture(nil, "OVERLAY")
-		local faction = PvPCheck
-		if faction == "Horde" then
-			PvP:SetTexCoord(0.08, 0.58, 0.045, 0.545)
-		elseif faction == "Alliance" then
-			PvP:SetTexCoord(0.07, 0.58, 0.06, 0.57)
-		else
-			PvP:SetTexCoord(0.05, 0.605, 0.015, 0.57)
-		end
 		PvP:SetHeight(12)
 		PvP:SetWidth(12)
 		PvP:SetPoint("TOPRIGHT", 6, 6)

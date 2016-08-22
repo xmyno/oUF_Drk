@@ -45,7 +45,7 @@ local Update = function(self, event, unit, powerType)
     end
 
     if(cpoints.PostUpdate) then
-        return cpoints:PostUpdate(cp)
+        return cpoints:PostUpdate(cur)
     end
 end
 

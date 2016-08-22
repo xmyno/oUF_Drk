@@ -286,7 +286,7 @@ local cfg = CreateFrame("Frame")
                 --Malkorok
                     ["142863"] = 3, -- Weak Ancient Barrier
                     ["142864"] = 3, -- Ancient Barrier
-                    ["142864"] = 3, -- Strong Ancient Barrier
+                    ["142865"] = 3, -- Strong Ancient Barrier
                     ["142913"] = 8, -- Displaced Energy
                 --Spoils of Pandaria
                     ["145996"] = 4, -- Set to Blow
