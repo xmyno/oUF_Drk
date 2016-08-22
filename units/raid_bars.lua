@@ -92,11 +92,11 @@ local AddRaidDebuffs = function(self)
 	end
 
 	local debuffs = CreateFrame("Frame", nil, self)
-	debuffs:SetWidth(14)
-	debuffs:SetHeight(14)
+	debuffs:SetWidth(16)
+	debuffs:SetHeight(16)
 	debuffs:SetFrameLevel(7)
 	debuffs:SetPoint("RIGHT", self, "RIGHT", -35, 4)
-	debuffs.size = 12
+	debuffs.size = 16
 
 	debuffs.CustomFilter = CustomFilter
 	self.raidDebuffs = debuffs
@@ -193,7 +193,7 @@ local create = function(self)
 		ai:SetSize(10, 10)
 		self.Assistant = ai
 		local ml = h:CreateTexture(nil, 'OVERLAY')
-		ml:SetSize(9, 9)
+		ml:SetSize(10, 10)
 		ml:SetPoint('LEFT', self.Leader, 'RIGHT')
 		self.MasterLooter = ml
 		-- Raid Marks

@@ -62,22 +62,21 @@ local createAuraIcon = function(debuffs)
 	button:SetSize(debuffs.size, debuffs.size)
 
 	local icon = button:CreateTexture(nil, "BACKGROUND")
-	icon:SetPoint("TOPLEFT",button,"TOPLEFT",-1,1)
-	icon:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",1.3,-1.3)
+	icon:SetPoint("TOPLEFT", button)
+	icon:SetPoint("BOTTOMRIGHT", button)
 	icon:SetTexCoord(.05, .95, .05, .95)
 
 	local cd = CreateFrame("Cooldown", nil, button)
 	cd:SetReverse(true)
 	cd:SetFrameLevel(9)
-	cd:SetPoint("TOPLEFT",button,"TOPLEFT",-1,1)
-	cd:SetPoint("BOTTOMRIGHT",button,"BOTTOMRIGHT",1.3,-1.3)
+	cd:SetPoint("TOPLEFT", button)
+	cd:SetPoint("BOTTOMRIGHT", button)
 
 	local border = CreateFrame("Frame", nil, button)
 	border:SetFrameLevel(7)
-	border:SetPoint("TOPLEFT",-3,3)
-	border:SetPoint("BOTTOMRIGHT",3,-3)
+	border:SetPoint("TOPLEFT", -4, 3)
+	border:SetPoint("BOTTOMRIGHT", 4, -4)
 	gen_backdrop(border,0,0,0)
-
 
 	local count = button:CreateFontString(nil, "OVERLAY")
 	count:SetFont(cfg.smallfont,9,"OUTLINE")
@@ -87,9 +86,8 @@ local createAuraIcon = function(debuffs)
 
 	local overlay = button:CreateTexture(nil, "OVERLAY")
 	overlay:SetTexture(cfg.debuff_border_texture)
-	overlay:SetPoint("TOPLEFT", button, "TOPLEFT", -3, 2)
-	overlay:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 2, -2)
-	overlay:SetTexCoord(0.03, 0.97, 0.03, 0.97)
+	overlay:SetPoint("TOPLEFT", -1.3, 1)
+	overlay:SetPoint("BOTTOMRIGHT", 1.3, -1)
 	button.overlay = overlay
 
 	button:SetPoint("BOTTOMLEFT", debuffs, "BOTTOMLEFT")
@@ -105,7 +103,7 @@ local createAuraIcon = function(debuffs)
 end
 
 local updateDebuff = function(icon, texture, count, dtype, duration, timeLeft)
-	local color = DebuffTypeColor[dtype] or nil
+	local color = DebuffTypeColor[dtype] or {r = 0.8, g = 0.2, b = 0}
 	if color == nil then
 		icon.overlay:SetVertexColor(0,0,0)
 	else
