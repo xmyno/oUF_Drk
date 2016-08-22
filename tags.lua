@@ -292,7 +292,7 @@ local ATONEMENT = GetSpellInfo(214206)
 tags.Events["Priest:Atonement"] = 'UNIT_AURA'
 tags.Methods["Priest:Atonement"] = function(unit)
 	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, ATONEMENT)
-	if expirationTime then
+	if source and source == "player" then
 		return format("|cff268ccc%.0f|r ", expirationTime - GetTime())
 	end
 end
