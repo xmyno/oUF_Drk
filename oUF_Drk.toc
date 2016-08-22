@@ -19,11 +19,7 @@ tags.lua
 castbar.lua
 elements\raidDebuffs.lua
 elements\ResInfo.lua
-elements\oUF_WarlockSpecBars.lua
-elements\oUF_MonkHarmonyBar.lua
 elements\oUF_ComboPoints.lua
-elements\oUF_HolyPower.lua
-elements\oUF_ArcaneCharges.lua
 core.lua
 
 units\player.lua
