@@ -441,6 +441,53 @@ local create = function(self)
 		self.DruidMana = AdditionalPower
 		self.DruidMana.bg = AdditionalPower.bg
 	end
+	do
+		local maxPower, color
+		if playerClass == "MAGE" then
+			maxPower = 4
+			color = {0.15, 0.55, 0.8}
+		elseif playerClass == "MONK" then
+			maxPower = 6
+			color = {0.9, 0.99, 0.9}
+		elseif playerClass == "PALADIN" then
+			maxPower = 5
+			color = {0.9, 0.95, 0.33}
+		elseif playerClass == "WARLOCK" then
+			maxPower = 5
+			color = {0.86, 0.22, 1}
+		end
+
+		if maxPower ~= nil then
+			local ClassIcons = CreateFrame("Frame", nil, self)
+			ClassIcons:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
+			ClassIcons:SetHeight(5)
+			ClassIcons:SetWidth(self.Health:GetWidth() / 2 + 75)
+			ClassIcons:SetFrameLevel(10)
+
+			for i = 1, maxPower do
+				ClassIcons[i] = CreateFrame("StatusBar", self:GetName()..playerClass..i, self)
+				ClassIcons[i]:SetHeight(5)
+				ClassIcons[i]:SetWidth((ClassIcons:GetWidth() / maxPower) - 2)
+				ClassIcons[i]:SetStatusBarTexture(cfg.statusbar_texture)
+				ClassIcons[i]:SetStatusBarColor(color[1], color[2], color[3])
+				ClassIcons[i]:SetFrameLevel(11)
+
+				local h = CreateFrame("Frame", nil, ClassIcons[i])
+				h:SetFrameLevel(10)
+				h:SetPoint("TOPLEFT", -3, 3)
+				h:SetPoint("BOTTOMRIGHT", 3, -3)
+				core.createBackdrop(h, 1)
+
+				if (i == 1) then
+					ClassIcons[i]:SetPoint('LEFT', ClassIcons, 'LEFT', 1, 0)
+				else
+					ClassIcons[i]:SetPoint('TOPLEFT', ClassIcons[i-1], "TOPRIGHT", 1, 0)
+				end
+			end
+
+			self.ClassIcons = ClassIcons
+		end
+	end
 	if cfg.showRunebar and playerClass == "DEATHKNIGHT" then
 		local Runes = CreateFrame("Frame", nil, self)
 		Runes:SetPoint('CENTER', self.Health, 'TOP', 2, 1)
@@ -474,144 +521,6 @@ local create = function(self)
 		end
 
 		self.Runes = Runes
-	end
-	if cfg.showHolybar and playerClass == "PALADIN" then
-		local PaladinHolyPower = CreateFrame("Frame", nil, self)
-		PaladinHolyPower:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
-		PaladinHolyPower:SetHeight(5)
-		PaladinHolyPower:SetWidth(self.Health:GetWidth() / 2 + 75)
-
-		for i = 1, 5 do
-			PaladinHolyPower[i] = CreateFrame("StatusBar", self:GetName().."_Holypower"..i, self)
-			PaladinHolyPower[i]:SetHeight(5)
-			PaladinHolyPower[i]:SetWidth((PaladinHolyPower:GetWidth() / 5) - 2)
-			PaladinHolyPower[i]:SetStatusBarTexture(cfg.statusbar_texture)
-			PaladinHolyPower[i]:SetStatusBarColor(.9, .95, .33)
-			PaladinHolyPower[i]:SetFrameLevel(11)
-			PaladinHolyPower[i].bg = PaladinHolyPower[i]:CreateTexture(nil, "BORDER")
-			PaladinHolyPower[i].bg:SetTexture(cfg.statusbar_texture)
-			PaladinHolyPower[i].bg:SetPoint("TOPLEFT", PaladinHolyPower[i], "TOPLEFT", 0, 0)
-			PaladinHolyPower[i].bg:SetPoint("BOTTOMRIGHT", PaladinHolyPower[i], "BOTTOMRIGHT", 0, 0)
-			PaladinHolyPower[i].bg.multiplier = 0.3
-
-			local h = CreateFrame("Frame", nil, PaladinHolyPower[i])
-			h:SetFrameLevel(10)
-			h:SetPoint("TOPLEFT", -3, 3)
-			h:SetPoint("BOTTOMRIGHT", 3, -3)
-			core.createBackdrop(h, 1)
-
-			if (i == 1) then
-				PaladinHolyPower[i]:SetPoint('LEFT', PaladinHolyPower, 'LEFT', 1, 0)
-			else
-				PaladinHolyPower[i]:SetPoint('TOPLEFT', PaladinHolyPower[i-1], "TOPRIGHT", 2, 0)
-			end
-		end
-
-		self.PaladinHolyPower = PaladinHolyPower
-	end
-	if cfg.showChibar and playerClass == "MONK" then
-		local mhb = CreateFrame("Frame", "MonkHarmonyBar", self)
-		mhb:SetPoint("CENTER", self.Health, "TOP", 0, 1)
-		mhb:SetWidth(self.Health:GetWidth()/2+75)
-		mhb:SetHeight(5)
-		mhb:SetFrameLevel(10)
-
-		for i = 1, 6 do
-			mhb[i] = CreateFrame("StatusBar", "MonkHarmonyBar"..i, mhb)
-			mhb[i]:SetHeight(5)
-			mhb[i]:SetStatusBarTexture(cfg.statusbar_texture)
-			mhb[i]:SetStatusBarColor(.9,.99,.9)
-			mhb[i].bg = mhb[i]:CreateTexture(nil,"BORDER")
-			mhb[i].bg:SetTexture(cfg.statusbar_texture)
-			mhb[i].bg:SetVertexColor(0,0,0)
-			mhb[i].bg:SetPoint("TOPLEFT",mhb[i],"TOPLEFT",0,0)
-			mhb[i].bg:SetPoint("BOTTOMRIGHT",mhb[i],"BOTTOMRIGHT",0,0)
-			mhb[i].bg.multiplier = .3
-
-			local h = CreateFrame("Frame",nil,mhb[i])
-			h:SetFrameLevel(mhb:GetFrameLevel())
-			h:SetPoint("TOPLEFT",-3,3)
-			h:SetPoint("BOTTOMRIGHT",3,-3)
-			core.createBackdrop(h,1)
-
-			if i == 1 then
-				mhb[i]:SetPoint("LEFT", mhb, "LEFT", 1, 0)
-			else
-				mhb[i]:SetPoint("LEFT", mhb[i-1], "RIGHT", 2, 0)
-			end
-		end
-
-		self.MonkHarmonyBar = mhb
-	end
-	if cfg.showShardbar and playerClass == "WARLOCK" then
-		local wsb = CreateFrame("Frame", "WarlockSpecBars", self)
-		wsb:SetPoint("CENTER", self.Health, "TOP", -6, 1)
-		wsb:SetWidth(self.Health:GetWidth() - 50)
-		wsb:SetHeight(5)
-		wsb:SetFrameLevel(10)
-
-		for i = 1, 5 do
-			wsb[i] = CreateFrame("StatusBar", "WarlockSpecBars"..i, wsb)
-			wsb[i]:SetHeight(5)
-	        wsb[i]:SetWidth(wsb:GetWidth() / 5)
-			wsb[i]:SetStatusBarTexture(cfg.statusbar_texture)
-			wsb[i]:SetStatusBarColor(.86,.22,1)
-			wsb[i].bg = wsb[i]:CreateTexture(nil,"BORDER")
-			wsb[i].bg:SetTexture(cfg.statusbar_texture)
-			wsb[i].bg:SetVertexColor(0,0,0)
-			wsb[i].bg:SetPoint("TOPLEFT",wsb[i],"TOPLEFT",0,0)
-			wsb[i].bg:SetPoint("BOTTOMRIGHT",wsb[i],"BOTTOMRIGHT",0,0)
-			wsb[i].bg.multiplier = .3
-
-			local h = CreateFrame("Frame",nil,wsb[i])
-			h:SetFrameLevel(10)
-			h:SetPoint("TOPLEFT",-3,3)
-			h:SetPoint("BOTTOMRIGHT",3,-3)
-			core.createBackdrop(h,1)
-
-			if i == 1 then
-				wsb[i]:SetPoint("LEFT", wsb, "LEFT", 1, 0)
-			else
-				wsb[i]:SetPoint("LEFT", wsb[i-1], "RIGHT", 2, 0)
-			end
-		end
-
-		self.WarlockSpecBars = wsb
-	end
-	if cfg.showArcaneChargesbar and playerClass == "MAGE" then
-		local MageArcaneCharges = CreateFrame("Frame", "ArcaneChargesBar", self)
-		MageArcaneCharges:SetPoint("CENTER", self.Health, "TOP", -6, 1)
-		MageArcaneCharges:SetWidth(self.Health:GetWidth() - 50)
-		MageArcaneCharges:SetHeight(5)
-		MageArcaneCharges:SetFrameLevel(10)
-
-		for i = 1, 4 do
-			MageArcaneCharges[i] = CreateFrame("StatusBar", "ArcaneChargesBar"..i, MageArcaneCharges)
-			MageArcaneCharges[i]:SetHeight(5)
-	        MageArcaneCharges[i]:SetWidth(MageArcaneCharges:GetWidth() / 4)
-			MageArcaneCharges[i]:SetStatusBarTexture(cfg.statusbar_texture)
-			MageArcaneCharges[i]:SetStatusBarColor(.15,.55,.8)
-			MageArcaneCharges[i].bg = MageArcaneCharges[i]:CreateTexture(nil,"BORDER")
-			MageArcaneCharges[i].bg:SetTexture(cfg.statusbar_texture)
-			MageArcaneCharges[i].bg:SetVertexColor(0,0,0)
-			MageArcaneCharges[i].bg:SetPoint("TOPLEFT",MageArcaneCharges[i],"TOPLEFT",0,0)
-			MageArcaneCharges[i].bg:SetPoint("BOTTOMRIGHT",MageArcaneCharges[i],"BOTTOMRIGHT",0,0)
-			MageArcaneCharges[i].bg.multiplier = .3
-
-			local h = CreateFrame("Frame",nil,MageArcaneCharges[i])
-			h:SetFrameLevel(10)
-			h:SetPoint("TOPLEFT",-3,3)
-			h:SetPoint("BOTTOMRIGHT",3,-3)
-			core.createBackdrop(h,1)
-
-			if i == 1 then
-				MageArcaneCharges[i]:SetPoint("LEFT", MageArcaneCharges, "LEFT", 1, 0)
-			else
-				MageArcaneCharges[i]:SetPoint("LEFT", MageArcaneCharges[i-1], "RIGHT", 2, 0)
-			end
-		end
-
-		self.MageArcaneCharges = MageArcaneCharges
 	end
     if cfg.showComboPoints then
     	local dcp = CreateFrame("Frame", nil, self)
