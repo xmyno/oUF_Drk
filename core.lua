@@ -197,10 +197,6 @@ function core.PostCreateIcon(self, button)
 	button.icon:SetTexCoord(.04, .96, .04, .96)
 	button.icon:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
 	button.icon:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
-	button.overlay:SetTexture(border)
-	button.overlay:SetTexCoord(0,1,0,1)
-	button.overlay.Hide = function(self) self:SetVertexColor(0.3, 0.3, 0.3) end
-
 
 	button.time = core.createFontString(button, cfg.smallfont, cfg.fontsize.auras, "OUTLINE")
 	button.time:SetPoint("BOTTOMLEFT", button, -2, -2)
