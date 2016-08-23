@@ -433,7 +433,41 @@ local cfg = CreateFrame("Frame")
                     ["183634"] = 7, -- Shadowfel Burst
                     ["189895"] = 6, -- Void Star Fixate
                     ["190049"] = 4, -- Nether Corruption
-
+            -- [[ T19 ]] --
+            -- Emerald Nightmare
+                -- Nythendra
+                    ["204504"] = 6, -- Infested
+                    ["205043"] = 7, -- Infested Mind (MC)
+                    ["203096"] = 8, -- Rot
+                    ["204463"] = 6, -- Volatile Rot (Tank)
+                -- Il'gynoth
+                    ["208929"] = 7, -- Spew Corruption
+                    ["210099"] = 6, -- Fixate
+                    ["209469"] = 3, -- Touch of Corruption (DoT)
+                    ["215128"] = 7, -- Cursed Blood (Phase 2)
+                -- Elerenthe
+                    ["215460"] = 7, -- Necrotic Venom
+                    ["215307"] = 6, -- Web of Pain
+                    ["210850"] = 7, -- Tornado swirly
+                -- Ursoc
+                    ["198108"] = 6, -- Momentum
+                    ["198006"] = 7, -- Focused Gaze
+                    ["204859"] = 3, -- Rend Flesh (Tank)
+                -- Dragons of Nightmare
+                   ["203110"] = 3, -- Slumbering Nightmare (30 sec fuckup stun)
+                   ["205341"] = 5, -- Seeping Fog (magic)
+                   ["203770"] = 5, -- Defiled Vines (magic)
+                -- Cenarius
+                   ["210315"] = 5, -- Roots
+                   ["214529"] = 3, -- Tank debuff
+                -- Xavius
+                   ["210451"] = 8, ["209034"] = 8, -- Bonds of Terror
+                   ["209158"] = 5, ["206651"] = 5, -- Blackening/Darkening Soul (Tank)
+                   ["211802"] = 7, -- Nightmare blades
+                   ["208431"] = 3, -- Corruption: Descent into Madness (Damage buff)
+                   ["207409"] = 3, -- Corruption: Madness
+                   ["206005"] = 3, -- Dream Simulacrum
+                   ["224508"] = 7, -- Meteor
         },
     }
 
