@@ -31,7 +31,7 @@ local addRaidDebuffs = function(self)
 	local debuffs = raid_debuffs.debuffs
 	local CustomFilter = function(icons, ...)
 		local _, icon, _, _, _, _, dtype, _, _, _, _, _, spellID = ...
-		name = tostring(spellID)
+		local name = tostring(spellID)
 		if debuffs[name] then
 			icon.priority = debuffs[name]
 			return true

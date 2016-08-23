@@ -78,8 +78,9 @@ local function Update(self, event, unit)
 	element:SetMinMaxValues(0, max)
 	element:SetValue(cur)
 
+	local exhaustion
 	if(element.Rested) then
-		local exhaustion = (showHonor and GetHonorExhaustion or GetXPExhaustion)() or 0
+		exhaustion = (showHonor and GetHonorExhaustion or GetXPExhaustion)() or 0
 		element.Rested:SetMinMaxValues(0, max)
 		element.Rested:SetValue(math.min(cur + exhaustion, max))
 	end

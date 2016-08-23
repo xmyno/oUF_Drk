@@ -1,7 +1,7 @@
 ## Interface: 70000
 ## Author: Drakull, Myno
 ## Title: oUF_Drk
-## Version: r27b
+## Version: r28
 ## Notes: PvE-oriented Layout for oUF
 ## RequiredDeps: oUF
 ## X-Category: UnitFrame
@@ -19,11 +19,7 @@ tags.lua
 castbar.lua
 elements\raidDebuffs.lua
 elements\ResInfo.lua
-elements\oUF_WarlockSpecBars.lua
-elements\oUF_MonkHarmonyBar.lua
 elements\oUF_ComboPoints.lua
-elements\oUF_HolyPower.lua
-elements\oUF_ArcaneCharges.lua
 core.lua
 
 units\player.lua

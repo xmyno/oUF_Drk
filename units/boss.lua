@@ -172,7 +172,7 @@ local create = function(self)
 	end
 	-- Buffs
 	do
-		b = CreateFrame("Frame", nil, self)
+		local b = CreateFrame("Frame", nil, self)
 	    b.size = 20
 		b.num = 4
 		b.onlyShowPlayer = false
@@ -195,7 +195,7 @@ local create = function(self)
 	    self.Buffs = b
 	end
 	do
-		b = CreateFrame("Frame", nil, self)
+		local b = CreateFrame("Frame", nil, self)
 	    b.size = 20
 		b.num = 4
 		b.onlyShowPlayer = false

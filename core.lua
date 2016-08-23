@@ -189,7 +189,7 @@ function core.createBuffTimer(self, elapsed)
 end
 
 function core.PostCreateIcon(self, button)
-	self.showDebuffType = true
+	self.showDebuffType = false
 	self.disableCooldown = true
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
@@ -197,10 +197,6 @@ function core.PostCreateIcon(self, button)
 	button.icon:SetTexCoord(.04, .96, .04, .96)
 	button.icon:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
 	button.icon:SetPoint("BOTTOMRIGHT", button, "BOTTOMRIGHT", 0, 0)
-	button.overlay:SetTexture(border)
-	button.overlay:SetTexCoord(0,1,0,1)
-	button.overlay.Hide = function(self) self:SetVertexColor(0.3, 0.3, 0.3) end
-
 
 	button.time = core.createFontString(button, cfg.smallfont, cfg.fontsize.auras, "OUTLINE")
 	button.time:SetPoint("BOTTOMLEFT", button, -2, -2)
@@ -212,6 +208,15 @@ function core.PostCreateIcon(self, button)
 	button.count:SetPoint("TOPRIGHT", button, 2, 2)
 	button.count:SetVertexColor(1,1,1)
 
+	button.overlay:Hide()
+
+	local border = button:CreateTexture(nil, "OVERLAY")
+	border:SetTexture(cfg.debuff_border_texture)
+	border:SetPoint("TOPLEFT", -1, 1)
+	border:SetPoint("BOTTOMRIGHT", 1, -1)
+	border:Hide()
+	button.border = border
+
 	--helper
 	local h = CreateFrame("Frame", nil, button)
 	h:SetFrameLevel(0)
@@ -222,7 +227,7 @@ end
 
 function core.PostUpdateIcon(self, unit, icon, index, offset, filter, isDebuff)
 
-	local _, _, _, _, _, duration, expirationTime, unitCaster, _ = UnitAura(unit, index, icon.filter)
+	local _, _, _, _, dispelType, duration, expirationTime, unitCaster, _ = UnitAura(unit, index, icon.filter)
 
 	if duration and duration > 0 then
 		icon.time:Show()
@@ -234,14 +239,23 @@ function core.PostUpdateIcon(self, unit, icon, index, offset, filter, isDebuff)
 		icon:SetScript("OnUpdate", nil)
 	end
 
-	-- Desaturate non-Player Debuffs
-	if(unit == "target") then
-		if(icon.filter == "HARMFUL") then
+	if unit == "target" then
+		-- Hide/show and color border depending on type for buffs
+		if dispelType then
+			local color = DebuffTypeColor[dispelType] or nil
+			if color then
+				icon.border:Show()
+				icon.border:SetVertexColor(color.r, color.g, color.b)
+			end
+		else
+			icon.border:Hide()
+		end
+		-- Desaturate non-Player Debuffs
+		if icon.filter == "HARMFUL" then
 			if (unitCaster == 'player' or unitCaster == 'vehicle') then
 				icon.icon:SetDesaturated(nil)
 			elseif(not UnitPlayerControlled(unit)) then -- If Unit is Player Controlled don't desaturate debuffs
 				icon:SetBackdropColor(0, 0, 0)
-				icon.overlay:SetVertexColor(0.3, 0.3, 0.3)
 				icon.icon:SetDesaturated(1)
 			end
 		end
@@ -258,7 +272,7 @@ function core.PostUpdateIcon(self, unit, icon, index, offset, filter, isDebuff)
 end
 
 function core.addBuffs(f)
-    b = CreateFrame("Frame", nil, f)
+    local b = CreateFrame("Frame", nil, f)
     b.size = 20
     b.num = 20
     b.spacing = 5
@@ -283,7 +297,7 @@ function core.addBuffs(f)
 end
 
 function core.addDebuffs(f)
-    b = CreateFrame("Frame", nil, f)
+    local b = CreateFrame("Frame", nil, f)
     b.size = 20
 	b.num = 10
 	b.onlyShowPlayer = false

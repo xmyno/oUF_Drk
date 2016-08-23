@@ -38,12 +38,14 @@ function Update(self, event, unit)
 	local status, endTime, casterUnit, casterGUID = LibResInfo:UnitHasIncomingRes(unit)
 	if status then
 		element:Show()
+		element.__owner.Health.hasRes = true
 	else
 		element:Hide()
+		element.__owner.Health.hasRes = false
 	end
 
 	if element.PostUpdate then
-		element:PostUpdate(unit, status, text)
+		element:PostUpdate(unit, status)
 	end
 end
 

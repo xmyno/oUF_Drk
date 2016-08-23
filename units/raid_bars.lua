@@ -2,8 +2,8 @@ local addon, ns = ...
 local cfg = ns.cfg
 local core = ns.core
 
-local UnitClass, UnitThreatSituation, GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC, RAID_CLASS_COLORS
-    = UnitClass, UnitThreatSituation, GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC, RAID_CLASS_COLORS
+local UnitClass, GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC
+    = UnitClass, GetInstanceInfo, DIFFICULTY_PRIMARYRAID_MYTHIC
 
 local _, playerClass = UnitClass("player")
 local raid, n, max
@@ -92,11 +92,11 @@ local AddRaidDebuffs = function(self)
 	end
 
 	local debuffs = CreateFrame("Frame", nil, self)
-	debuffs:SetWidth(14)
-	debuffs:SetHeight(14)
+	debuffs:SetWidth(16)
+	debuffs:SetHeight(16)
 	debuffs:SetFrameLevel(7)
 	debuffs:SetPoint("RIGHT", self, "RIGHT", -35, 4)
-	debuffs.size = 12
+	debuffs.size = 16
 
 	debuffs.CustomFilter = CustomFilter
 	self.raidDebuffs = debuffs
@@ -107,7 +107,6 @@ local PostUpdateRaidFrame = function(Health, unit, min, max)
 	local dc = not UnitIsConnected(unit)
 	local dead = UnitIsDead(unit)
 	local ghost = UnitIsGhost(unit)
-	local inrange = UnitInRange(unit)
 
 	Health:SetAlpha(1)
 	Health:SetValue(min)
@@ -122,6 +121,10 @@ local PostUpdateRaidFrame = function(Health, unit, min, max)
 		end
 	else
 		Health:SetValue(min)
+		if Health.hasRes then
+			Health:GetParent().ResInfo:Hide()
+			Health.hasRes = false
+		end
 	end
 end
 
@@ -194,7 +197,7 @@ local create = function(self)
 		ai:SetSize(10, 10)
 		self.Assistant = ai
 		local ml = h:CreateTexture(nil, 'OVERLAY')
-		ml:SetSize(9, 9)
+		ml:SetSize(10, 10)
 		ml:SetPoint('LEFT', self.Leader, 'RIGHT')
 		self.MasterLooter = ml
 		-- Raid Marks
