@@ -121,10 +121,6 @@ local PostUpdateRaidFrame = function(Health, unit, min, max)
 		end
 	else
 		Health:SetValue(min)
-		if Health.hasRes then
-			Health:GetParent().ResInfo:Hide()
-			Health.hasRes = false
-		end
 	end
 end
 
