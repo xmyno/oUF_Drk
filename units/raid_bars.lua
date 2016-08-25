@@ -190,11 +190,11 @@ local create = function(self)
 		-- Leader, Assist, Master Looter Icon
 		local li = h:CreateTexture(nil, "OVERLAY")
 		li:SetPoint("TOPLEFT", self, 2, 5)
-		li:SetSize(10, 10)
+		li:SetSize(11, 11)
 		self.Leader = li
 		local ai = h:CreateTexture(nil, "OVERLAY")
 		ai:SetPoint("TOPLEFT", self, 2, 5)
-		ai:SetSize(10, 10)
+		ai:SetSize(11, 11)
 		self.Assistant = ai
 		local ml = h:CreateTexture(nil, 'OVERLAY')
 		ml:SetSize(10, 10)
@@ -202,7 +202,7 @@ local create = function(self)
 		self.MasterLooter = ml
 		-- Raid Marks
 		local ri = h:CreateTexture(nil, "OVERLAY")
-		ri:SetPoint("TOP", self, "TOP", 0, 5)
+		ri:SetPoint("TOP", self, "TOP", -30, 5)
 		ri:SetSize(13, 13)
 		self.RaidIcon = ri
 		-- Ready Check
