@@ -279,7 +279,7 @@ end
 
 if cfg.showRaid and cfg.raidStyle == "BARS" then
 
-	local mode = cfg.raidShowSolo and "custom show;" or "party,raid10,raid25,raid40;"
+	local mode = cfg.raidShowSolo and "custom show;" or "custom [group:party] show; [@raid2, exists] show; hide;"
 
 	oUF:RegisterStyle('drk:raid', create)
 	oUF:SetActiveStyle('drk:raid')
