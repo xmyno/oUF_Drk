@@ -128,8 +128,8 @@ end
 local create = function(self)
 	self.unitType = "raid"
 	self.Range = {
-		insideAlpha = 1,
-		outsideAlpha = .4,
+		insideAlpha = .9,
+		outsideAlpha = .2,
 	}
 	if cfg.enableRightClickMenu then
 		self:RegisterForClicks('AnyUp')
@@ -212,12 +212,12 @@ local create = function(self)
 		local name = core.createFontString(self.Health, cfg.font, cfg.fontsize.unitframe, "OUTLINE")
 		name:SetPoint("LEFT", self, "RIGHT", 3, 0)
 		name:SetJustifyH("LEFT")
+		self:Tag(name, "[drk:name+threat][drk:raidafkdnd]")
+
 		local hpval = core.createFontString(self.Health, cfg.font, cfg.fontsize.unitframe, "OUTLINE")
 		hpval:SetPoint("CENTER", self, "CENTER", 0, 0)
 		hpval:SetJustifyH("MIDDLE")
 		hpval.frequentUpdates = true
-
-		self:Tag(name, "[drk:name+threat][drk:raidafkdnd]")
 		self:Tag(hpval, "[drk:raidhp]")
 	end
 	CreateTargetBorder(self)
