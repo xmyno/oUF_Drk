@@ -26,6 +26,13 @@ assert(LibResInfo, "ResInfo element requires LibResInfo-1.0")
 
 local Update, Path, ForceUpdate, Enable, Disable
 
+function HideOnResAccept(self, event, unit)
+	if self.unit ~= unit then return end
+	if UnitHealth(unit) > 0 then
+		self:Hide()
+		self:UnregisterEvent("UNIT_HEALTH")
+	end
+end
 
 function Update(self, event, unit)
 	if unit ~= self.unit then return end
@@ -38,10 +45,10 @@ function Update(self, event, unit)
 	local status, endTime, casterUnit, casterGUID = LibResInfo:UnitHasIncomingRes(unit)
 	if status then
 		element:Show()
-		element.__owner.Health.hasRes = true
+		element:RegisterEvent("UNIT_HEALTH", HideOnResAccept)
 	else
 		element:Hide()
-		element.__owner.Health.hasRes = false
+		element:UnregisterEvent("UNIT_HEALTH")
 	end
 
 	if element.PostUpdate then

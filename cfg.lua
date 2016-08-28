@@ -61,6 +61,7 @@ local cfg = CreateFrame("Frame")
     cfg.showRaid = true -- show raid frames
     cfg.raidStyle = "BARS" -- "RECT" or "BARS"
     cfg.raidShowSolo = true -- show raid frames even when solo
+    cfg.raidHideMissingHealth = true
     cfg.showIncHeals = true -- Show incoming heals in player and raid frames
     cfg.showTooltips = true -- Show Tooltips on raid frames
     cfg.enableRightClickMenu = true -- Enables the right click menu for raid frames

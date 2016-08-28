@@ -111,7 +111,7 @@ tags.Methods["drk:raidhp"] = function(u)
 
 	if ddg then
 		return ddg
-	else
+	elseif not cfg.raidHideMissingHealth then
 		local missinghp = SVal(tags.Methods["missinghp"](u)) or ""
 		if missinghp ~= "" then
 			return ("-%s"):format(missinghp)
@@ -119,6 +119,7 @@ tags.Methods["drk:raidhp"] = function(u)
 			return ""
 		end
 	end
+	return ""
 end
 
 tags.Events["drk:color"] = 'UNIT_REACTION UNIT_HEALTH UNIT_HAPPINESS'

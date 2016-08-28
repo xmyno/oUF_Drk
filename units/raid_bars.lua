@@ -121,10 +121,6 @@ local PostUpdateRaidFrame = function(Health, unit, min, max)
 		end
 	else
 		Health:SetValue(min)
-		if Health.hasRes then
-			Health:GetParent().ResInfo:Hide()
-			Health.hasRes = false
-		end
 	end
 end
 
@@ -132,8 +128,8 @@ end
 local create = function(self)
 	self.unitType = "raid"
 	self.Range = {
-		insideAlpha = 1,
-		outsideAlpha = .4,
+		insideAlpha = .9,
+		outsideAlpha = .2,
 	}
 	if cfg.enableRightClickMenu then
 		self:RegisterForClicks('AnyUp')
@@ -190,11 +186,11 @@ local create = function(self)
 		-- Leader, Assist, Master Looter Icon
 		local li = h:CreateTexture(nil, "OVERLAY")
 		li:SetPoint("TOPLEFT", self, 2, 5)
-		li:SetSize(10, 10)
+		li:SetSize(11, 11)
 		self.Leader = li
 		local ai = h:CreateTexture(nil, "OVERLAY")
 		ai:SetPoint("TOPLEFT", self, 2, 5)
-		ai:SetSize(10, 10)
+		ai:SetSize(11, 11)
 		self.Assistant = ai
 		local ml = h:CreateTexture(nil, 'OVERLAY')
 		ml:SetSize(10, 10)
@@ -202,7 +198,7 @@ local create = function(self)
 		self.MasterLooter = ml
 		-- Raid Marks
 		local ri = h:CreateTexture(nil, "OVERLAY")
-		ri:SetPoint("TOP", self, "TOP", 0, 5)
+		ri:SetPoint("TOP", self, "TOP", -30, 5)
 		ri:SetSize(13, 13)
 		self.RaidIcon = ri
 		-- Ready Check
@@ -216,12 +212,12 @@ local create = function(self)
 		local name = core.createFontString(self.Health, cfg.font, cfg.fontsize.unitframe, "OUTLINE")
 		name:SetPoint("LEFT", self, "RIGHT", 3, 0)
 		name:SetJustifyH("LEFT")
+		self:Tag(name, "[drk:name+threat][drk:raidafkdnd]")
+
 		local hpval = core.createFontString(self.Health, cfg.font, cfg.fontsize.unitframe, "OUTLINE")
 		hpval:SetPoint("CENTER", self, "CENTER", 0, 0)
 		hpval:SetJustifyH("MIDDLE")
 		hpval.frequentUpdates = true
-
-		self:Tag(name, "[drk:name+threat][drk:raidafkdnd]")
 		self:Tag(hpval, "[drk:raidhp]")
 	end
 	CreateTargetBorder(self)
@@ -283,7 +279,7 @@ end
 
 if cfg.showRaid and cfg.raidStyle == "BARS" then
 
-	local mode = cfg.raidShowSolo and "custom show;" or "party,raid10,raid25,raid40;"
+	local mode = cfg.raidShowSolo and "custom show;" or "custom [group:party] show; [@raid2, exists] show; hide;"
 
 	oUF:RegisterStyle('drk:raid', create)
 	oUF:SetActiveStyle('drk:raid')
