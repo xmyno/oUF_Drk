@@ -22,9 +22,9 @@ local cfg = CreateFrame("Frame")
     cfg.targetX = 180 -- x-coordinate of the target frame
     cfg.targetY = 325 -- y-coordinate of the target frame
 --boss
-    cfg.bossX = 10 -- x-offset of boss frames, from side
-    cfg.bossY = -200 -- y-offset of boss frames, from center, this is for the first bossframe, additional frames will grow upwards (75px each)
-    cfg.bossWidth = 200
+    cfg.bossX = 325 -- x-offset of boss frames, from side
+    cfg.bossY = 350 -- y-offset of boss frames, from center, this is for the first bossframe, additional frames will grow upwards (75px each)
+    cfg.bossWidth = 175
     cfg.bossSide = "RIGHT" -- "LEFT" or "RIGHT", highly depending on raidStyle settings
     -- recommended: raidStyle "BARS" -> "RIGHT", "RECT" -> "LEFT"
 --auras
