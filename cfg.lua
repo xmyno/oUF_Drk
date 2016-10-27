@@ -12,7 +12,7 @@ local cfg = CreateFrame("Frame")
     cfg.unitframeWidth = 250
     cfg.unitframeScale = 1 -- Keep between 1 and 1.25 to have a good result, 1 is default
     cfg.showPortraits = true
-    cfg.alwaysShowArtifactXPBar = false
+    cfg.alwaysShowArtifactXPBar = true
 --player
     cfg.playerX = -180 -- x-coordinate of the player frame
     cfg.playerY = 325 -- y-coordinate of the player frame

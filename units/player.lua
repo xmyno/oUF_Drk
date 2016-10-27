@@ -209,7 +209,7 @@ local create = function(self)
 		core.createBackdrop(h, 1)
 
 		Experience.Text = core.createFontString(Experience, cfg.smallfont, cfg.fontsize.smalltext, 'OUTLINE')
-		Experience.Text:SetPoint("BOTTOMRIGHT", self.Power, "BOTTOMLEFT", -1, 0)
+		Experience.Text:SetPoint("BOTTOMRIGHT", Experience, "BOTTOMLEFT", -4, 0)
 		Experience.Text:SetJustifyH("RIGHT")
 		Experience.Text:SetWordWrap(true)
 
@@ -247,7 +247,7 @@ local create = function(self)
 		core.createBackdrop(h, 1)
 
 		ArtifactPower.Text = core.createFontString(ArtifactPower, cfg.smallfont, cfg.fontsize.smalltext, 'OUTLINE')
-		ArtifactPower.Text:SetPoint("TOPRIGHT", self.Health, "TOPLEFT", -1, 0)
+		ArtifactPower.Text:SetPoint("TOPRIGHT", ArtifactPower, "TOPLEFT", -1, 0)
 		ArtifactPower.Text:SetJustifyH("RIGHT")
 		ArtifactPower.Text:SetWordWrap(true)
 		ArtifactPower.Text:SetAlpha(0)
