@@ -76,7 +76,7 @@ local cfg = CreateFrame("Frame")
     -- these are for RECT layout only
     cfg.raidOrientationHorizontal = false
     cfg.raidX = cfg.raidOrientationHorizontal and -410 or -491
-    cfg.raidY = cfg.raidOrientationHorizontal and 227 or 190
+    cfg.raidY = cfg.raidOrientationHorizontal and -873 or -890--227 or 190
     cfg.raidScale = 1
 
     cfg.fontsize = {

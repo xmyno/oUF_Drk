@@ -307,7 +307,7 @@ if cfg.showRaid and cfg.raidStyle == "RECT" then
 			header:SetAttribute("showPlayer", true)
 			header:SetAttribute("showParty", true)
 
-			header:SetPoint("TOPLEFT", UIParent, "BOTTOMRIGHT", cfg.raidX, cfg.raidY)
+			header:SetPoint("TOPRIGHT", UIParent, cfg.raidX, cfg.raidY)
 		else
 			if cfg.raidOrientationHorizontal then
 				header:SetPoint("TOPLEFT",raid[i-1],"BOTTOMLEFT",0,-5)
