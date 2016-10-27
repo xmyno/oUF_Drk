@@ -315,6 +315,7 @@ if cfg.showRaid and cfg.raidStyle == "BARS" then
 		end
 
 		header:SetScale(cfg.raidScale)
+		header:SetFrameStrata("LOW")
 		raid[i] = header
 	end
 
