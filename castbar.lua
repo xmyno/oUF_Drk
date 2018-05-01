@@ -7,13 +7,10 @@
   -----------------------------
   -- special thanks to Allez for coming up with this solution
 local channelingTicks = {
-	-- warlock
-	[GetSpellInfo(689)] = 6, -- Drain Life
 	-- druid
 	[GetSpellInfo(740)] = 4, -- Tranquility
 	-- priest
     [GetSpellInfo(15407)] = 4, -- Mind Flay
-	[GetSpellInfo(48045)] = 6, -- Mind Sear
 	[GetSpellInfo(47540)] = 3, -- Penance
 	-- mage
 	[GetSpellInfo(5143)] = 5, -- arcane missiles
