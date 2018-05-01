@@ -221,7 +221,7 @@ local create = function(self)
 		self:Tag(hpval, "[drk:raidhp]")
 	end
 	CreateTargetBorder(self)
-	--CreateResInfoBorder(self)
+	CreateResInfoBorder(self)
 	-- Heal Prediction
 	if cfg.showIncHeals then
 		local healing = CreateFrame('StatusBar', nil, self.Health)
