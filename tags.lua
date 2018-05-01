@@ -152,7 +152,7 @@ tags.Methods["drk:raidafkdnd"] = function(unit)
 	return UnitIsAFK(unit) and "|cffCFCFCF AFK|r" or UnitIsDND(unit) and "|cffCFCFCF DND|r" or ""
 end
 
-tags.Events["drk:power"] = 'UNIT_MAXPOWER UNIT_POWER'
+tags.Events["drk:power"] = 'UNIT_MAXPOWER UNIT_POWER_UPDATE'
 tags.Methods["drk:power"] = function(unit)
 	local curpp, maxpp = UnitPower(unit), UnitPowerMax(unit);
 	local playerClass, englishClass = UnitClass(unit);
@@ -231,7 +231,7 @@ tags.Methods["drk:level"] = function(unit)
 	return str
 end
 
-tags.Events["drk:altpowerbar"] = 'UNIT_POWER UNIT_MAXPOWER UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE PLAYER_TARGET_CHANGED'
+tags.Events["drk:altpowerbar"] = 'UNIT_POWER_UPDATE UNIT_MAXPOWER UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE PLAYER_TARGET_CHANGED'
 tags.Methods["drk:altpowerbar"] = function(unit)
 	local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX
 	local cur = UnitPower(unit, ALTERNATE_POWER_INDEX)
