@@ -227,7 +227,7 @@ end
 
 function core.PostUpdateIcon(self, unit, icon, index, offset, filter, isDebuff)
 
-	local _, _, _, _, dispelType, duration, expirationTime, unitCaster, _ = UnitAura(unit, index, icon.filter)
+	local _, _, _, dispelType, duration, expirationTime, unitCaster, _ = UnitAura(unit, index, icon.filter)
 
 	if duration and duration > 0 then
 		icon.time:Show()
