@@ -350,7 +350,7 @@ local create = function(self)
 		l:SetJustifyH("RIGHT")
 		l:Hide()
 		s.Lag = l
-		self:RegisterEvent("UNIT_SPELLCAST_SENT", cast.OnCastSent)
+		self:RegisterEvent("UNIT_SPELLCAST_START", cast.OnCastSent)
 
 	    s.OnUpdate = cast.OnCastbarUpdate
 	    s.PostCastStart = cast.PostCastStart
