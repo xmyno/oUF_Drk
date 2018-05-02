@@ -437,8 +437,8 @@ local create = function(self)
 		h:SetPoint("BOTTOMRIGHT", 4, -4)
 		core.createBackdrop(h, 0)
 
-		self.DruidMana = AdditionalPower
-		self.DruidMana.bg = AdditionalPower.bg
+		self.AdditionalPower = AdditionalPower
+		self.AdditionalPower.bg = AdditionalPower.bg
 	end
 	do
 		local maxPower, color
