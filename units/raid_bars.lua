@@ -192,10 +192,6 @@ local create = function(self)
 		ai:SetPoint("TOPLEFT", self, 2, 5)
 		ai:SetSize(11, 11)
 		self.Assistant = ai
-		local ml = h:CreateTexture(nil, 'OVERLAY')
-		ml:SetSize(10, 10)
-		ml:SetPoint('LEFT', self.Leader, 'RIGHT')
-		self.MasterLooter = ml
 		-- Raid Marks
 		local ri = h:CreateTexture(nil, "OVERLAY")
 		ri:SetPoint("TOP", self, "TOP", -30, 5)

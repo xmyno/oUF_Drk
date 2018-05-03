@@ -233,10 +233,6 @@ local create = function(self)
 		ai:SetPoint("TOPLEFT", self, 0, 8)
 		ai:SetSize(12,12)
 		self.Assistant = ai
-		local ml = h:CreateTexture(nil, 'OVERLAY')
-		ml:SetSize(10,10)
-		ml:SetPoint('LEFT', self.Leader, 'RIGHT')
-		self.MasterLooter = ml
 		-- Phase Icon
 		local picon = h:CreateTexture(nil, 'OVERLAY')
 		picon:SetPoint('TOPRIGHT', self, 'TOPRIGHT', 8, 8)
