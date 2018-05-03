@@ -154,19 +154,19 @@ local create = function(self)
 	    h:SetAllPoints(self)
 	    h:SetFrameLevel(10)
 		-- Leader, Assist, Master Looter Icon
-		local li = h:CreateTexture(nil, "OVERLAY")
-		li:SetPoint("TOPLEFT", self, 0, 8)
-		li:SetSize(12,12)
-		self.Leader = li
-		local ai = h:CreateTexture(nil, "OVERLAY")
-		ai:SetPoint("TOPLEFT", self, 0, 8)
-		ai:SetSize(12,12)
-		self.Assistant = ai
+		local LeaderIndicator = h:CreateTexture(nil, "OVERLAY")
+		LeaderIndicator:SetPoint("TOPLEFT", self, 0, 8)
+		LeaderIndicator:SetSize(12,12)
+		self.LeaderIndicator = LeaderIndicator
+		local AssistantIndicator = h:CreateTexture(nil, "OVERLAY")
+		AssistantIndicator:SetPoint("TOPLEFT", self, 0, 8)
+		AssistantIndicator:SetSize(12,12)
+		self.AssistantIndicator = AssistantIndicator
 		-- Raid Marks
-		local ri = h:CreateTexture(nil, "OVERLAY")
-		ri:SetPoint("CENTER", self, "TOP", 0, 2)
-		ri:SetSize(20, 20)
-		self.RaidIcon = ri
+		local RaidTargetIndicator = h:CreateTexture(nil, "OVERLAY")
+		RaidTargetIndicator:SetPoint("CENTER", self, "TOP", 0, 2)
+		RaidTargetIndicator:SetSize(20, 20)
+		self.RaidTargetIndicator = RaidTargetIndicator
 	end
 	-- Buffs/Debuffs
 	if cfg.focusBuffs or cfg.focusDebuffs then

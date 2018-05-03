@@ -129,8 +129,8 @@ local create = function(self)
 	    b:SetAllPoints(s)
 		b:SetVertexColor(45/255, 45/255, 45/255)
 
-		self.AltPowerBar = s
-	    self.AltPowerBar.bg = b
+        self.AlternativePower = s
+        self.AlternativePower.bg = b
 	end
 	-- AltPowerBar Text
 	do
@@ -168,10 +168,10 @@ local create = function(self)
 		absorbs:SetStatusBarColor(0.25, 0.8, 1, 0.5)
 		absorbs:SetFrameLevel(1)
 
-		self.HealPrediction = {
+        self.HealthPrediction = {
 			healingBar = healing,
 			absorbsBar = absorbs,
-			Override = core.HealPrediction_Override
+            Override = core.HealthPrediction_Override
 		}
 	end
 	-- Experience
@@ -371,45 +371,45 @@ local create = function(self)
 	    h:SetAllPoints(self)
 	    h:SetFrameLevel(10)
 	    --Combat Icon
-		local Combat = h:CreateTexture(nil, "OVERLAY")
-		Combat:SetSize(15,15)
-		Combat:SetTexture("Interface\\CharacterFrame\\UI-StateIcon")
-		Combat:SetTexCoord(0.58, 0.90, 0.08, 0.41)
-		Combat:SetPoint("BOTTOMRIGHT", 7, -7)
-		self.Combat = Combat
+        local CombatIndicator = h:CreateTexture(nil, "OVERLAY")
+        CombatIndicator:SetSize(15,15)
+        CombatIndicator:SetTexture("Interface\\CharacterFrame\\UI-StateIcon")
+        CombatIndicator:SetTexCoord(0.58, 0.90, 0.08, 0.41)
+        CombatIndicator:SetPoint("BOTTOMRIGHT", 7, -7)
+        self.CombatIndicator = CombatIndicator
 		-- PvP Icon
-		local PvP = h:CreateTexture(nil, "OVERLAY")
-		PvP:SetHeight(12)
-		PvP:SetWidth(12)
-		PvP:SetPoint("TOPRIGHT", 6, 6)
-		self.PvP = PvP
+        local PvPIndicator = h:CreateTexture(nil, "OVERLAY")
+        PvPIndicator:SetHeight(12)
+        PvPIndicator:SetWidth(12)
+        PvPIndicator:SetPoint("TOPRIGHT", 6, 6)
+        self.PvPIndicator = PvPIndicator
 		-- Rest Icon
-		local Resting = h:CreateTexture(nil, "OVERLAY")
-		Resting:SetSize(15,15)
-		Resting:SetPoint("BOTTOMRIGHT", -12, -8)
-		Resting:SetTexture("Interface\\CharacterFrame\\UI-StateIcon")
-		Resting:SetTexCoord(0.09, 0.43, 0.08, 0.42)
-		self.Resting = Resting
+        local RestingIndicator = h:CreateTexture(nil, "OVERLAY")
+        RestingIndicator:SetSize(15,15)
+        RestingIndicator:SetPoint("BOTTOMRIGHT", -12, -8)
+        RestingIndicator:SetTexture("Interface\\CharacterFrame\\UI-StateIcon")
+        RestingIndicator:SetTexCoord(0.09, 0.43, 0.08, 0.42)
+        self.RestingIndicator = RestingIndicator
 	    --LFDRole icon
-		local LFDRole = h:CreateTexture(nil, "OVERLAY")
-		LFDRole:SetSize(15, 15)
-		LFDRole:SetAlpha(0.9)
-		LFDRole:SetPoint("BOTTOMLEFT", -6, -8)
-	    self.LFDRole = LFDRole
+        local GroupRoleIndicator = h:CreateTexture(nil, "OVERLAY")
+        GroupRoleIndicator:SetSize(15, 15)
+        GroupRoleIndicator:SetAlpha(0.9)
+        GroupRoleIndicator:SetPoint("BOTTOMLEFT", -6, -8)
+        self.GroupRoleIndicator = GroupRoleIndicator
 		-- Leader, Assist, Master Looter Icon
-		local li = h:CreateTexture(nil, "OVERLAY")
-		li:SetPoint("TOPLEFT", self, 0, 8)
-		li:SetSize(12,12)
-		self.Leader = li
-		local ai = h:CreateTexture(nil, "OVERLAY")
-		ai:SetPoint("TOPLEFT", self, 0, 8)
-		ai:SetSize(12,12)
-		self.Assistant = ai
+        local LeaderIndicator = h:CreateTexture(nil, "OVERLAY")
+        LeaderIndicator:SetPoint("TOPLEFT", self, 0, 8)
+        LeaderIndicator:SetSize(12,12)
+        self.LeaderIndicator = LeaderIndicator
+        local AssistantIndicator = h:CreateTexture(nil, "OVERLAY")
+        AssistantIndicator:SetPoint("TOPLEFT", self, 0, 8)
+        AssistantIndicator:SetSize(12,12)
+        self.AssistantIndicator = AssistantIndicator
 		-- Raid Marks
-		local ri = h:CreateTexture(nil, "OVERLAY")
-		ri:SetPoint("RIGHT", self, "LEFT", 5, 6)
-		ri:SetSize(20, 20)
-		self.RaidIcon = ri
+        local RaidTargetIndicator = h:CreateTexture(nil, "OVERLAY")
+        RaidTargetIndicator:SetPoint("RIGHT", self, "LEFT", 5, 6)
+        RaidTargetIndicator:SetSize(20, 20)
+        self.RaidTargetIndicator = RaidTargetIndicator
 	end
 	-- Class Bars
 	do
@@ -453,34 +453,34 @@ local create = function(self)
 		end
 
 		if maxPower ~= nil then
-			local ClassIcons = CreateFrame("Frame", nil, self)
-			ClassIcons:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
-			ClassIcons:SetHeight(5)
-			ClassIcons:SetWidth(self.Health:GetWidth() / 2 + 75)
-			ClassIcons:SetFrameLevel(10)
+            local ClassPower = CreateFrame("Frame", nil, self)
+            ClassPower:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
+            ClassPower:SetHeight(5)
+            ClassPower:SetWidth(self.Health:GetWidth() / 2 + 75)
+            ClassPower:SetFrameLevel(10)
 
 			for i = 1, maxPower do
-				ClassIcons[i] = CreateFrame("StatusBar", self:GetName()..playerClass..i, self)
-				ClassIcons[i]:SetHeight(5)
-				ClassIcons[i]:SetWidth((ClassIcons:GetWidth() / maxPower) - 2)
-				ClassIcons[i]:SetStatusBarTexture(cfg.statusbar_texture)
-				ClassIcons[i]:SetStatusBarColor(color[1], color[2], color[3])
-				ClassIcons[i]:SetFrameLevel(11)
+                ClassPower[i] = CreateFrame("StatusBar", self:GetName()..playerClass..i, self)
+                ClassPower[i]:SetHeight(5)
+                ClassPower[i]:SetWidth((ClassPower:GetWidth() / maxPower) - 2)
+                ClassPower[i]:SetStatusBarTexture(cfg.statusbar_texture)
+                ClassPower[i]:SetStatusBarColor(color[1], color[2], color[3])
+                ClassPower[i]:SetFrameLevel(11)
 
-				local h = CreateFrame("Frame", nil, ClassIcons[i])
+                local h = CreateFrame("Frame", nil, ClassPower[i])
 				h:SetFrameLevel(10)
 				h:SetPoint("TOPLEFT", -3, 3)
 				h:SetPoint("BOTTOMRIGHT", 3, -3)
 				core.createBackdrop(h, 1)
 
 				if (i == 1) then
-					ClassIcons[i]:SetPoint('LEFT', ClassIcons, 'LEFT', 1, 0)
+                    ClassPower[i]:SetPoint('LEFT', ClassPower, 'LEFT', 1, 0)
 				else
-					ClassIcons[i]:SetPoint('TOPLEFT', ClassIcons[i-1], "TOPRIGHT", 1, 0)
+                    ClassPower[i]:SetPoint('TOPLEFT', ClassPower[i-1], "TOPRIGHT", 1, 0)
 				end
 			end
 
-			self.ClassIcons = ClassIcons
+            self.ClassPower = ClassPower
 		end
 	end
 	if cfg.showRunebar and playerClass == "DEATHKNIGHT" then
