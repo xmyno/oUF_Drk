@@ -197,7 +197,7 @@ local create = function(self)
         CombatIndicator:SetPoint("BOTTOMRIGHT", 7, -7)
         self.CombatIndicator = CombatIndicator
 
-        local combaticon = combat:CreateTexture(nil, "ARTWORK")
+        local combaticon = CombatIndicator:CreateTexture(nil, "ARTWORK")
         combaticon:SetAllPoints(true)
         combaticon:SetTexture("Interface\\CharacterFrame\\UI-StateIcon")
         combaticon:SetTexCoord(0.58, 0.9, 0.08, 0.41)
