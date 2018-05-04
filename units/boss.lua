@@ -104,7 +104,7 @@ local create = function(self)
 	    b:SetTexture(cfg.powerbar_texture)
 	    b:SetAllPoints(s)
 		b:SetVertexColor(45/255, 45/255, 45/255)
-	    self.AltPowerBar.bg = b
+		self.AlternativePower.bg = b
 	end
 	-- Castbar
 	if cfg.Castbars then

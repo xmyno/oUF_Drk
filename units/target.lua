@@ -201,10 +201,10 @@ local create = function(self)
         combaticon:SetAllPoints(true)
         combaticon:SetTexture("Interface\\CharacterFrame\\UI-StateIcon")
         combaticon:SetTexCoord(0.58, 0.9, 0.08, 0.41)
-        combat.icon = combaticon
+        CombatIndicator.icon = combaticon
 
-        combat.__owner = self
-        combat:SetScript("OnUpdate", function(self)
+        CombatIndicator.__owner = self
+        CombatIndicator:SetScript("OnUpdate", function(self)
             local unit = self.__owner.unit
             if unit and UnitAffectingCombat(unit) then
                 self.icon:Show()
