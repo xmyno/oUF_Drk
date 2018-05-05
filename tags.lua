@@ -251,11 +251,11 @@ end
 tags.Events["drk:artifactpower"] = 'AZERITE_ITEM_EXPERIENCE_CHANGED ARTIFACT_XP_UPDATE UNIT_INVENTORY_CHANGED'
 tags.Methods["drk:artifactpower"] = function()
 	local traitsLearnable = _TAGS['artifactpower:traits_learnable']
-	return "%d / %d%s".format(
+	return ("%d / %d%s"):format(
 		_TAGS['artifactpower:power'],
 		_TAGS['artifactpower:total_until_next'],
 		traitsLearnable > 0 and
-			"\n  +" .. traitsLearnable .. " trait" .. traitsLearnable > 1 and "s" or ""
+			"\n  +" .. traitsLearnable .. " trait" .. (traitsLearnable > 1 and "s" or "")
 		or ""
 	) 
 end
