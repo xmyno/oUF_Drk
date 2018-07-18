@@ -248,7 +248,7 @@ tags.Methods["drk:altpowerbar"] = function(unit)
 	end
 end
 
-tags.Events["drk:artifactpower"] = 'AZERITE_ITEM_EXPERIENCE_CHANGED ARTIFACT_XP_UPDATE UNIT_INVENTORY_CHANGED'
+tags.Events["drk:artifactpower"] = 'AZERITE_ITEM_EXPERIENCE_CHANGED UNIT_INVENTORY_CHANGED'
 tags.Methods["drk:artifactpower"] = function()
 	local traitsLearnable = _TAGS['artifactpower:traits_learnable']() or 0
 	return ("%d / %d%s"):format(
