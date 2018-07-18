@@ -7,13 +7,10 @@
   -----------------------------
   -- special thanks to Allez for coming up with this solution
 local channelingTicks = {
-	-- warlock
-	[GetSpellInfo(689)] = 6, -- Drain Life
 	-- druid
 	[GetSpellInfo(740)] = 4, -- Tranquility
 	-- priest
     [GetSpellInfo(15407)] = 4, -- Mind Flay
-	[GetSpellInfo(48045)] = 6, -- Mind Sear
 	[GetSpellInfo(47540)] = 3, -- Penance
 	-- mage
 	[GetSpellInfo(5143)] = 5, -- arcane missiles
@@ -24,6 +21,19 @@ local channelingTicks = {
 }
 
 local ticks = {}
+
+local function updateSafeZone(self)
+	local safeZone = self.SafeZone
+	local width = self:GetWidth()
+	local _, _, _, ms = GetNetStats()
+
+	local safeZoneRatio = (ms / 1e3) / self.max
+	if(safeZoneRatio > 1) then
+		safeZoneRatio = 1
+	end
+
+	safeZone:SetWidth(width * safeZoneRatio)
+end
 
 cast.setBarTicks = function(castBar, ticknum)
 	if ticknum and ticknum > 0 then
@@ -84,11 +94,6 @@ cast.OnCastbarUpdate = function(self, elapsed)
 	end
 end
 
-cast.OnCastSent = function(self, event, unit, spell, rank)
-	if self.unit ~= unit or not self.Castbar.SafeZone then return end
-	self.Castbar.SafeZone.sendTime = GetTime()
-end
-
 cast.PostCastStart = function(self, unit, name, rank, text)
 	local pcolor = {1, .5, .5}
 	local interruptcb = {.5, .5, 1}
@@ -97,11 +102,12 @@ cast.PostCastStart = function(self, unit, name, rank, text)
 	self:SetStatusBarColor(unpack(self.casting and self.CastingColor or self.ChannelingColor))
 	if unit == "player" then
 		local sf = self.SafeZone
-		if sf and sf.sendTime ~= nil then
-			sf.timeDiff = GetTime() - sf.sendTime
-			sf.timeDiff = sf.timeDiff > self.max and self.max or sf.timeDiff
-			sf:SetWidth(self:GetWidth() * sf.timeDiff / self.max)
-			sf:Show()
+		if sf then
+			sf:ClearAllPoints()
+			sf:SetPoint(self:GetReverseFill() and 'LEFT' or 'RIGHT')
+			sf:SetPoint('TOP')
+			sf:SetPoint('BOTTOM')
+			updateSafeZone(self)
 		end
 
 		if self.casting then

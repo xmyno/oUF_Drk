@@ -177,35 +177,31 @@ local create = function(self)
 
 	    --LFDRole icon
 		if cfg.showRoleIcons then
-			local LFDRole = h:CreateTexture(nil, 'OVERLAY')
-			LFDRole:SetSize(10, 10)
-			LFDRole:SetPoint('CENTER', self, 'LEFT', 0, -6)
-			LFDRole:SetAlpha(cfg.showRoleIconsHoverOnly and 0 or 1)
-			self.LFDRole = LFDRole
+			local GroupRoleIndicator = h:CreateTexture(nil, 'OVERLAY')
+			GroupRoleIndicator:SetSize(10, 10)
+			GroupRoleIndicator:SetPoint('CENTER', self, 'LEFT', 0, -6)
+			GroupRoleIndicator:SetAlpha(cfg.showRoleIconsHoverOnly and 0 or 1)
+			self.GroupRoleIndicator = GroupRoleIndicator
 	    end
 		-- Leader, Assist, Master Looter Icon
-		local li = h:CreateTexture(nil, "OVERLAY")
-		li:SetPoint("TOPLEFT", self, 2, 5)
-		li:SetSize(11, 11)
-		self.Leader = li
-		local ai = h:CreateTexture(nil, "OVERLAY")
-		ai:SetPoint("TOPLEFT", self, 2, 5)
-		ai:SetSize(11, 11)
-		self.Assistant = ai
-		local ml = h:CreateTexture(nil, 'OVERLAY')
-		ml:SetSize(10, 10)
-		ml:SetPoint('LEFT', self.Leader, 'RIGHT')
-		self.MasterLooter = ml
+		local LeaderIndicator = h:CreateTexture(nil, "OVERLAY")
+		LeaderIndicator:SetPoint("TOPLEFT", self, 2, 5)
+		LeaderIndicator:SetSize(11, 11)
+		self.LeaderIndicator = LeaderIndicator
+		local AssistantIndicator = h:CreateTexture(nil, "OVERLAY")
+		AssistantIndicator:SetPoint("TOPLEFT", self, 2, 5)
+		AssistantIndicator:SetSize(11, 11)
+		self.AssistantIndicator = AssistantIndicator
 		-- Raid Marks
-		local ri = h:CreateTexture(nil, "OVERLAY")
-		ri:SetPoint("TOP", self, "TOP", -30, 5)
-		ri:SetSize(13, 13)
-		self.RaidIcon = ri
+		local RaidTargetIndicator = h:CreateTexture(nil, "OVERLAY")
+		RaidTargetIndicator:SetPoint("TOP", self, "TOP", -30, 5)
+		RaidTargetIndicator:SetSize(13, 13)
+		self.RaidTargetIndicator = RaidTargetIndicator
 		-- Ready Check
-		local rc = h:CreateTexture(nil, "OVERLAY")
-		rc:SetSize(12, 12)
-		rc:SetPoint("RIGHT", self.Health, "RIGHT", 4, 0)
-		self.ReadyCheck = rc
+		local ReadyCheckIndicator = h:CreateTexture(nil, "OVERLAY")
+		ReadyCheckIndicator:SetSize(12, 12)
+		ReadyCheckIndicator:SetPoint("RIGHT", self.Health, "RIGHT", 4, 0)
+		self.ReadyCheckIndicator = ReadyCheckIndicator
 	end
 	-- Tag Texts
 	do
@@ -240,11 +236,11 @@ local create = function(self)
 		absorbs:SetStatusBarColor(0.25, 0.8, 1, 0.5)
 		absorbs:SetFrameLevel(1)
 
-		self.HealPrediction = {
+		self.HealthPrediction = {
 			frequentUpdates = true,
 			healingBar = healing,
 			absorbsBar = absorbs,
-			Override = core.HealPrediction_Override
+			Override = core.HealthPrediction_Override
 		}
 	end
 	AddRaidDebuffs(self)

@@ -192,19 +192,19 @@ local create = function(self)
 	    h:SetAllPoints(self)
 	    h:SetFrameLevel(10)
 	    --Combat Icon
-		local combat = CreateFrame("Frame", nil, h)
-        combat:SetSize(15, 15)
-        combat:SetPoint("BOTTOMRIGHT", 7, -7)
-        self.CombatIcon = combat
+		local CombatIndicator = CreateFrame("Frame", nil, h)
+        CombatIndicator:SetSize(15, 15)
+        CombatIndicator:SetPoint("BOTTOMRIGHT", 7, -7)
+        self.CombatIndicator = CombatIndicator
 
-        local combaticon = combat:CreateTexture(nil, "ARTWORK")
+        local combaticon = CombatIndicator:CreateTexture(nil, "ARTWORK")
         combaticon:SetAllPoints(true)
         combaticon:SetTexture("Interface\\CharacterFrame\\UI-StateIcon")
         combaticon:SetTexCoord(0.58, 0.9, 0.08, 0.41)
-        combat.icon = combaticon
+        CombatIndicator.icon = combaticon
 
-        combat.__owner = self
-        combat:SetScript("OnUpdate", function(self)
+        CombatIndicator.__owner = self
+        CombatIndicator:SetScript("OnUpdate", function(self)
             local unit = self.__owner.unit
             if unit and UnitAffectingCombat(unit) then
                 self.icon:Show()
@@ -213,40 +213,36 @@ local create = function(self)
             end
         end)
 		-- PvP Icon
-		local PvP = h:CreateTexture(nil, "OVERLAY")
-		PvP:SetHeight(12)
-		PvP:SetWidth(12)
-		PvP:SetPoint("TOPRIGHT", 6, 6)
-		self.PvP = PvP
+		local PvPIndicator = h:CreateTexture(nil, "OVERLAY")
+		PvPIndicator:SetHeight(12)
+		PvPIndicator:SetWidth(12)
+		PvPIndicator:SetPoint("TOPRIGHT", 6, 6)
+		self.PvPIndicator = PvPIndicator
 	    --LFDRole icon
-		local LFDRole = h:CreateTexture(nil, "OVERLAY")
-		LFDRole:SetSize(15, 15)
-		LFDRole:SetAlpha(0.9)
-		LFDRole:SetPoint("BOTTOMLEFT", -6, -8)
-	    self.LFDRole = LFDRole
+		local GroupRoleIndicator = h:CreateTexture(nil, "OVERLAY")
+		GroupRoleIndicator:SetSize(15, 15)
+		GroupRoleIndicator:SetAlpha(0.9)
+		GroupRoleIndicator:SetPoint("BOTTOMLEFT", -6, -8)
+	    self.GroupRoleIndicator = GroupRoleIndicator
 		-- Leader, Assist, Master Looter Icon
-		local li = h:CreateTexture(nil, "OVERLAY")
-		li:SetPoint("TOPLEFT", self, 0, 8)
-		li:SetSize(12,12)
-		self.Leader = li
-		local ai = h:CreateTexture(nil, "OVERLAY")
-		ai:SetPoint("TOPLEFT", self, 0, 8)
-		ai:SetSize(12,12)
-		self.Assistant = ai
-		local ml = h:CreateTexture(nil, 'OVERLAY')
-		ml:SetSize(10,10)
-		ml:SetPoint('LEFT', self.Leader, 'RIGHT')
-		self.MasterLooter = ml
+		local LeaderIndicator = h:CreateTexture(nil, "OVERLAY")
+		LeaderIndicator:SetPoint("TOPLEFT", self, 0, 8)
+		LeaderIndicator:SetSize(12,12)
+		self.LeaderIndicator = LeaderIndicator
+		local AssistantIndicator = h:CreateTexture(nil, "OVERLAY")
+		AssistantIndicator:SetPoint("TOPLEFT", self, 0, 8)
+		AssistantIndicator:SetSize(12,12)
+		self.AssistantIndicator = AssistantIndicator
 		-- Phase Icon
-		local picon = h:CreateTexture(nil, 'OVERLAY')
-		picon:SetPoint('TOPRIGHT', self, 'TOPRIGHT', 8, 8)
-		picon:SetSize(16, 16)
-		self.PhaseIcon = picon
+		local PhaseIndicator = h:CreateTexture(nil, 'OVERLAY')
+		PhaseIndicator:SetPoint('TOPRIGHT', self, 'TOPRIGHT', 8, 8)
+		PhaseIndicator:SetSize(16, 16)
+		self.PhaseIndicator = PhaseIndicator
 		-- Raid Marks
-		local ri = h:CreateTexture(nil, "OVERLAY")
-		ri:SetPoint("RIGHT", self, "LEFT", 5, 6)
-		ri:SetSize(20, 20)
-		self.RaidIcon = ri
+		local RaidTargetIndicator = h:CreateTexture(nil, "OVERLAY")
+		RaidTargetIndicator:SetPoint("RIGHT", self, "LEFT", 5, 6)
+		RaidTargetIndicator:SetSize(20, 20)
+		self.RaidTargetIndicator = RaidTargetIndicator
 	end
 	-- Buffs & Debuffs
 	if cfg.targetBuffs then core.addBuffs(self) end
@@ -271,14 +267,14 @@ local create = function(self)
 		absorbs:SetStatusBarColor(0.25, 0.8, 1, 0.5)
 		absorbs:SetFrameLevel(1)
 
-		self.HealPrediction = {
+		self.HealthPrediction = {
 			healingBar = healing,
 			absorbsBar = absorbs,
-			Override = core.HealPrediction_Override
+			Override = core.HealthPrediction_Override
 		}
 	end
 	-- AltPowerBar
-	if cfg.AltPowerBarPlayer then
+	do
 		local s = CreateFrame("StatusBar", nil, self.Power) -- TODO attach to health
 		s:SetFrameLevel(1)
 		s:SetSize(3, self:GetHeight()+0.5)
@@ -299,8 +295,8 @@ local create = function(self)
 	    b:SetAllPoints(s)
 		b:SetVertexColor(45/255, 45/255, 45/255)
 
-		self.AltPowerBar = s
-	    self.AltPowerBar.bg = b
+		self.AlternativePower = s
+	    self.AlternativePower.bg = b
 	end
 	-- AltPowerBar Text
 	do

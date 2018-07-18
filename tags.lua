@@ -1,5 +1,6 @@
 local addon, ns = ...
 local cfg = ns.cfg
+local utils = ns.utils
 
 local tags = oUF.Tags
 
@@ -152,7 +153,7 @@ tags.Methods["drk:raidafkdnd"] = function(unit)
 	return UnitIsAFK(unit) and "|cffCFCFCF AFK|r" or UnitIsDND(unit) and "|cffCFCFCF DND|r" or ""
 end
 
-tags.Events["drk:power"] = 'UNIT_MAXPOWER UNIT_POWER'
+tags.Events["drk:power"] = 'UNIT_MAXPOWER UNIT_POWER_UPDATE'
 tags.Methods["drk:power"] = function(unit)
 	local curpp, maxpp = UnitPower(unit), UnitPowerMax(unit);
 	local playerClass, englishClass = UnitClass(unit);
@@ -231,7 +232,7 @@ tags.Methods["drk:level"] = function(unit)
 	return str
 end
 
-tags.Events["drk:altpowerbar"] = 'UNIT_POWER UNIT_MAXPOWER UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE PLAYER_TARGET_CHANGED'
+tags.Events["drk:altpowerbar"] = 'UNIT_POWER_UPDATE UNIT_MAXPOWER UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE PLAYER_TARGET_CHANGED'
 tags.Methods["drk:altpowerbar"] = function(unit)
 	local ALTERNATE_POWER_INDEX = ALTERNATE_POWER_INDEX
 	local cur = UnitPower(unit, ALTERNATE_POWER_INDEX)
@@ -247,132 +248,144 @@ tags.Methods["drk:altpowerbar"] = function(unit)
 	end
 end
 
+tags.Events["drk:artifactpower"] = 'AZERITE_ITEM_EXPERIENCE_CHANGED UNIT_INVENTORY_CHANGED'
+tags.Methods["drk:artifactpower"] = function()
+	local traitsLearnable = _TAGS['artifactpower:traits_learnable']() or 0
+	return ("%d / %d%s"):format(
+		_TAGS['artifactpower:power'](),
+		_TAGS['artifactpower:total_until_next'](),
+		traitsLearnable > 0 and
+			"\n  +" .. traitsLearnable .. " trait" .. (traitsLearnable > 1 and "s" or "")
+		or ""
+	) 
+end
+
 
 ---------------------------
 -- Class Buff Indicators --
 ---------------------------
 
-local UnitAura, GetTime = UnitAura, GetTime
+local GetTime = GetTime
 
-local RIPTIDE = GetSpellInfo(61295)
+local RIPTIDE = 61295
 tags.Events["Shaman:Riptide"] = 'UNIT_AURA'
 tags.Methods["Shaman:Riptide"] = function(unit)
-	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, RIPTIDE)
+	local _, _, _, _, _, expirationTime, source = utils.UnitBuff(unit, RIPTIDE)
 	if source and source == "player" then
 		return format("|cff0099cc%.0f|r ", expirationTime - GetTime())
 	end
 end
 
-local POWER_WORD_SHIELD = GetSpellInfo(17)
-local WEAKENED_SOUL = GetSpellInfo(6788)
+local POWER_WORD_SHIELD = 17
+local WEAKENED_SOUL = 6788
 tags.Events["Priest:PowerWordShield"] = 'UNIT_AURA'
 tags.Methods["Priest:PowerWordShield"] = function(unit)
 
-	local _, _, _, _, _, _, expirationTime = UnitAura(unit, POWER_WORD_SHIELD)
+	local _, _, _, _, _, expirationTime = utils.UnitBuff(unit, POWER_WORD_SHIELD)
 	if expirationTime then
 		return format("|cffffcc00%.0f|r ", expirationTime - GetTime())
 	else
-		local _, _, _, _, _, _, expirationTime = UnitDebuff(unit, WEAKENED_SOUL)
+		local _, _, _, _, _, expirationTime = utils.UnitDebuff(unit, WEAKENED_SOUL)
 		if expirationTime then
 			return format("|cffaa0000%.0f|r ", expirationTime - GetTime())
 		end
 	end
 end
 
-local CLARITY_OF_WILL = GetSpellInfo(152118)
+local CLARITY_OF_WILL = 152118
 tags.Events["Priest:ClarityOfWill"] = 'UNIT_AURA'
 tags.Methods["Priest:ClarityOfWill"] = function(unit)
 
-	local _, _, _, _, _, _, expirationTime = UnitAura(unit, CLARITY_OF_WILL)
+	local _, _, _, _, _, expirationTime = utils.UnitBuff(unit, CLARITY_OF_WILL)
 	if expirationTime then
 		return format("|cff33cc00%.0f|r ", expirationTime - GetTime())
 	end
 end
 
-local ATONEMENT = GetSpellInfo(214206)
+local ATONEMENT = 214206
 tags.Events["Priest:Atonement"] = 'UNIT_AURA'
 tags.Methods["Priest:Atonement"] = function(unit)
-	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, ATONEMENT)
+	local _, _, _, _, _, expirationTime, source = utils.UnitBuff(unit, ATONEMENT)
 	if source and source == "player" then
 		return format("|cff268ccc%.0f|r ", expirationTime - GetTime())
 	end
 end
 
-local RENEW = GetSpellInfo(139)
+local RENEW = 139
 tags.Events["Priest:Renew"] = 'UNIT_AURA'
 tags.Methods["Priest:Renew"] = function(unit)
-	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, RENEW)
+	local _, _, _, _, _, expirationTime, source = utils.UnitBuff(unit, RENEW)
 	if source and source == "player" then
 		return format("|cff33cc00%.0f|r ", expirationTime - GetTime())
 	end
 end
 
-local INNERVATE = GetSpellInfo(29166)
+local INNERVATE = 29166
 tags.Events["Druid:Innervate"] = 'UNIT_AURA'
 tags.Methods["Druid:Innervate"] = function(unit)
-	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, INNERVATE)
+	local _, _, _, _, _, expirationTime, source = utils.UnitBuff(unit, INNERVATE)
 	if expirationTime then
 		return format("|cff268ccc%.0f|r ", expirationTime - GetTime())
 	end
 end
 
-local IRONBARK = GetSpellInfo(102342)
+local IRONBARK = 102342
 tags.Events["Druid:Ironbark"] = 'UNIT_AURA'
 tags.Methods["Druid:Ironbark"] = function(unit)
-	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, IRONBARK)
+	local _, _, _, _, _, expirationTime, source = utils.UnitBuff(unit, IRONBARK)
 	if expirationTime then
 		return format("|cffa52a2a%.0f|r ", expirationTime - GetTime())
 	end
 end
 
-local LIFEBLOOM = GetSpellInfo(33763)
+local LIFEBLOOM = 33763
 tags.Events["Druid:Lifebloom"] = 'UNIT_AURA'
 tags.Methods["Druid:Lifebloom"] = function(unit)
-	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, LIFEBLOOM)
+	local _, _, _, _, _, expirationTime, source = utils.UnitBuff(unit, LIFEBLOOM)
 	if source and source == "player" then
 		return format("|cffffcc00%.0f|r ", expirationTime - GetTime())
 	end
 end
 
-local REJUVENATION = GetSpellInfo(774)
+local REJUVENATION = 774
 tags.Events["Druid:Rejuv"] = 'UNIT_AURA'
 tags.Methods["Druid:Rejuv"] = function(unit)
-	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, REJUVENATION)
+	local _, _, _, _, _, expirationTime, source = utils.UnitBuff(unit, REJUVENATION)
 	if source and source == "player" then
 		return format("|cffd814ff%.0f|r ", expirationTime - GetTime())
 	end
 end
 
-local GERMINATION = GetSpellInfo(155777)
+local GERMINATION = 155777
 tags.Events["Druid:Germination"] = 'UNIT_AURA'
 tags.Methods["Druid:Germination"] = function(unit)
-    local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, GERMINATION)
+    local _, _, _, _, _, expirationTime, source = utils.UnitBuff(unit, GERMINATION)
     if source and source == "player" then
         return format("|cffd814ff%.0f|r ", expirationTime - GetTime())
     end
 end
 
-local REGROWTH = GetSpellInfo(8936)
+local REGROWTH = 8936
 tags.Events["Druid:Regrowth"] = 'UNIT_AURA'
 tags.Methods["Druid:Regrowth"] = function(unit)
-	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, REGROWTH)
+	local _, _, _, _, _, expirationTime, source = utils.UnitBuff(unit, REGROWTH)
 	if source == "player" then
 		return format("|cff33cc00%.0f|r ", expirationTime - GetTime())
 	end
 end
 
-local WILD_GROWTH = GetSpellInfo(48438)
+local WILD_GROWTH = 48438
 tags.Events["Druid:WildGrowth"] = 'UNIT_AURA'
 tags.Methods["Druid:WildGrowth"] = function(unit)
-    if UnitBuff(unit, WILD_GROWTH) then
+    if utils.UnitBuff(unit, WILD_GROWTH) then
         return "|cff33cc00M|r "
     end
 end
 
-local BEACON = GetSpellInfo(53563)
+local BEACON = 53563
 tags.Events["Paladin:Beacon"] = 'UNIT_AURA'
 tags.Methods["Paladin:Beacon"] = function(unit)
-	local _, _, _, _, _, _, _, source = UnitAura(unit, BEACON)
+	local _, _, _, _, _, source = utils.UnitBuff(unit, BEACON)
 	if source then
 		if source == "player" then
 			return "|cffffff33M|r "
@@ -382,27 +395,27 @@ tags.Methods["Paladin:Beacon"] = function(unit)
 	end
 end
 
-local FORBEARANCE = GetSpellInfo(25771)
+local FORBEARANCE = 25771
 tags.Events["Paladin:Forbearance"] = 'UNIT_AURA'
 tags.Methods["Paladin:Forbearance"] = function(unit)
-	if UnitDebuff(unit, FORBEARANCE) then
+	if utils.UnitDebuff(unit, FORBEARANCE) then
 		return "|cffaa0000M|r "
 	end
 end
 
-local ENVELOPING_MIST = GetSpellInfo(124682)
+local ENVELOPING_MIST = 124682
 tags.Events["Monk:EnvelopingMist"] = 'UNIT_AURA'
 tags.Methods["Monk:EnvelopingMist"] = function(unit)
-	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, ENVELOPING_MIST)
+	local _, _, _, _, _, expirationTime, source = utils.UnitBuff(unit, ENVELOPING_MIST)
 	if source and source == "player" then
 		return format("|cff33cc00%.0f|r ", expirationTime - GetTime())
 	end
 end
 
-local RENEWING_MIST = GetSpellInfo(119611)
+local RENEWING_MIST = 119611
 tags.Events["Monk:RenewingMist"] = 'UNIT_AURA'
 tags.Methods["Monk:RenewingMist"] = function(unit)
-	local _, _, _, _, _, _, expirationTime, source = UnitAura(unit, RENEWING_MIST)
+	local _, _, _, _, _, expirationTime, source = utils.UnitBuff(unit, RENEWING_MIST)
 	if source and source == "player" then
 		return format("|cff0099cc%.0f|r ", expirationTime - GetTime())
 	end

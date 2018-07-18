@@ -92,7 +92,7 @@ local create = function(self)
 		s:SetStatusBarTexture(cfg.powerbar_texture)
 		s:GetStatusBarTexture():SetHorizTile(false)
 		s:SetStatusBarColor(235/255, 235/255, 235/255)
-		self.AltPowerBar = s
+		self.AlternativePower = s
 
 		local h = CreateFrame("Frame", nil, s)
 		h:SetFrameLevel(0)
@@ -104,7 +104,7 @@ local create = function(self)
 	    b:SetTexture(cfg.powerbar_texture)
 	    b:SetAllPoints(s)
 		b:SetVertexColor(45/255, 45/255, 45/255)
-	    self.AltPowerBar.bg = b
+		self.AlternativePower.bg = b
 	end
 	-- Castbar
 	if cfg.Castbars then

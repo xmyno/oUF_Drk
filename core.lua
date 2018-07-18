@@ -59,7 +59,7 @@ function core.addHighlight(f)
 		end
 		if f.unitType == "raid" then
 			if not cfg.showTooltips then GameTooltip:Hide() end
-			if cfg.showRoleIcons and cfg.showRoleIconsHoverOnly then f.LFDRole:SetAlpha(1) end
+			if cfg.showRoleIcons and cfg.showRoleIconsHoverOnly then f.GroupRoleIndicator:SetAlpha(1) end
 		end
     end
     local OnLeave = function(f)
@@ -75,7 +75,7 @@ function core.addHighlight(f)
 			f.ArtifactPower.Text:SetAlpha(0)
 		end
 		if f.unitType == "raid" then
-			if cfg.showRoleIcons and cfg.showRoleIconsHoverOnly then f.LFDRole:SetAlpha(0) end
+			if cfg.showRoleIcons and cfg.showRoleIconsHoverOnly then f.GroupRoleIndicator:SetAlpha(0) end
 		end
     end
     f:SetScript("OnEnter", OnEnter)
@@ -90,10 +90,10 @@ function core.addHighlight(f)
     f.Highlight = hl
 end
 
-function core.HealPrediction_Override(self, event, unit)
+function core.HealthPrediction_Override(self, event, unit)
 	if self.unit ~= unit then return end
 
-	local element = self.HealPrediction
+	local element = self.HealthPrediction
 	local parent = self.Health
 
 	local health, maxHealth = UnitHealth(unit), UnitHealthMax(unit)
@@ -227,7 +227,7 @@ end
 
 function core.PostUpdateIcon(self, unit, icon, index, offset, filter, isDebuff)
 
-	local _, _, _, _, dispelType, duration, expirationTime, unitCaster, _ = UnitAura(unit, index, icon.filter)
+	local _, _, _, dispelType, duration, expirationTime, unitCaster, _ = UnitAura(unit, index, icon.filter)
 
 	if duration and duration > 0 then
 		icon.time:Show()
