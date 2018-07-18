@@ -219,7 +219,7 @@ local create = function(self)
         self.Experience = Experience
     end
     -- ArtifactPower
-    if cfg.showArtifactPowerBar then
+    if cfg.showArtifactPowerBar and C_AzeriteItem and C_AzeriteItem.FindActiveAzeriteItem() then
         local ArtifactPower = CreateFrame('StatusBar', nil, self)
         if UnitLevel('player') == MAX_PLAYER_LEVEL then
             ArtifactPower:SetPoint('TOPRIGHT', self.Health, 'TOPLEFT', -3, 0)
