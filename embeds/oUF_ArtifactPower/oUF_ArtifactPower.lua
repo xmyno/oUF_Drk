@@ -15,6 +15,14 @@ ArtifactPower - a `StatusBar` used to display the player's artifact power
 .tooltipAnchor - anchor point for the tooltip. Defaults to 'ANCHOR_BOTTOMRIGHT' (string)
 .unusableColor - the RGB values for the widget when the equipped artifact is unusable. Defaults to {1, 0, 0} (table)
 
+## Attributes
+
+.current            - the amount of artifact power gained towards the next artifact level/trait (number?)
+.max                - the total amount of artifact power needed for the next artifact level/trait (number?)
+.level              - the current artifact level or the sum of learned and learnable traits (number?)
+.unspentPower       - the amount of unspent artifact power (number?)
+.numTraitsLearnable - the number of learnable traits based on the amount of unspent artifact power (number?)
+
 ## Notes
 
 A default texture will be applied if the widget is a `StatusBar` and doesn't have a texture or color set.
@@ -78,10 +86,11 @@ for tag, func in next, {
 			if (azeriteItemLocation) then
 				local power = C_AzeriteItem.GetAzeriteItemXPInfo(azeriteItemLocation)
 				return power
-			elseif (HasArtifactEquipped()) then
-				local _, _, _, _, unspentPower, numTraitsLearned, _, _, _, _, _, _, tier = C_ArtifactUI.GetEquippedArtifactInfo()
-				local _, power = GetNumTraitsLearnable(numTraitsLearned, unspentPower, tier)
-				return power
+			-- elseif (HasArtifactEquipped()) then
+			-- 	local _, _, _, _, unspentPower, numTraitsLearned, _, _, _, _, _, _, tier = C_ArtifactUI.GetEquippedArtifactInfo()
+			-- 	local _, power = GetNumTraitsLearnable(numTraitsLearned, unspentPower, tier)
+			-- 	return power
+		
 			end
 		end
 	end,
@@ -91,10 +100,10 @@ for tag, func in next, {
 			if (azeriteItemLocation) then
 				local power, max = C_AzeriteItem.GetAzeriteItemXPInfo(azeriteItemLocation)
 				return max - power
-			elseif (HasArtifactEquipped()) then
-				local _, _, _, _, unspentPower, numTraitsLearned, _, _, _, _, _, _, tier = C_ArtifactUI.GetEquippedArtifactInfo()
-				local _, power, powerForNextTrait = GetNumTraitsLearnable(numTraitsLearned, unspentPower, tier)
-				return powerForNextTrait - power
+			-- elseif (HasArtifactEquipped()) then
+			-- 	local _, _, _, _, unspentPower, numTraitsLearned, _, _, _, _, _, _, tier = C_ArtifactUI.GetEquippedArtifactInfo()
+			-- 	local _, power, powerForNextTrait = GetNumTraitsLearnable(numTraitsLearned, unspentPower, tier)
+			-- 	return powerForNextTrait - power
 			end
 		end
 	end,
@@ -104,10 +113,10 @@ for tag, func in next, {
 			if (azeriteItemLocation) then
 				local power, max = C_AzeriteItem.GetAzeriteItemXPInfo(azeriteItemLocation)
 				return math.floor(power / max * 100 + 0.5)
-			elseif (HasArtifactEquipped()) then
-				local _, _, _, _, unspentPower, numTraitsLearned, _, _, _, _, _, _, tier = C_ArtifactUI.GetEquippedArtifactInfo()
-				local _, power, powerForNextTrait = GetNumTraitsLearnable(numTraitsLearned, unspentPower, tier)
-				return math.floor(power / powerForNextTrait * 100 + 0.5)
+			-- elseif (HasArtifactEquipped()) then
+			-- 	local _, _, _, _, unspentPower, numTraitsLearned, _, _, _, _, _, _, tier = C_ArtifactUI.GetEquippedArtifactInfo()
+			-- 	local _, power, powerForNextTrait = GetNumTraitsLearnable(numTraitsLearned, unspentPower, tier)
+			-- 	return math.floor(power / powerForNextTrait * 100 + 0.5)
 			end
 		end
 	end,
@@ -117,10 +126,10 @@ for tag, func in next, {
 			if (azeriteItemLocation) then
 				local _, max = C_AzeriteItem.GetAzeriteItemXPInfo(azeriteItemLocation)
 				return max
-			elseif (HasArtifactEquipped()) then
-				local _, _, _, _, unspentPower, numTraitsLearned, _, _, _, _, _, _, tier = C_ArtifactUI.GetEquippedArtifactInfo()
-				local _, _, powerForNextTrait = GetNumTraitsLearnable(numTraitsLearned, unspentPower, tier)
-				return powerForNextTrait
+			-- elseif (HasArtifactEquipped()) then
+			-- 	local _, _, _, _, unspentPower, numTraitsLearned, _, _, _, _, _, _, tier = C_ArtifactUI.GetEquippedArtifactInfo()
+			-- 	local _, _, powerForNextTrait = GetNumTraitsLearnable(numTraitsLearned, unspentPower, tier)
+			-- 	return powerForNextTrait
 			end
 		end
 	end,
@@ -234,7 +243,8 @@ local function UpdateColor(element, isUsable)
 	element:SetStatusBarColor(unpack(color))
 end
 
-local function Update(self, event, unit)
+local function Update(self, event, arg)
+	local unit = type(arg) == 'string' and arg
 	if (unit and unit ~= self.unit) then return end
 	local element = self.ArtifactPower
 
