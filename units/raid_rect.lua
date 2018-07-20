@@ -181,35 +181,30 @@ local create = function(self)
 
 	    --LFDRole icon
 		if cfg.showRoleIcons then
-			local LFDRole = h:CreateTexture(nil, 'OVERLAY')
-			LFDRole:SetSize(12, 12)
-			LFDRole:SetPoint('CENTER', self, 'RIGHT', 1, 0)
-			LFDRole:SetAlpha(cfg.showRoleIconsHoverOnly and 0 or 1)
-			self.LFDRole = LFDRole
+			local GroupRoleIndicator = h:CreateTexture(nil, 'OVERLAY')
+			GroupRoleIndicator:SetSize(12, 12)
+			GroupRoleIndicator:SetPoint('CENTER', self, 'RIGHT', 1, 0)
+			GroupRoleIndicator:SetAlpha(cfg.showRoleIconsHoverOnly and 0 or 1)
+			self.GroupRoleIndicator = GroupRoleIndicator
 	    end
 		-- Leader, Assist, Master Looter Icon
-		-- local li = h:CreateTexture(nil, "OVERLAY")
-		-- li:SetPoint("TOPLEFT", self, 0, 8)
-		-- li:SetSize(12,12)
-		-- self.Leader = li
-		-- local ai = h:CreateTexture(nil, "OVERLAY")
-		-- ai:SetPoint("TOPLEFT", self, 0, 8)
-		-- ai:SetSize(12,12)
-		-- self.Assistant = ai
-		-- local ml = h:CreateTexture(nil, 'OVERLAY')
-		-- ml:SetSize(10,10)
-		-- ml:SetPoint('LEFT', self.Leader, 'RIGHT')
-		-- self.MasterLooter = ml
-		-- Raid Marks
-		local ri = h:CreateTexture(nil, "OVERLAY")
-		ri:SetPoint("CENTER", self, "TOP", 0, 0)
-		ri:SetSize(12, 12)
-		self.RaidIcon = ri
+		-- local LeaderIndicator = h:CreateTexture(nil, "OVERLAY")
+		-- LeaderIndicator:SetPoint("TOPLEFT", self, 0, 8)
+		-- LeaderIndicator:SetSize(12,12)
+		-- self.LeaderIndicator = LeaderIndicator
+		-- local AssistantIndicator = h:CreateTexture(nil, "OVERLAY")
+		-- AssistantIndicator:SetPoint("TOPLEFT", self, 0, 8)
+		-- AssistantIndicator:SetSize(12,12)
+		-- self.AssistantIndicator = AssistantIndicator
+		local RaidTargetIndicator = h:CreateTexture(nil, "OVERLAY")
+		RaidTargetIndicator:SetPoint("CENTER", self, "TOP", 0, 0)
+		RaidTargetIndicator:SetSize(12, 12)
+		self.RaidTargetIndicator = RaidTargetIndicator
 		-- Ready Check
-		local rc = h:CreateTexture(nil, "OVERLAY")
-		rc:SetSize(14, 14)
-		rc:SetPoint("BOTTOMLEFT", self.Health, "TOPRIGHT", -13, -12)
-		self.ReadyCheck = rc
+		local ReadyCheckIndicator = h:CreateTexture(nil, "OVERLAY")
+		ReadyCheckIndicator:SetSize(14, 14)
+		ReadyCheckIndicator:SetPoint("BOTTOMLEFT", self.Health, "TOPRIGHT", -13, -12)
+		self.ReadyCheckIndicator = ReadyCheckIndicator
 	end
 	createTargetBorder(self)
 	-- Heal Prediction
@@ -230,10 +225,10 @@ local create = function(self)
 		absorbs:SetStatusBarColor(0.25, 0.8, 1, 0.5)
 		absorbs:SetFrameLevel(1)
 
-		self.HealPrediction = {
+		self.HealthPrediction = {
 			healingBar = healing,
 			absorbsBar = absorbs,
-			Override = core.HealPrediction_Override
+			Override = core.HealthPrediction_Override
 		}
 	end
 	-- Raid debuffs
@@ -307,7 +302,7 @@ if cfg.showRaid and cfg.raidStyle == "RECT" then
 			header:SetAttribute("showPlayer", true)
 			header:SetAttribute("showParty", true)
 
-			header:SetPoint("TOPLEFT", UIParent, "BOTTOMRIGHT", cfg.raidX, cfg.raidY)
+			header:SetPoint("TOPRIGHT", UIParent, cfg.raidX, cfg.raidY)
 		else
 			if cfg.raidOrientationHorizontal then
 				header:SetPoint("TOPLEFT",raid[i-1],"BOTTOMLEFT",0,-5)

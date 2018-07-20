@@ -12,7 +12,7 @@ local cfg = CreateFrame("Frame")
     cfg.unitframeWidth = 250
     cfg.unitframeScale = 1 -- Keep between 1 and 1.25 to have a good result, 1 is default
     cfg.showPortraits = true
-    cfg.alwaysShowArtifactXPBar = false
+    cfg.alwaysShowArtifactXPBar = true
 --player
     cfg.playerX = -180 -- x-coordinate of the player frame
     cfg.playerY = 325 -- y-coordinate of the player frame
@@ -22,9 +22,9 @@ local cfg = CreateFrame("Frame")
     cfg.targetX = 180 -- x-coordinate of the target frame
     cfg.targetY = 325 -- y-coordinate of the target frame
 --boss
-    cfg.bossX = 10 -- x-offset of boss frames, from side
-    cfg.bossY = -200 -- y-offset of boss frames, from center, this is for the first bossframe, additional frames will grow upwards (75px each)
-    cfg.bossWidth = 200
+    cfg.bossX = 325 -- x-offset of boss frames, from side
+    cfg.bossY = 350 -- y-offset of boss frames, from center, this is for the first bossframe, additional frames will grow upwards (75px each)
+    cfg.bossWidth = 175
     cfg.bossSide = "RIGHT" -- "LEFT" or "RIGHT", highly depending on raidStyle settings
     -- recommended: raidStyle "BARS" -> "RIGHT", "RECT" -> "LEFT"
 --auras
@@ -76,7 +76,7 @@ local cfg = CreateFrame("Frame")
     -- these are for RECT layout only
     cfg.raidOrientationHorizontal = false
     cfg.raidX = cfg.raidOrientationHorizontal and -410 or -491
-    cfg.raidY = cfg.raidOrientationHorizontal and 227 or 190
+    cfg.raidY = cfg.raidOrientationHorizontal and -873 or -890--227 or 190
     cfg.raidScale = 1
 
     cfg.fontsize = {

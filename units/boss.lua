@@ -12,7 +12,7 @@ local create = function(self)
 	do
 		local s = CreateFrame("StatusBar", nil, self)
 		s:SetFrameLevel(1)
-		s:SetHeight(37)
+		s:SetHeight(30)
 		s:SetWidth(self:GetWidth())
 		s:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 0)
 		s:SetStatusBarTexture(cfg.statusbar_texture)
@@ -92,7 +92,7 @@ local create = function(self)
 		s:SetStatusBarTexture(cfg.powerbar_texture)
 		s:GetStatusBarTexture():SetHorizTile(false)
 		s:SetStatusBarColor(235/255, 235/255, 235/255)
-		self.AltPowerBar = s
+		self.AlternativePower = s
 
 		local h = CreateFrame("Frame", nil, s)
 		h:SetFrameLevel(0)
@@ -104,7 +104,7 @@ local create = function(self)
 	    b:SetTexture(cfg.powerbar_texture)
 	    b:SetAllPoints(s)
 		b:SetVertexColor(45/255, 45/255, 45/255)
-	    self.AltPowerBar.bg = b
+		self.AlternativePower.bg = b
 	end
 	-- Castbar
 	if cfg.Castbars then
@@ -223,7 +223,7 @@ oUF:RegisterStyle('drk:boss', create)
 oUF:SetActiveStyle('drk:boss')
 local bossX = (cfg.bossSide == "RIGHT") and -cfg.bossX or cfg.bossX
 oUF:Spawn("boss1", "oUF_DrkBossFrame1"):SetPoint("TOP"..cfg.bossSide, UIParent, cfg.bossSide, bossX, cfg.bossY)
-oUF:Spawn("boss2", "oUF_DrkBossFrame2"):SetPoint("TOP"..cfg.bossSide, UIParent, cfg.bossSide, bossX, cfg.bossY+75)
-oUF:Spawn("boss3", "oUF_DrkBossFrame3"):SetPoint("TOP"..cfg.bossSide, UIParent, cfg.bossSide, bossX, cfg.bossY+150)
-oUF:Spawn("boss4", "oUF_DrkBossFrame4"):SetPoint("TOP"..cfg.bossSide, UIParent, cfg.bossSide, bossX, cfg.bossY+225)
-oUF:Spawn("boss5", "oUF_DrkBossFrame5"):SetPoint("TOP"..cfg.bossSide, UIParent, cfg.bossSide, bossX, cfg.bossY+300)
+oUF:Spawn("boss2", "oUF_DrkBossFrame2"):SetPoint("TOP"..cfg.bossSide, UIParent, cfg.bossSide, bossX, cfg.bossY + 75 * (cfg.bossSide == "RIGHT" and -1 or 1))
+oUF:Spawn("boss3", "oUF_DrkBossFrame3"):SetPoint("TOP"..cfg.bossSide, UIParent, cfg.bossSide, bossX, cfg.bossY + 150 * (cfg.bossSide == "RIGHT" and -1 or 1))
+oUF:Spawn("boss4", "oUF_DrkBossFrame4"):SetPoint("TOP"..cfg.bossSide, UIParent, cfg.bossSide, bossX, cfg.bossY + 225 * (cfg.bossSide == "RIGHT" and -1 or 1))
+oUF:Spawn("boss5", "oUF_DrkBossFrame5"):SetPoint("TOP"..cfg.bossSide, UIParent, cfg.bossSide, bossX, cfg.bossY + 300 * (cfg.bossSide == "RIGHT" and -1 or 1))

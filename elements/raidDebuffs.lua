@@ -120,11 +120,11 @@ local updateIcon = function(unit, debuffs)
 	local hide = true
 	local index = 1
 	while true do
-		local name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, 'HARMFUL')
+		local name, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID = UnitAura(unit, index, 'HARMFUL')
 		if not name then break end
 
 		local icon = debuffs.button
-		local show = debuffs.CustomFilter(debuffs, unit, icon, name, rank, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID)
+		local show = debuffs.CustomFilter(debuffs, unit, icon, name, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID)
 
 		if not show then
 			if dtype and candispell[dtype][playerClass] and candispell[dtype][playerClass][cfg.spec] then

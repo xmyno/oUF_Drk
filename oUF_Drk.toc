@@ -6,6 +6,8 @@
 ## RequiredDeps: oUF
 ## X-Category: UnitFrame
 
+utils.lua
+
 libs\LibStub\LibStub.lua
 libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
 libs\LibResInfo-1.0\LibResInfo-1.0.lua

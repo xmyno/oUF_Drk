@@ -25,6 +25,9 @@ if not lib then return end
 
 ------------------------------------------------------------------------
 
+local addon, ns     = ...
+local utils         = ns.utils
+
 local callbacks     = lib.callbacks     or LibStub("CallbackHandler-1.0"):New(lib)
 local eventFrame    = lib.eventFrame    or CreateFrame("Frame")
 
@@ -95,8 +98,8 @@ local massSpells = {
 
 ------------------------------------------------------------------------
 
-local next, pairs, GetNumGroupMembers, GetTime, IsInGroup, IsInRaid, UnitAura, UnitCastingInfo, UnitGUID, UnitHasIncomingResurrection, UnitHealth, UnitIsConnected, UnitIsDead, UnitIsDeadOrGhost, UnitIsGhost, UnitName
-    = next, pairs, GetNumGroupMembers, GetTime, IsInGroup, IsInRaid, UnitAura, UnitCastingInfo, UnitGUID, UnitHasIncomingResurrection, UnitHealth, UnitIsConnected, UnitIsDead, UnitIsDeadOrGhost, UnitIsGhost, UnitName
+local next, pairs, GetNumGroupMembers, GetTime, IsInGroup, IsInRaid, UnitCastingInfo, UnitGUID, UnitHasIncomingResurrection, UnitHealth, UnitIsConnected, UnitIsDead, UnitIsDeadOrGhost, UnitIsGhost, UnitName
+    = next, pairs, GetNumGroupMembers, GetTime, IsInGroup, IsInRaid, UnitCastingInfo, UnitGUID, UnitHasIncomingResurrection, UnitHealth, UnitIsConnected, UnitIsDead, UnitIsDeadOrGhost, UnitIsGhost, UnitName
 
 ------------------------------------------------------------------------
 
@@ -571,7 +574,7 @@ function eventFrame:UNIT_AURA(event, unit)
 	if not guid then return end
 	--debug(5, event, unit)
 	if not isDead[guid] then
-		local stoned = UnitAura(unit, SOULSTONE)
+		local stoned = utils.UnitBuff(unit, SOULSTONE)
 		if stoned ~= hasSoulstone[guid] then
 			if not stoned and UnitHealth(unit) <= 1 then
 				return
