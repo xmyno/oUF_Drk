@@ -159,7 +159,7 @@ local function ElementEnable(self)
 	end
 
 	element:Show()
-	element:SetAlpha(element.outAlpha)
+	element:SetAlpha(element.outAlpha or 1)
 
 	Path(self, 'ElementEnable', 'player')
 end
