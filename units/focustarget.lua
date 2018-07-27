@@ -6,7 +6,7 @@ local cast = ns.cast
 local create = function(self)
 	self.unitType = "focustarget"
 	self:SetSize((cfg.unitframeWidth/2-5)*cfg.unitframeScale, 25*cfg.unitframeScale)
-	self:SetPoint("BOTTOMRIGHT", oUF_DrkTargetFrame, "TOPRIGHT", 0, 7)
+	self:SetPoint("BOTTOMLEFT", oUF_DrkTargetFrame, "TOPLEFT", 0, 7)
 	self:RegisterForClicks('AnyUp')
 
 	-- Health
