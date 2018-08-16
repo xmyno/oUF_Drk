@@ -127,7 +127,7 @@ local updateIcon = function(unit, debuffs)
 		local show = debuffs.CustomFilter(debuffs, unit, icon, name, texture, count, dtype, duration, timeLeft, caster, isStealable, shouldConsolidate, spellID)
 
 		if not show then
-			if dtype and candispell[dtype][playerClass] and candispell[dtype][playerClass][cfg.spec] then
+			if dtype and candispell[dtype] and candispell[dtype][playerClass] and candispell[dtype][playerClass][cfg.spec] then
 				show = true
 				icon.priority = 5
 			end
