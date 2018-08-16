@@ -99,7 +99,8 @@ cast.PostCastStart = function(self, unit, name, rank, text)
 	local interruptcb = {.5, .5, 1}
 	self:SetAlpha(1.0)
 	self.Spark:Show()
-	self:SetStatusBarColor(unpack(self.casting and self.CastingColor or self.ChannelingColor))
+	self:SetStatusBarColor(unpack(self.notInterruptible and self.NotInterruptableColor or
+		(self.casting and self.CastingColor or self.ChannelingColor)))
 	if unit == "player" then
 		local sf = self.SafeZone
 		if sf then
@@ -117,10 +118,6 @@ cast.PostCastStart = function(self, unit, name, rank, text)
 			self.channelingTicks = channelingTicks[spell] or 0
 			cast.setBarTicks(self, self.channelingTicks)
 		end
-	elseif (unit == "target" or unit == "focus") and not self.interrupt then
-		self:SetStatusBarColor(interruptcb[1],interruptcb[2],interruptcb[3],1)
-	else
-		self:SetStatusBarColor(pcolor[1], pcolor[2], pcolor[3],1)
 	end
 end
 

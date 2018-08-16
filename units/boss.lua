@@ -120,6 +120,7 @@ local create = function(self)
 	    s.CompleteColor = {0.5, 1, 0}
 	    s.FailColor = {1.0, 0.05, 0}
 	    s.ChannelingColor = {.5, .5, 1}
+	    s.NotInterruptableColor = {1, 0.2, 0}
 	    --helper
 	    local h = CreateFrame("Frame", nil, s)
 	    h:SetFrameLevel(0)
