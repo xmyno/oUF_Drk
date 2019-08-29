@@ -262,12 +262,12 @@ local create = function(self)
 
 	-- Event Handlers
 	self.Health.PostUpdate = PostUpdateRaidFrame
-	self:RegisterEvent("PLAYER_TARGET_CHANGED", OnChangedTarget)
+	self:RegisterEvent("PLAYER_TARGET_CHANGED", OnChangedTarget, true)
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", function(self, event)
 		OnChangedTarget(self, event)
 		UpdateLayout()
 	end)
-	self:RegisterEvent("PLAYER_REGEN_ENABLED", UpdateLayout)
+	self:RegisterEvent("PLAYER_REGEN_ENABLED", UpdateLayout, true)
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", UpdateLayout)
 
 end

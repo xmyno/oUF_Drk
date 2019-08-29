@@ -261,7 +261,7 @@ local create = function(self)
 	-- Event Handlers
 	self.Health.PostUpdate = PostUpdateRaidFrame
 	self.Power.PostUpdate = PostUpdateRaidFramePower
-	self:RegisterEvent('PLAYER_TARGET_CHANGED', onChangedTarget)
+	self:RegisterEvent('PLAYER_TARGET_CHANGED', onChangedTarget, true)
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', onChangedTarget)
 end
 
