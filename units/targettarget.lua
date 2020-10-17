@@ -1,7 +1,6 @@
 local addon, ns = ...
 local cfg = ns.cfg
 local core = ns.core
-local cast = ns.cast
 
 local create = function(self)
 	self.unitType = "targettarget"
@@ -83,71 +82,6 @@ local create = function(self)
 	end
 	-- Highlight
 	core.addHighlight(self)
-	-- Castbars
-	if cfg.Castbars then
-	    local s = CreateFrame("StatusBar", "oUF_DrkCastbar"..self.unitType, self)
-		s:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 19, 3)
-		s:SetHeight(18)
-		s:SetWidth(self:GetWidth() - 19)
-	    s:SetStatusBarTexture(cfg.statusbar_texture)
-	    s:SetStatusBarColor(0.5, 0.5, 1, 1)
-	    s:SetFrameLevel(9)
-	    --color
-	    s.CastingColor = {0.5, 0.5, 1}
-	    s.CompleteColor = {0.5, 1, 0}
-	    s.FailColor = {1.0, 0.05, 0}
-	    s.ChannelingColor = {0.5, 0.5, 1}
-	    s.NotInterruptableColor = {1, 0.2, 0}
-	    --helper
-	    local h = CreateFrame("Frame", nil, s)
-	    h:SetFrameLevel(0)
-	    h:SetPoint("TOPLEFT", -4, 4)
-	    h:SetPoint("BOTTOMRIGHT", 4, -4)
-	    core.createBackdrop(h, 0)
-	    --backdrop
-		local b = s:CreateTexture(nil, "BACKGROUND")
-	    b:SetTexture(cfg.statusbar_texture)
-	    b:SetAllPoints(s)
-	    b:SetVertexColor(0.5*0.2, 0.5*0.2, 1*0.2, 0.7)
-	    --spark
-	    local sp = s:CreateTexture(nil, "OVERLAY")
-	    sp:SetBlendMode("ADD")
-	    sp:SetAlpha(0.5)
-	    sp:SetHeight(s:GetHeight()*2.5)
-	    --spell text
-	    local txt = core.createFontString(s, cfg.font, cfg.fontsize.smallunitframe, "NONE")
-	    txt:SetPoint("LEFT", 4, 0)
-	    txt:SetJustifyH("LEFT")
-	    --time
-	    local t = core.createFontString(s, cfg.font, cfg.fontsize.smallunitframe, "NONE")
-	    t:SetPoint("RIGHT", -2, 0)
-	    txt:SetPoint("RIGHT", t, "LEFT", -5, 0)
-	    --icon
-	    local i = s:CreateTexture(nil, "ARTWORK")
-		i:SetPoint("RIGHT",s,"LEFT",-1,0)
-		i:SetSize(s:GetHeight(),s:GetHeight())
-	    i:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	    --helper2 for icon
-	    local h2 = CreateFrame("Frame", nil, s)
-	    h2:SetFrameLevel(0)
-	    h2:SetPoint("TOPLEFT", i, "TOPLEFT", -4, 4)
-	    h2:SetPoint("BOTTOMRIGHT", i,"BOTTOMRIGHT", 4, -4)
-	    core.createBackdrop(h2, 0)
-
-	    s.OnUpdate = cast.OnCastbarUpdate
-	    s.PostCastStart = cast.PostCastStart
-	    s.PostChannelStart = cast.PostCastStart
-	    s.PostCastStop = cast.PostCastStop
-	    s.PostChannelStop = cast.PostChannelStop
-	    s.PostCastFailed = cast.PostCastFailed
-	    s.PostCastInterrupted = cast.PostCastFailed
-
-	    self.Castbar = s
-	    self.Castbar.Text = txt
-	    self.Castbar.Time = t
-	    self.Castbar.Icon = i
-	    self.Castbar.Spark = sp
-	end
 	-- Info Icons
 	do
 		local h = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
