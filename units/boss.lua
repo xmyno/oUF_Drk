@@ -159,11 +159,8 @@ local create = function(self)
 
 	    s.OnUpdate = cast.OnCastbarUpdate
 	    s.PostCastStart = cast.PostCastStart
-	    s.PostChannelStart = cast.PostCastStart
 	    s.PostCastStop = cast.PostCastStop
-	    s.PostChannelStop = cast.PostChannelStop
-	    s.PostCastFailed = cast.PostCastFailed
-	    s.PostCastInterrupted = cast.PostCastFailed
+	    s.PostCastFail = cast.PostCastFail
 
 	    self.Castbar = s
 	    self.Castbar.Text = txt

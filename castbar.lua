@@ -81,7 +81,7 @@ cast.OnCastbarUpdate = function(self, elapsed)
 		end
 		self.duration = duration
 		self:SetValue(duration)
-		self.Spark:SetPoint('CENTER', self, 'LEFT', (duration / self.max) * self:GetWidth(), 0)
+		self.Spark:SetPoint('CENTER', self:GetStatusBarTexture(), 'LEFT', (duration / self.max) * self:GetWidth(), 0)
 	else
 		self.Spark:Hide()
 		local alpha = self:GetAlpha() - 0.02
@@ -130,13 +130,7 @@ cast.PostCastStop = function(self, unit, name, rank, castid)
 	self:Show()
 end
 
-cast.PostChannelStop = function(self, unit, name, rank)
-	self.fadeOut = true
-	self:SetValue(0)
-	self:Show()
-end
-
-cast.PostCastFailed = function(self, event, unit, name, rank, castid)
+cast.PostCastFail = function(self, event, unit, name, rank, castid)
 	self:SetStatusBarColor(unpack(self.FailColor))
 	self:SetValue(self.max)
 	if not self.fadeOut then
@@ -144,5 +138,6 @@ cast.PostCastFailed = function(self, event, unit, name, rank, castid)
 	end
 	self:Show()
 end
-  --hand the lib to the namespace for further usage
-  ns.cast = cast
+
+--hand the lib to the namespace for further usage
+ns.cast = cast
