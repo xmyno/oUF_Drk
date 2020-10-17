@@ -218,7 +218,7 @@ function core.PostCreateIcon(self, button)
 	button.border = border
 
 	--helper
-	local h = CreateFrame("Frame", nil, button)
+	local h = CreateFrame("Frame", nil, button, BackdropTemplateMixin and "BackdropTemplate")
 	h:SetFrameLevel(0)
 	h:SetPoint("TOPLEFT",-4,4)
 	h:SetPoint("BOTTOMRIGHT",4,-4)
@@ -272,7 +272,7 @@ function core.PostUpdateIcon(self, unit, icon, index, offset, filter, isDebuff)
 end
 
 function core.addBuffs(f)
-    local b = CreateFrame("Frame", nil, f)
+    local b = CreateFrame("Frame", nil, f, BackdropTemplateMixin and "BackdropTemplate")
     b.size = 20
     b.num = 20
     b.spacing = 5
@@ -297,7 +297,7 @@ function core.addBuffs(f)
 end
 
 function core.addDebuffs(f)
-    local b = CreateFrame("Frame", nil, f)
+    local b = CreateFrame("Frame", nil, f, BackdropTemplateMixin and "BackdropTemplate")
     b.size = 20
 	b.num = 10
 	b.onlyShowPlayer = false
@@ -329,6 +329,7 @@ do
 		--	end
 		--end
 		_G[bar..'Border']:Hide()
+		Mixin(_G[bar], BackdropTemplateMixin or {})
 		_G[bar]:SetParent(UIParent)
 		_G[bar]:SetScale(1)
 		_G[bar]:SetHeight(16)
@@ -344,7 +345,7 @@ do
 		_G[bar..'StatusBar']:SetAllPoints(_G[bar])
 
 		--glowing borders
-		local h = CreateFrame("Frame", nil, _G[bar])
+		local h = CreateFrame("Frame", nil, _G[bar], BackdropTemplateMixin and "BackdropTemplate")
 		h:SetFrameLevel(0)
 		h:SetPoint("TOPLEFT", -3, 3)
 		h:SetPoint("BOTTOMRIGHT", 3, -3)

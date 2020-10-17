@@ -11,7 +11,7 @@ local raid, n, max
 -- Create Target Border
 local CreateTargetBorder = function(self)
 	local backdrop = {edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1}
-	local targetBorder = CreateFrame("Frame", nil, self)
+	local targetBorder = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
 	targetBorder:SetPoint("TOPLEFT", self, "TOPLEFT", -2, 2)
 	targetBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 2, -2)
 	targetBorder:SetBackdrop(backdrop)
@@ -23,7 +23,7 @@ end
 
 local CreateResInfoBorder = function(self)
 	local backdrop = {edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1}
-	local resInfoBorder = CreateFrame("Frame", nil, self)
+	local resInfoBorder = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
 	resInfoBorder:SetPoint("TOPLEFT", self, "TOPLEFT", -2, 2)
 	resInfoBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 2, -2)
 	resInfoBorder:SetBackdrop(backdrop)
@@ -91,7 +91,7 @@ local AddRaidDebuffs = function(self)
 		end
 	end
 
-	local debuffs = CreateFrame("Frame", nil, self)
+	local debuffs = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
 	debuffs:SetWidth(16)
 	debuffs:SetHeight(16)
 	debuffs:SetFrameLevel(7)
@@ -145,7 +145,7 @@ local create = function(self)
 		s:SetStatusBarTexture("Interface\\ChatFrame\\ChatFrameBackground")
 		s:GetStatusBarTexture():SetHorizTile(true)
 
-		local h = CreateFrame("Frame", nil, s)
+		local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
 		h:SetFrameLevel(0)
 		h:SetPoint("TOPLEFT", self, "TOPLEFT", -3, 3)
 		h:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 3, -3)
@@ -262,12 +262,12 @@ local create = function(self)
 
 	-- Event Handlers
 	self.Health.PostUpdate = PostUpdateRaidFrame
-	self:RegisterEvent("PLAYER_TARGET_CHANGED", OnChangedTarget)
+	self:RegisterEvent("PLAYER_TARGET_CHANGED", OnChangedTarget, true)
 	self:RegisterEvent("GROUP_ROSTER_UPDATE", function(self, event)
 		OnChangedTarget(self, event)
 		UpdateLayout()
 	end)
-	self:RegisterEvent("PLAYER_REGEN_ENABLED", UpdateLayout)
+	self:RegisterEvent("PLAYER_REGEN_ENABLED", UpdateLayout, true)
 	self:RegisterEvent("PLAYER_ENTERING_WORLD", UpdateLayout)
 
 end

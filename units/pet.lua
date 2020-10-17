@@ -19,7 +19,7 @@ local create = function(self)
 		s:SetStatusBarTexture(cfg.statusbar_texture)
 		s:GetStatusBarTexture():SetHorizTile(true)
 
-		local h = CreateFrame("Frame", nil, s)
+		local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
 		h:SetFrameLevel(0)
 		h:SetPoint("TOPLEFT", -4, 4)
 		h:SetPoint("BOTTOMRIGHT", 4, -10*cfg.unitframeScale) -- TODO: check
@@ -62,7 +62,7 @@ local create = function(self)
 		s:SetPoint("BOTTOM", self, "BOTTOM", 0, 0)
 		s.frequentUpdates = true
 
-		local h = CreateFrame("Frame", nil, s)
+		local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
 		h:SetFrameLevel(0)
 		h:SetPoint("TOPLEFT", -4, 4)
 		h:SetPoint("BOTTOMRIGHT", 4, -4)

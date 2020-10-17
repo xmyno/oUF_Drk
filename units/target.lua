@@ -20,7 +20,7 @@ local create = function(self)
 		s:SetStatusBarTexture(cfg.statusbar_texture)
 		s:GetStatusBarTexture():SetHorizTile(true)
 
-		local h = CreateFrame("Frame", nil, s)
+		local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
 		h:SetFrameLevel(0)
 		h:SetPoint("TOPLEFT", -4, 4)
 		h:SetPoint("BOTTOMRIGHT",4,-4)
@@ -66,7 +66,7 @@ local create = function(self)
 		s:SetPoint("BOTTOM", self, "BOTTOM", 0, 0)
 		s.frequentUpdates = true
 
-		local h = CreateFrame("Frame", nil, s)
+		local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
 		h:SetFrameLevel(0)
 		h:SetPoint("TOPLEFT", -4, 4)
 		h:SetPoint("BOTTOMRIGHT", 4, -4)
@@ -95,7 +95,7 @@ local create = function(self)
 	    p:SetWidth(self:GetWidth()-17.55)
 	    p:SetPoint("BOTTOM", self, "BOTTOM", 0, 8)
 	    --helper
-	    local h = CreateFrame("Frame", nil, p)
+	    local h = CreateFrame("Frame", nil, p, BackdropTemplateMixin and 'BackdropTemplate')
 	    h:SetFrameLevel(3)
 	    h:SetPoint("TOPLEFT", -4, 4)
 	    h:SetPoint("BOTTOMRIGHT", 5, -5)
@@ -132,7 +132,7 @@ local create = function(self)
 	    s.ChannelingColor = {0.5, 0.5, 1}
 	    s.NotInterruptableColor = {1, 0.2, 0}
 	    --helper
-	    local h = CreateFrame("Frame", nil, s)
+	    local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
 	    h:SetFrameLevel(0)
 	    h:SetPoint("TOPLEFT", -4, 4)
 	    h:SetPoint("BOTTOMRIGHT", 4, -4)
@@ -167,7 +167,7 @@ local create = function(self)
 		end
 	    i:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	    --helper2 for icon
-	    local h2 = CreateFrame("Frame", nil, s)
+	    local h2 = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
 	    h2:SetFrameLevel(0)
 	    h2:SetPoint("TOPLEFT", i, "TOPLEFT", -4, 4)
 	    h2:SetPoint("BOTTOMRIGHT", i,"BOTTOMRIGHT", 4, -4)
@@ -189,11 +189,11 @@ local create = function(self)
 	end
 	-- Info Icons
 	do
-		local h = CreateFrame("Frame", nil, self)
+		local h = CreateFrame("Frame", nil, self, BackdropTemplateMixin and 'BackdropTemplate')
 	    h:SetAllPoints(self)
 	    h:SetFrameLevel(10)
 	    --Combat Icon
-		local CombatIndicator = CreateFrame("Frame", nil, h)
+		local CombatIndicator = CreateFrame("Frame", nil, h, BackdropTemplateMixin and 'BackdropTemplate')
         CombatIndicator:SetSize(15, 15)
         CombatIndicator:SetPoint("BOTTOMRIGHT", 7, -7)
         self.CombatIndicator = CombatIndicator
@@ -285,7 +285,7 @@ local create = function(self)
 		s:GetStatusBarTexture():SetHorizTile(false)
 		s:SetStatusBarColor(235/255, 235/255, 235/255)
 
-		local h = CreateFrame("Frame", nil, s)
+		local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
 		h:SetFrameLevel(0)
 		h:SetPoint("TOPLEFT", -3, 3)
 		h:SetPoint("BOTTOMRIGHT", 3, -3)
@@ -301,7 +301,7 @@ local create = function(self)
 	end
 	-- AltPowerBar Text
 	do
-		local altpphelpframe = CreateFrame("Frame", nil, self)
+		local altpphelpframe = CreateFrame("Frame", nil, self, BackdropTemplateMixin and 'BackdropTemplate')
 		altpphelpframe:SetPoint("RIGHT", self.AltPowerBar, "BOTTOMRIGHT", 1, 4)
 		altpphelpframe:SetFrameLevel(7)
 		altpphelpframe:SetSize(30, 10)

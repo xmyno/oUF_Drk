@@ -21,7 +21,7 @@ local create = function(self)
         s:SetStatusBarTexture(cfg.statusbar_texture)
         s:GetStatusBarTexture():SetHorizTile(true)
 
-        local h = CreateFrame("Frame", nil, s)
+        local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
         h:SetFrameLevel(0)
         h:SetPoint("TOPLEFT", -4, 4)
         h:SetPoint("BOTTOMRIGHT",4,-4)
@@ -34,7 +34,7 @@ local create = function(self)
         self.Health = s
         self.Health.bg = b
 
-        self.Health.frequentUpdates = true
+        self.Health.FrequentUpdates = true
         self.Health.colorSmooth = true
         self.Health.bg.multiplier = 0.3
         self.Health.Smooth = true
@@ -66,7 +66,7 @@ local create = function(self)
         s:SetPoint("BOTTOM", self, "BOTTOM", 0, 0)
         s.frequentUpdates = true
 
-        local h = CreateFrame("Frame", nil, s)
+        local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate" )
         h:SetFrameLevel(0)
         h:SetPoint("TOPLEFT", -4, 4)
         h:SetPoint("BOTTOMRIGHT", 4, -4)
@@ -92,7 +92,7 @@ local create = function(self)
         p:SetWidth(self:GetWidth()-17.55)
         p:SetPoint("BOTTOM", self, "BOTTOM", 0, 8)
         --helper
-        local h = CreateFrame("Frame", nil, p)
+        local h = CreateFrame("Frame", nil, p, BackdropTemplateMixin and "BackdropTemplate")
         h:SetFrameLevel(3)
         h:SetPoint("TOPLEFT", -4, 4)
         h:SetPoint("BOTTOMRIGHT", 5, -5)
@@ -118,7 +118,7 @@ local create = function(self)
         s:GetStatusBarTexture():SetHorizTile(false)
         s:SetStatusBarColor(235/255, 235/255, 235/255)
 
-        local h = CreateFrame("Frame", nil, s)
+        local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
         h:SetFrameLevel(0)
         h:SetPoint("TOPLEFT", -3, 3)
         h:SetPoint("BOTTOMRIGHT", 3, -3)
@@ -134,7 +134,7 @@ local create = function(self)
     end
     -- AltPowerBar Text
     do
-        local altpphelpframe = CreateFrame("Frame", nil, self)
+        local altpphelpframe = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
         if cfg.AltPowerBarPlayer then
             altpphelpframe:SetPoint("LEFT", self.AltPowerBar, "BOTTOMLEFT", 1, 4)
         else
@@ -202,7 +202,7 @@ local create = function(self)
         Experience.Rested.bg:SetTexture(cfg.statusbar_texture)
         Experience.Rested.bg:SetVertexColor(0, 0, 0)
 
-        local h = CreateFrame("Frame", nil, Experience.Rested)
+        local h = CreateFrame("Frame", nil, Experience.Rested, BackdropTemplateMixin and "BackdropTemplate")
         h:SetFrameLevel(5)
         h:SetPoint("TOPLEFT", -3, 3)
         h:SetPoint("BOTTOMRIGHT", 3, -3)
@@ -240,7 +240,7 @@ local create = function(self)
         ArtifactPower.bg:SetTexture(cfg.statusbar_texture)
         ArtifactPower.bg:SetVertexColor(0, 0, 0)
 
-        local h = CreateFrame("Frame", nil, ArtifactPower)
+        local h = CreateFrame("Frame", nil, ArtifactPower, BackdropTemplateMixin and "BackdropTemplate")
         h:SetFrameLevel(5)
         h:SetPoint("TOPLEFT", -3, 3)
         h:SetPoint("BOTTOMRIGHT", 3, -3)
@@ -288,7 +288,7 @@ local create = function(self)
         s.ChannelingColor = {0.5, 0.5, 1}
         s.NotInterruptableColor = {1, 0.2, 0}
         --helper
-        local h = CreateFrame("Frame", nil, s)
+        local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
         h:SetFrameLevel(0)
         h:SetPoint("TOPLEFT", -4, 4)
         h:SetPoint("BOTTOMRIGHT", 4, -4)
@@ -323,7 +323,7 @@ local create = function(self)
         end
         i:SetTexCoord(0.1, 0.9, 0.1, 0.9)
         --helper2 for icon
-        local h2 = CreateFrame("Frame", nil, s)
+        local h2 = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
         h2:SetFrameLevel(0)
         h2:SetPoint("TOPLEFT", i, "TOPLEFT", -4, 4)
         h2:SetPoint("BOTTOMRIGHT", i,"BOTTOMRIGHT", 4, -4)
@@ -360,7 +360,7 @@ local create = function(self)
     end
     -- Info Icons
     do
-        local h = CreateFrame("Frame", nil, self)
+        local h = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
         h:SetAllPoints(self)
         h:SetFrameLevel(10)
         --Combat Icon
@@ -420,7 +420,7 @@ local create = function(self)
         AdditionalPower.bg:SetPoint("TOPLEFT", AdditionalPower, "TOPLEFT", 0, 0)
         AdditionalPower.bg:SetPoint("BOTTOMRIGHT", AdditionalPower, "BOTTOMRIGHT", 0, 0)
 
-        local h = CreateFrame("Frame", nil, AdditionalPower)
+        local h = CreateFrame("Frame", nil, AdditionalPower, BackdropTemplateMixin and "BackdropTemplate")
         h:SetFrameLevel(0)
         h:SetPoint("TOPLEFT", -4, 4)
         h:SetPoint("BOTTOMRIGHT", 4, -4)
@@ -446,7 +446,7 @@ local create = function(self)
         end
 
         if maxPower ~= nil then
-            local ClassPower = CreateFrame("Frame", nil, self)
+            local ClassPower = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
             ClassPower:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
             ClassPower:SetHeight(5)
             ClassPower:SetWidth(self.Health:GetWidth() / 2 + 75)
@@ -460,7 +460,7 @@ local create = function(self)
                 ClassPower[i]:SetStatusBarColor(color[1], color[2], color[3])
                 ClassPower[i]:SetFrameLevel(11)
 
-                local h = CreateFrame("Frame", nil, ClassPower[i])
+                local h = CreateFrame("Frame", nil, ClassPower[i], BackdropTemplateMixin and "BackdropTemplate")
                 h:SetFrameLevel(10)
                 h:SetPoint("TOPLEFT", -3, 3)
                 h:SetPoint("BOTTOMRIGHT", 3, -3)
@@ -477,7 +477,7 @@ local create = function(self)
         end
     end
     if cfg.showRunebar and playerClass == "DEATHKNIGHT" then
-        local Runes = CreateFrame("Frame", nil, self)
+        local Runes = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
         Runes:SetPoint('CENTER', self.Health, 'TOP', 2, 1)
         Runes:SetHeight(5)
         Runes:SetWidth(self.Health:GetWidth()-15)
@@ -495,7 +495,7 @@ local create = function(self)
             Runes[i].bg:SetPoint("BOTTOMRIGHT", Runes[i], "BOTTOMRIGHT", 0, 0)
             Runes[i].bg.multiplier = 0.2
 
-            local h = CreateFrame("Frame", nil, Runes[i])
+            local h = CreateFrame("Frame", nil, Runes[i], BackdropTemplateMixin and "BackdropTemplate")
             h:SetFrameLevel(10)
             h:SetPoint("TOPLEFT",-3,3)
             h:SetPoint("BOTTOMRIGHT",3,-3)
@@ -511,7 +511,7 @@ local create = function(self)
         self.Runes = Runes
     end
     if cfg.showComboPoints then
-        local dcp = CreateFrame("Frame", nil, self)
+        local dcp = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
         dcp:SetPoint('CENTER', self.Health, 'TOP', 0, 1)
         dcp:SetHeight(5)
         dcp:SetWidth(self.Health:GetWidth()/2+75)
@@ -527,7 +527,7 @@ local create = function(self)
             dcp[i].bg:SetPoint("BOTTOMRIGHT", dcp[i], "BOTTOMRIGHT", 0, 0)
             dcp[i].bg.multiplier = 0.3
 
-            local h = CreateFrame("Frame", nil, dcp[i])
+            local h = CreateFrame("Frame", nil, dcp[i], BackdropTemplateMixin and "BackdropTemplate")
             h:SetFrameLevel(10)
             h:SetPoint("TOPLEFT", -3, 3)
             h:SetPoint("BOTTOMRIGHT", 3, -3)

@@ -18,7 +18,7 @@ local create = function(self)
 		s:SetStatusBarTexture(cfg.statusbar_texture)
 		s:GetStatusBarTexture():SetHorizTile(true)
 
-		local h = CreateFrame("Frame", nil, s)
+		local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
 		h:SetFrameLevel(0)
 		h:SetPoint("TOPLEFT", -4, 4)
 		h:SetPoint("BOTTOMRIGHT", 4, -4)
@@ -63,7 +63,7 @@ local create = function(self)
 		s:SetPoint("TOPLEFT", self.Health, "BOTTOMLEFT", 0, -3)
 		s.frequentUpdates = true
 
-		local h = CreateFrame("Frame", nil, s)
+		local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
 		h:SetFrameLevel(0)
 		h:SetPoint("TOPLEFT", -4, 4)
 		h:SetPoint("BOTTOMRIGHT", 4, -4)
@@ -94,7 +94,7 @@ local create = function(self)
 		s:SetStatusBarColor(235/255, 235/255, 235/255)
 		self.AlternativePower = s
 
-		local h = CreateFrame("Frame", nil, s)
+		local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
 		h:SetFrameLevel(0)
 		h:SetPoint("TOPLEFT", -3, 3)
 		h:SetPoint("BOTTOMRIGHT", 3, -3)
@@ -122,7 +122,7 @@ local create = function(self)
 	    s.ChannelingColor = {.5, .5, 1}
 	    s.NotInterruptableColor = {1, 0.2, 0}
 	    --helper
-	    local h = CreateFrame("Frame", nil, s)
+	    local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
 	    h:SetFrameLevel(0)
 	    h:SetPoint("TOPLEFT",-4,4)
 	    h:SetPoint("BOTTOMRIGHT",4,-4)
@@ -151,7 +151,7 @@ local create = function(self)
 		i:SetSize(s:GetHeight(), s:GetHeight())
 	    i:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	    --helper2 for icon
-	    local h2 = CreateFrame("Frame", nil, s)
+	    local h2 = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
 	    h2:SetFrameLevel(0)
 	    h2:SetPoint("TOPLEFT", i, "TOPLEFT", -4, 4)
 	    h2:SetPoint("BOTTOMRIGHT", i, "BOTTOMRIGHT", 4, -4)

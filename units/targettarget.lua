@@ -19,7 +19,7 @@ local create = function(self)
 		s:SetStatusBarTexture(cfg.statusbar_texture)
 		s:GetStatusBarTexture():SetHorizTile(true)
 
-		local h = CreateFrame("Frame", nil, s)
+		local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
 		h:SetFrameLevel(0)
 		h:SetPoint("TOPLEFT", -4, 4)
 		h:SetPoint("BOTTOMRIGHT", 4, -10*cfg.unitframeScale) -- TODO: check
@@ -62,7 +62,7 @@ local create = function(self)
 		s:SetPoint("BOTTOM", self, "BOTTOM", 0, 0)
 		s.frequentUpdates = true
 
-		local h = CreateFrame("Frame", nil, s)
+		local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
 		h:SetFrameLevel(0)
 		h:SetPoint("TOPLEFT", -4, 4)
 		h:SetPoint("BOTTOMRIGHT", 4, -4)
@@ -150,7 +150,7 @@ local create = function(self)
 	end
 	-- Info Icons
 	do
-		local h = CreateFrame("Frame", nil, self)
+		local h = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
 	    h:SetAllPoints(self)
 	    h:SetFrameLevel(10)
 		-- Leader, Assist, Master Looter Icon
@@ -170,7 +170,7 @@ local create = function(self)
 	end
 	-- Buff/Debuffs
 	if cfg.totBuffs or cfg.totDebuffs then
-		local b = CreateFrame("Frame", nil, self)
+		local b = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
 	    b.size = 20
 		b.num = 5
 		b.onlyShowPlayer = false

@@ -72,7 +72,7 @@ local createAuraIcon = function(debuffs)
 	cd:SetPoint("TOPLEFT", button)
 	cd:SetPoint("BOTTOMRIGHT", button)
 
-	local border = CreateFrame("Frame", nil, button)
+	local border = CreateFrame("Frame", nil, button, BackdropTemplateMixin and "BackdropTemplate")
 	border:SetFrameLevel(7)
 	border:SetPoint("TOPLEFT", -4, 3)
 	border:SetPoint("BOTTOMRIGHT", 4, -4)

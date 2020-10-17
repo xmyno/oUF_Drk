@@ -7,7 +7,7 @@ local _, playerClass = UnitClass("player")
 -- Create Target Border
 local createTargetBorder = function(self)
 	local glowBorder = {edgeFile = "Interface\\ChatFrame\\ChatFrameBackground", edgeSize = 1}
-	self.TargetBorder = CreateFrame("Frame", nil, self)
+	self.TargetBorder = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
 	self.TargetBorder:SetPoint("TOPLEFT", self, "TOPLEFT", -2.5, 2.5)
 	self.TargetBorder:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 3, -2.5)
 	self.TargetBorder:SetBackdrop(glowBorder)
@@ -40,7 +40,7 @@ local addRaidDebuffs = function(self)
 		end
 	end
 
-	local debuffs = CreateFrame("Frame", nil, self)
+	local debuffs = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
 	debuffs:SetWidth(12)
 	debuffs:SetHeight(12)
 	debuffs:SetFrameLevel(7)
@@ -116,7 +116,7 @@ local create = function(self)
 		s:SetStatusBarTexture(cfg.raid_texture)
 		s:GetStatusBarTexture():SetHorizTile(true)
 
-		local h = CreateFrame("Frame", nil, s)
+		local h = CreateFrame("Frame", nil, s, BackdropTemplateMixin and "BackdropTemplate")
 		h:SetFrameLevel(0)
 		h:SetPoint("TOPLEFT", self, "TOPLEFT", -4, 4)
 		h:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 4, -4)
@@ -175,7 +175,7 @@ local create = function(self)
 	core.addHighlight(self)
 	-- Info Icons
 	do
-		local h = CreateFrame("Frame", nil, self)
+		local h = CreateFrame("Frame", nil, self, BackdropTemplateMixin and "BackdropTemplate")
 	    h:SetAllPoints(self)
 	    h:SetFrameLevel(10)
 
@@ -261,7 +261,7 @@ local create = function(self)
 	-- Event Handlers
 	self.Health.PostUpdate = PostUpdateRaidFrame
 	self.Power.PostUpdate = PostUpdateRaidFramePower
-	self:RegisterEvent('PLAYER_TARGET_CHANGED', onChangedTarget)
+	self:RegisterEvent('PLAYER_TARGET_CHANGED', onChangedTarget, true)
 	self:RegisterEvent('GROUP_ROSTER_UPDATE', onChangedTarget)
 end
 
