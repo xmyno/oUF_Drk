@@ -191,6 +191,9 @@ end
 function core.PostCreateIcon(self, button)
 	self.showDebuffType = false
 	self.disableCooldown = true
+
+	Mixin(button, BackdropTemplateMixin or {})
+
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
 
