@@ -469,7 +469,9 @@ local create = function(self)
                     ClassPower[i]:SetPoint('TOPLEFT', ClassPower[i-1], "TOPRIGHT", 1, 0)
                 end
             end
-
+            
+            Runes.colorSpec = true
+            Runes.sortOrder = 'asc'
             self.ClassPower = ClassPower
         end
     end
